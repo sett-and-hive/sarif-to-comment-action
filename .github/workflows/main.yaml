@@ -14,9 +14,16 @@ jobs:
 
     steps:
 
-      - run: echo "Hello"
-      - run: echo "$GITHUB_CONTEXT"
+      - name: Dump the GH context
+        id: github_context_step
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
+      - uses: kceb/pull-request-url-action@v1
+        id: pr-url
+
+      - run: echo "${{ steps.pr-url.outputs.url }}"
       # - name: Post SARIF findings in the pull request
       # if: github.event_name == 'pull_request'
       # uses: actions/sarif-to-comment-action
