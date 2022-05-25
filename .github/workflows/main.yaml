@@ -1,0 +1,26 @@
+# A workflow that tests this action
+
+name: SARIF comment workflow
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    name: Run the SARIF commenter
+
+    steps:
+
+      run: echo "$GITHUB_CONTEXT"
+
+      # - name: Post SARIF findings in the pull request
+      # if: github.event_name == 'pull_request'
+      # uses: actions/sarif-to-comment-action
+      # with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     url: ${{ }}
+      #     repo: ${{ github.repository }}
+      #     owner: ${{ github.repository_owner }}
