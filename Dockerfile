@@ -2,6 +2,8 @@
 
 FROM node:18-bullseye-slim
 
+WORKDIR /usr/app
+
 COPY entrypoint.sh /entrypoint.sh
 
 RUN npm install @security-alert/sarif-to-comment@1.10.3
