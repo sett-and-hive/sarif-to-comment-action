@@ -14,7 +14,8 @@ jobs:
 
     steps:
 
-      run: echo "$GITHUB_CONTEXT"
+      - run: echo "Hello"
+      - run: echo "$GITHUB_CONTEXT"
 
       # - name: Post SARIF findings in the pull request
       # if: github.event_name == 'pull_request'
