@@ -20,10 +20,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - uses: kceb/pull-request-url-action@v1
-        id: pr-url
+      - name: Define the URL for this PR
+        run: |
+          url="https://https://github.com/${{ github.repository }}/pull/${{ github.event.number }}"
+          echo $url
 
-      - run: echo "${{ steps.pr-url.outputs.url }}"
+
       # - name: Post SARIF findings in the pull request
       # if: github.event_name == 'pull_request'
       # uses: actions/sarif-to-comment-action
