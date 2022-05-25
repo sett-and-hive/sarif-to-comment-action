@@ -38,3 +38,4 @@ jobs:
             url:   ${{ steps.define-url.outputs.url }}
             repo:  ${{ github.repository }}
             owner: ${{ github.repository_owner }}
+            sarif-file: 'odc-reports/test.sarif'
