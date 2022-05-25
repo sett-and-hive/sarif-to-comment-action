@@ -2,10 +2,10 @@
 
 FROM node:18-bullseye-slim
 
-WORKDIR /usr/app
+WORKDIR /app
 
-COPY entrypoint.sh /entrypoint.sh
-
+# Install dependencies
 RUN npm install @security-alert/sarif-to-comment@1.10.3
+COPY ./entrypoint.sh ./entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
