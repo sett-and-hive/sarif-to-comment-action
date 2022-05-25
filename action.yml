@@ -24,7 +24,11 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ sarif-file token url repo owner }}
+    - ${{ sarif-file }}
+    - ${{ token }}
+    - ${{ url }}
+    - ${{ repo }}
+    - ${{ owner }}
 branding:
   icon: 'git-pull-request'
   color: 'green'
