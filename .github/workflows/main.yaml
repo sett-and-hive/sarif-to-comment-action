@@ -42,3 +42,4 @@ jobs:
             owner:      ${{ github.repository_owner }}
             branch:     ${{ github.head_ref }}
             sarif-file: 'test/fixtures/xss.sarif'
+            dry-run:    'true'

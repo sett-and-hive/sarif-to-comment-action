@@ -20,6 +20,10 @@ inputs:
   branch:
     description: 'The branch for the pull request.'
     required: true
+  dry-run:
+    description: 'Add "true" flag here for dry run mode. For testing.'
+    default: 'false'
+    required: true
 outputs:
   output:
     description: 'The output of the docker run.'
@@ -33,6 +37,7 @@ runs:
     - ${{ inputs.repo }}
     - ${{ inputs.owner }}
     - ${{ inputs.branch }}
+    - ${{ inputs.dry-run }}
 branding:
   icon: 'git-pull-request'
   color: 'green'
