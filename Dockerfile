@@ -8,4 +8,4 @@ WORKDIR /app
 RUN npm install @security-alert/sarif-to-comment@1.10.3
 COPY ./entrypoint.sh ./entrypoint.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["bash", "/app/entrypoint.sh"]
