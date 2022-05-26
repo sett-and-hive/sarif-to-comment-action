@@ -29,6 +29,8 @@ jobs:
           url="https://github.com/${{ github.repository }}/pull/${{ github.event.number }}"
           echo "::set-output name=url::$url"
 
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
