@@ -1,25 +1,28 @@
 # action.yml
 name: 'sarif-to-comment-action'
-description: 'Run sarif-to-comment to post the content of a SARIF file to a GitHub PR.'
+description: 'Run sarif-to-comment to post the content of a SARIF file to a GitHub pull request.'
 inputs:
   sarif-file:
-    description: 'Path to SARIF file to add to PR comment'
+    description: 'Path to SARIF file to add to pull request comment'
     required: true
   token:
     description: 'GitHub Access Token'
     required: true
   url:
-    description: 'URL of the PR to comment.'
+    description: 'URL of the pull request to comment.'
     required: true
   repo:
-    description: 'GitHub repository with a PR.'
+    description: 'GitHub repository with a pull request.'
     required: true
   owner:
     description: 'Owner of the GitHub repository.'
     required: true
+  branch:
+    description: 'The branch for the pull request.'
+    required: true
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  output:
+    description: 'The output of the docker run.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -29,6 +32,7 @@ runs:
     - ${{ inputs.url }}
     - ${{ inputs.repo }}
     - ${{ inputs.owner }}
+    - ${{ inputs.branch }}
 branding:
   icon: 'git-pull-request'
   color: 'green'

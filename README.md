@@ -31,11 +31,10 @@ Required.
 Owner of the GitHub repository.
 Required.
 
-## Outputs
+### `branch`
 
-## `time`
-
-The time we greeted you.
+Branch the PR is on.
+Required.
 
 ## Example usage
 
@@ -45,7 +44,21 @@ The time we greeted you.
   uses: tomwillis608/sarif-to-comment-action
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
-    url:   ${{ steps.define-url.outputs.url }}
-    repo:  ${{ github.repository }}
+    url: ${{ steps.define-url.outputs.url }}
+    repo: ${{ github.repository }}
     owner: ${{ github.repository_owner }}
+    branch: ${{ github.head_ref }}
+    sarif-file: 'test/fixtures/xss.sarif'
+```
+
+## Notes
+
+### Support for OWASP dependency-check
+
+To make an OWASP dependency-check SARIF file work for the converter,
+you need to add an expected `defaultConfiguration` element to each `rules` object.
+
+```console
+jq '.runs[].tool.driver.rules[] |= . +
+  {"defaultConfiguration": { "level": "error"}}' test/fixtures/odc.sarif >odc-mod.sarif
 ```

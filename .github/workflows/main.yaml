@@ -34,8 +34,9 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: tomwillis608/sarif-to-comment-action@tom-create-action
         with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            url:   ${{ steps.define-url.outputs.url }}
-            repo:  ${{ github.repository }}
-            owner: ${{ github.repository_owner }}
-            sarif-file: 'odc-reports/test.sarif'
+            token:      ${{ secrets.GITHUB_TOKEN }}
+            url:        ${{ steps.define-url.outputs.url }}
+            repo:       ${{ github.repository }}
+            owner:      ${{ github.repository_owner }}
+            branch:     ${{ github.head_ref }}
+            sarif-file: 'test/fixtures/xss.sarif'
