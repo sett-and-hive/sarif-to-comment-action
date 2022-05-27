@@ -6,8 +6,8 @@ docker build . -t comment
 export DRY_RUN="true"
 export LIVE_RUN="false"
 MODE=$DRY_RUN
-OUTPUTS_FILE=test/test-outputs.txt
-FIXTURE_FILE=test/fixtures/codeql.sarif
+OUTPUTS_FILE=./test/test-outputs.txt
+FIXTURE_FILE=./test/fixtures/codeql.sarif
 PR_URL=https://github.com/tomwillis608/sarif-to-comment-action/pull/1
 OWNER=tomwillis608
 REPO=sarif-to-comment-action
