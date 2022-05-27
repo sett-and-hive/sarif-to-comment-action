@@ -29,9 +29,6 @@ jobs:
           url="https://github.com/${{ github.repository }}/pull/${{ github.event.number }}"
           echo "::set-output name=url::$url"
 
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Owner and repo names
         run: |
           owner=`echo ${{ github.repository }} | awk -F[/] '{print $1}'`
@@ -40,6 +37,8 @@ jobs:
           echo "::set-output name=repo::$repo"
         id: define-owner-repo
 
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
