@@ -29,6 +29,7 @@ jobs:
       - name: Run test scripts
         id: test
         shell: bash
+        working-directory: ./app
         run: |
           pwd
           ls -l
