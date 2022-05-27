@@ -95,6 +95,15 @@ There is a simple test that builds and runs the Dockerfile and does a dry run of
 test/test.sh
 ```
 
+## CI
+
+There are two files that perform different tests on the repository.
+[comment-test.yaml workflow](./.github/workflow/comment-test.yaml) uses the
+`tomwillis608/sarif-to-comment-actio` action as one would in their own action workflow.
+
+[cit-test.yaml workflow](./.github/workflow/ci-test.yaml) runs the same test
+script used to develop the action in this repository.
+
 ## Notes
 
 ### Support for OWASP dependency-check
