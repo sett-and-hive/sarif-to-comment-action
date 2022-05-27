@@ -34,6 +34,7 @@ jobs:
           ls -l
           ls -ltR test
           chmod +x "${{ github.workspace }}/test/test.sh"
+          ls -lt "${{ github.workspace }}/test/test.sh"
           bash "${{ github.workspace }}/test/test.sh > ${{github.workspace}}/test/test-result.txt)"
           ls -ltR test
           echo "::set-output name=test-outputs::$(cat ${{github.workspace}}/test/test-outputs.txt)"
