@@ -38,6 +38,12 @@ jobs:
           echo "::set-output name=test-result::$(grep "Test result:" ${{github.workspace}}/test/test-result.txt)"
         continue-on-error: true
 
+      - name: Create test script comment on pull request.
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: "Testing script results"
+
       - name: Update test script comment on pull request.
         if: github.event_name == 'pull_request' && ( ${{ success() }} || ${{ failure() }} )
         uses: thollander/actions-comment-pull-request@v1
