@@ -32,14 +32,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - run: |
+          owner=`echo ${{ github.repository }} | awk -F[/] '{print $1}'`
+          echo "::set-output name=url::$owner"
+          repo=`echo ${{ github.repository }} | awk -F[/] '{print $2}'`
+          echo "::set-output name=url::$repo"
+        id: define-owner-repo
+
+
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
         uses: tomwillis608/sarif-to-comment-action@tom-create-action
         with:
-            token:      ${{ secrets.GITHUB_TOKEN }}
-            url:        ${{ steps.define-url.outputs.url }}
-            repo:       ${{ github.repository }}
-            owner:      ${{ github.repository_owner }}
-            branch:     ${{ github.head_ref }}
-            sarif-file: 'test/fixtures/xss.sarif'
-            dry-run:    'true'
+            # token:      fake-secret
+            token:        ${{ secrets.GITHUB_TOKEN }}
+            url:          ${{ steps.define-url.outputs.url }}
+            repo:         ${{ steps.define-owner-repo.outputs.repo }}
+            owner:        ${{ steps.define-owner-repo.outputs.owner }}
+            branch:       ${{ github.head_ref }}
+            sarif-file:   'test/fixtures/xss.sarif'
+            sarif-folder: 'test/fixtures'
+            dry-run:      'true'

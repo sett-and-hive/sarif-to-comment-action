@@ -28,6 +28,7 @@ jobs:
 
       - name: Run test scripts
         id: test
+        shell: bash
         run: |
           chmod +x "${{ github.workspace }}/test/test.sh"
           bash "${{ github.workspace }}/test/test.sh"
@@ -40,9 +41,9 @@ jobs:
         uses: thollander/actions-comment-pull-request@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          comment_includes: "Test script testing results"
+          comment_includes: "Testing script results"
           message: |
-            Testing results
+            Testing script results
             ${{ steps.test.outputs.test-result }}
 
             <details><summary>Test script outputs</summary>
