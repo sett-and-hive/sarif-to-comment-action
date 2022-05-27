@@ -46,10 +46,11 @@ jobs:
         with:
             # token:      fake-secret
             token:        ${{ secrets.GITHUB_TOKEN }}
+            # url:          "${{ steps.define-url.outputs.url }}1"
             url:          ${{ steps.define-url.outputs.url }}
             repo:         ${{ steps.define-owner-repo.outputs.repo }}
             owner:        ${{ steps.define-owner-repo.outputs.owner }}
             branch:       ${{ github.head_ref }}
             # branch: 'tom-create-action'
-            sarif-file:   "${{ github.workspace }}/test/fixtures/codeql.sarif"
+            sarif-file:   "./test/fixtures/codeql.sarif"
             dry-run:      'true'
