@@ -50,6 +50,6 @@ jobs:
             repo:         ${{ steps.define-owner-repo.outputs.repo }}
             owner:        ${{ steps.define-owner-repo.outputs.owner }}
             branch:       ${{ github.head_ref }}
-            sarif-file:   "${{github.workspace}}/test/fixtures/xss.sarif"
-            sarif-folder: 'test/fixtures'
+            # branch: 'tom-create-action'
+            sarif-file:   "${{ github.workspace }}/test/fixtures/codeql.sarif"
             dry-run:      'true'
