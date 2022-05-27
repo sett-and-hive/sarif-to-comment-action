@@ -17,12 +17,6 @@ jobs:
 
     steps:
 
-      - name: Dump the GH context
-        id: github_context_step
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
       - name: Define the URL for this PR
         id: define-url
         run: |
@@ -42,15 +36,12 @@ jobs:
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: tomwillis608/sarif-to-comment-action@${{ github.head_ref }}
+        uses: tomwillis608/sarif-to-comment-action@tom-create-action
         with:
-            # token:      fake-secret
             token:        ${{ secrets.GITHUB_TOKEN }}
-            # url:          "${{ steps.define-url.outputs.url }}1"
             url:          ${{ steps.define-url.outputs.url }}
             repo:         ${{ steps.define-owner-repo.outputs.repo }}
             owner:        ${{ steps.define-owner-repo.outputs.owner }}
             branch:       ${{ github.head_ref }}
-            # branch: 'tom-create-action'
             sarif-file:   "./test/fixtures/codeql.sarif"
             dry-run:      'false'
