@@ -1,4 +1,4 @@
 node_modules
 package*.json
 *.sarif
-test/results.txt
+test/test-*.txt
