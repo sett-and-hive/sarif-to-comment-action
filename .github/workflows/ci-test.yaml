@@ -32,7 +32,8 @@ jobs:
         working-directory: ${{github.workspace}}
         run: |
           chmod +x "${{ github.workspace }}/test/test.sh"
-          ${{ github.workspace }}/test/test.sh > ${{github.workspace}}/test/test-result.txt
+          bash ${{ github.workspace }}/test/test.sh > ${{github.workspace}}/test/test-result.txt
+          cat ${{github.workspace}}/test/test-result.txt
           echo "::set-output name=test-outputs::$(cat ${{github.workspace}}/test/test-outputs.txt)"
           echo "::set-output name=test-result::$(grep "Test result:" ${{github.workspace}}/test/test-result.txt)"
         continue-on-error: true
