@@ -31,13 +31,9 @@ jobs:
         shell: bash
         working-directory: ${{github.workspace}}
         run: |
-          pwd
-          ls -l
-          ls -ltR test
+
           chmod +x "${{ github.workspace }}/test/test.sh"
-          ls -lt "${{ github.workspace }}/test/test.sh"
-          "${{ github.workspace }}/test/test.sh"
-          ls -ltR "${{ github.workspace }}/test"
+          ${{ github.workspace }}/test/test.sh > ${{github.workspace}}/test/test-result.txt
           echo "::set-output name=test-outputs::$(cat ${{github.workspace}}/test/test-outputs.txt)"
           echo "::set-output name=test-result::$(grep "Test result:" ${{github.workspace}}/test/test-result.txt)"
         continue-on-error: true
