@@ -30,6 +30,9 @@ jobs:
         id: test
         shell: bash
         run: |
+          pwd
+          ls -l
+          ls -ltR test
           chmod +x "${{ github.workspace }}/test/test.sh"
           bash "${{ github.workspace }}/test/test.sh > ${{github.workspace}}/test/test-result.txt)"
           ls -ltR test
