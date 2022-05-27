@@ -1,6 +1,7 @@
 # action.yml
 name: 'sarif-to-comment-action'
-description: 'Run sarif-to-comment to post the content of a SARIF file to a GitHub pull request.'
+author: tomwillis608
+description: 'Run @security-alert/sarif-to-comment to post the content of a SARIF file to a GitHub pull request.'
 inputs:
   sarif-file:
     description: 'Path to SARIF file to add to pull request comment'

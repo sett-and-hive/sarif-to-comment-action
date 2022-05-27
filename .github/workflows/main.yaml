@@ -34,9 +34,9 @@ jobs:
 
       - run: |
           owner=`echo ${{ github.repository }} | awk -F[/] '{print $1}'`
-          echo "::set-output name=url::$owner"
+          echo "::set-output name=owner::$owner"
           repo=`echo ${{ github.repository }} | awk -F[/] '{print $2}'`
-          echo "::set-output name=url::$repo"
+          echo "::set-output name=repo::$repo"
         id: define-owner-repo
 
 
@@ -50,6 +50,6 @@ jobs:
             repo:         ${{ steps.define-owner-repo.outputs.repo }}
             owner:        ${{ steps.define-owner-repo.outputs.owner }}
             branch:       ${{ github.head_ref }}
-            sarif-file:   'test/fixtures/xss.sarif'
+            sarif-file:   "${{github.workspace}}/test/fixtures/xss.sarif"
             sarif-folder: 'test/fixtures'
             dry-run:      'true'
