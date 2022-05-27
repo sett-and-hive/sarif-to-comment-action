@@ -102,7 +102,7 @@ There are two files that perform different tests on the repository.
 `tomwillis608/sarif-to-comment-actio` action as one would in their own action workflow.
 
 [cit-test.yaml workflow](./.github/workflow/ci-test.yaml) runs the same test
-script used to develop the action in this repository.
+script used to develop the action in this repository, ``test/test.sh`.
 
 ## Notes
 
