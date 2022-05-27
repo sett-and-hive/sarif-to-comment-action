@@ -51,7 +51,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           comment_includes: "Testing script results"
           message: |
-            Testing script results
+            Testing script results from *test/test.sh*
             ${{ steps.test.outputs.test-result }}
 
             <details><summary>Test script outputs</summary>
