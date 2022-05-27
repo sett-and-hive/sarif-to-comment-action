@@ -43,8 +43,6 @@ runs:
     - ${{ inputs.owner }}
     - ${{ inputs.branch }}
     - ${{ inputs.dry-run }}
-  volumes:
-    - ${{ github.workspace }}/${{ inputs.sarif-folder }}:/app/${{ inputs.sarif-folder }}
 branding:
   icon: 'git-pull-request'
   color: 'green'
