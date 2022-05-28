@@ -44,27 +44,19 @@ jobs:
         with:
           path: ${{ github.workspace }}/test/test-outputs.txt
 
-      - name: Create test script comment on pull request.
-        if: github.event_name == 'pull_request' && ( ${{ success() }} || ${{ failure() }} ) && ${{ !env.ACT }} && 0
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: "Testing script results from test/test.sh"
-
       - name: Update test script comment on pull request.
-        if: github.event_name == 'pull_request' && ( ${{ success() }} || ${{ failure() }} ) && ${{ !env.ACT }} && 0
+        if: github.event_name == 'pull_request' && ( ${{ success() }} || ${{ failure() }} )
         uses: thollander/actions-comment-pull-request@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          comment_includes: "Testing script results"
           message: |
             Testing script results from test/test.sh
             ${{ steps.test.outputs.test-result }}
 
-            <details><summary>Test script outputs</summary>
+            <details><summary>Test script outputs fro test/test.sh</summary>
             <p>
 
-            ${{ steps.details.outputs.output }}
+            ${{ steps.details.outputs.content }}
 
             </p>
             </details>
