@@ -1,0 +1,48 @@
+# action.yml
+name: 'sarif-to-comment-action'
+author: tomwillis608
+description: 'Run @security-alert/sarif-to-comment to post the content of a SARIF file to a GitHub pull request.'
+inputs:
+  sarif-file:
+    description: 'Path to SARIF file to add to pull request comment'
+    required: true
+  token:
+    description: 'GitHub Access Token'
+    required: true
+  url:
+    description: 'URL of the pull request to comment.'
+    required: true
+  repo:
+    description: 'GitHub repository with a pull request.'
+    required: true
+  owner:
+    description: 'Owner of the GitHub repository.'
+    required: true
+  branch:
+    description: 'The branch for the pull request.'
+    required: true
+  dry-run:
+    description: 'Add "true" flag here for dry run mode. For testing.'
+    default: 'false'
+    required: true
+  sarif-folder:
+    description: 'The path of the folder where the SARIF file is.  For Docker volume mounting'
+    default: 'test'
+    required: true
+outputs:
+  output:
+    description: 'The output of the docker run.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.sarif-file }}
+    - ${{ inputs.token }}
+    - ${{ inputs.url }}
+    - ${{ inputs.repo }}
+    - ${{ inputs.owner }}
+    - ${{ inputs.branch }}
+    - ${{ inputs.dry-run }}
+branding:
+  icon: 'git-pull-request'
+  color: 'green'

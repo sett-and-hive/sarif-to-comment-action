@@ -1,0 +1,53 @@
+# pre-commit is a linter runner and GitHub hook manager
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+# Run `pre-commit autoupdate` now and then, why don't ya?
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: check-merge-conflict
+
+  # Lint Dockerfiles
+  # This hook uses hadolint in a Docker to minimize dev environment at the cost of speed
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.10.0
+    hooks:
+      - id: hadolint
+        language: docker_image
+        entry: ghcr.io/hadolint/hadolint:v2.10.0 hadolint
+
+  # Linter for markdown files
+  # This hook uses DavidAnson Node.js markdownlint in a Docker to minimize dev environment at the cost of speed
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.31.1
+    hooks:
+      - id: markdownlint
+        language: docker_image
+        entry: ghcr.io/igorshubovych/markdownlint-cli:v0.31.1
+
+  # Linter for shell scripts
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.8.0.4
+    hooks:
+    - id: shellcheck
+
+  # Prettifier for shell scripts
+  # Try to get close to Google style guide
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.5.1-1
+    hooks:
+      - id: shfmt-docker # Docker image (requires Docker to run)
+        language: docker_image
+        entry: mvdan/shfmt -ci -s -i 2
+
+  # Detect secrets with GitLeaks
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.8.5
+    hooks:
+      - id: gitleaks-docker

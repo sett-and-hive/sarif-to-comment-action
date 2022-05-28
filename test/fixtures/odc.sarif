@@ -1,0 +1,879 @@
+{
+  "$schema" : "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version" : "2.1.0",
+  "runs" : [ {
+    "tool" : {
+      "driver" : {
+        "name" : "dependency-check",
+        "version" : "7.1.0",
+        "informationUri" : "https://jeremylong.github.io/DependencyCheck/",
+        "rules" : [ {
+          "id" : "CVE-2022-24823",
+          "shortDescription" : {
+            "text" : "Medium severity - CVE-2022-24823 Exposure of Resource to Wrong Sphere vulnerability in pkg:maven/io.netty/netty-transport@4.1.76.Final"
+          },
+          "fullDescription" : {
+            "text" : "Netty is an open-source, asynchronous event-driven network application framework. The package `io.netty:netty-codec-http` prior to version 4.1.77.Final contains an insufficient fix for CVE-2021-21290. When Netty's multipart decoders are used local information disclosure can occur via the local system temporary directory if temporary storing uploads on the disk is enabled. This only impacts applications running on Java version 6 and lower. Additionally, this vulnerability impacts code running on Unix-like systems, and very old versions of Mac OSX and Windows as they all share the system temporary directory between all users. Version 4.1.77.Final contains a patch for this vulnerability. As a workaround, specify one's own `java.io.tmpdir` when starting the JVM or use DefaultHttpDataFactory.setBaseDir(...) to set the directory to something that is only readable by the current user."
+          },
+          "help" : {
+            "text" : "",
+            "markdown" : "For more information see [CVE-2022-24823](http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2022-24823).\n\n\nIf this is a false positive - consider using the HTML report to generate a suppression file. For more information see [How dependency-check works](https://jeremylong.github.io/DependencyCheck/general/internals.html), [How to read the HTML report](https://jeremylong.github.io/DependencyCheck/general/thereport.html), and [Suppressing false positives](https://jeremylong.github.io/DependencyCheck/general/suppression.html)."
+          },
+          "properties" : {
+            "cvssv2_score" : 1.9,
+            "cvssv2_accessVector" : "LOCAL",
+            "cvssv2_accessComplexity" : "MEDIUM",
+            "cvssv2_authenticationr" : "NONE",
+            "cvssv2_confidentialImpact" : "$enc.json($rule.cvssv2ConfidentialityImpact)",
+            "cvssv2_integrityImpact" : "NONE",
+            "cvssv2_availabilityImpact" : "NONE",
+            "cvssv2_severity" : "LOW",
+            "cvssv3_baseScore" : 5.5,
+            "cvssv3_attackVector" : "LOCAL",
+            "cvssv3_attackComplexity" : "LOW",
+            "cvssv3_privilegesRequired" : "LOW",
+            "cvssv3_userInteraction" : "NONE",
+            "cvssv3_scope" : "UNCHANGED",
+            "cvssv3_confidentialityImpact" : "HIGH",
+            "cvssv3_integrityImpact" : "NONE",
+            "cvssv3_availabilityImpact" : "NONE",
+            "cvssv3_baseSeverity" : "MEDIUM",
+            "cvssv3_exploitabilityScore" : "1.8",
+            "cvssv3_impactScore" : "3.6",
+            "cvssv3_version" : "3.1",
+            "source" : "NVD"
+          }
+        } ],
+        "properties" : {
+          "disclaimer" : "Dependency-Check is an open source tool performing a best effort analysis of 3rd party dependencies; false positives and false negatives may exist in the analysis performed by the tool. Use of the tool and the reporting provided constitutes acceptance for use in an AS IS condition, and there are NO warranties, implied or otherwise, with regard to the analysis or its use. Any use of the tool and the reporting provided is at the user's risk. In no event shall the copyright holder or OWASP be held liable for any damages whatsoever arising out of or in connection with the use of this tool, the analysis performed, or the resulting report.",
+          "nvd" : "This report contains data retrieved from the National Vulnerability Database: http://nvd.nist.gov",
+          "npm" : "This report may contain data retrieved from the NPM Public Advisories: https://www.npmjs.com/advisories",
+          "retirejs" : "This report may contain data retrieved from the RetireJS community: https://retirejs.github.io/retire.js/",
+          "ossindex" : "This report may contain data retrieved from the Sonatype OSS Index: https://ossindex.sonatype.org",
+          "NVD CVE Checked" : "2022-05-25T15:58:07",
+          "NVD CVE Modified" : "2022-05-25T14:00:01",
+          "VersionCheckOn" : "2022-05-25T15:58:07"
+        }
+      }
+    },
+    "artifacts" : [ {
+      "location" : {
+        "uri" : "/src/score-engine/environments/aws/build/libs/aws-0.1.0-SNAPSHOT.jar"
+      },
+      "hashes" : {
+        "md5" : "21af31a988bb8f9e5b132fec6d9a0c3c",
+        "sha1" : "f1309993963a8194db11d13727beee3ee8ff68fa",
+        "sha256" : "a3d032e6ed33ad73c5a98c614bab510b750702c05c9d193ec196cfdaa7427d94"
+      },
+      "properties" : { }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/environments/build/libs/environments-0.1.0-SNAPSHOT.jar"
+      },
+      "hashes" : {
+        "md5" : "d45d454463c76bf8950382445c0a52d9",
+        "sha1" : "e0d7ea585b5fcd32d06608a1778fca5ee3f1846e",
+        "sha256" : "c7a7f96d96f1b2f910bf69bfc23fe55bd7240accff8704310f1ab9ce061dce56"
+      },
+      "properties" : { }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/gradle/wrapper/gradle-wrapper.jar"
+      },
+      "hashes" : {
+        "md5" : "56dfd1325535d644bf08c8df699d99b8",
+        "sha1" : "2aa1e772a1dc5a9b15d50443db4731b25180d58e",
+        "sha256" : "575098db54a998ff1c6770b352c3b16766c09848bee7555dab09afc34e8cf590"
+      },
+      "properties" : { }
+    }, {
+      "description" : {
+        "text" : "JaCoCo Java Agent"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/build/tmp/expandedArchives/org.jacoco.agent-0.8.6.jar_a26f6511a7813217be4cd6439d66563b/jacocoagent.jar/META-INF/maven/org.jacoco/org.jacoco.agent.rt/pom.xml"
+      },
+      "hashes" : {
+        "md5" : "8e5e435d194bce1997e1ecfba0966d81",
+        "sha1" : "d315d73c27d136d6d245ba3fb2aec463e300ec77",
+        "sha256" : "31bb8a2044199d17384d817f84cf371a38621282c959c5cbbdfc71ca145e272f"
+      },
+      "properties" : {
+        "id1" : "pkg:maven/org.jacoco/org.jacoco.agent.rt@0.8.6"
+      }
+    }, {
+      "description" : {
+        "text" : "JaCoCo Core"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/build/tmp/expandedArchives/org.jacoco.agent-0.8.6.jar_a26f6511a7813217be4cd6439d66563b/jacocoagent.jar/META-INF/maven/org.jacoco/org.jacoco.core/pom.xml"
+      },
+      "hashes" : {
+        "md5" : "306ba5197c224ffde059dd6938bffa7e",
+        "sha1" : "6f4a9abb3333a92f028bf444b596a7b7648db111",
+        "sha256" : "a3bbfede297067af7f55184310f02caf9be2a9b7221397c1d13655573ecf63de"
+      },
+      "properties" : {
+        "id2" : "pkg:maven/org.jacoco/org.jacoco.core@0.8.6"
+      }
+    }, {
+      "description" : {
+        "text" : "JaCoCo Agent"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/build/tmp/expandedArchives/org.jacoco.agent-0.8.6.jar_a26f6511a7813217be4cd6439d66563b/jacocoagent.jar"
+      },
+      "hashes" : {
+        "md5" : "70d661da6d88e2c135243ee40ec564ca",
+        "sha1" : "dc49f68f604f21737a58cf405623e36183228c46",
+        "sha256" : "7050e4de4063468127b5216b05457493658444994ee018585c97331570d55bf5"
+      },
+      "properties" : {
+        "id3" : "pkg:maven/org.jacoco/org.jacoco.agent@0.8.6"
+      }
+    }, {
+      "description" : {
+        "text" : "\n    Minimal set of interface definitions for Java support in AWS Lambda\n  "
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/aws/build/distributions/lambda.zip/lib/aws-lambda-java-core-1.2.1.jar"
+      },
+      "hashes" : {
+        "md5" : "9f054369e68a292c0ea0216c6fc303d5",
+        "sha1" : "ee677e3b913a2835c13b2746a7761b0a7b55a65d",
+        "sha256" : "314f3f515320de8403ddf9dbfc5ffb8638e16db44cf25969b2abb07f09d5a7cb"
+      },
+      "properties" : {
+        "license" : "Apache License, Version 2.0: https://aws.amazon.com/apache2.0",
+        "id4" : "pkg:maven/com.amazonaws/aws-lambda-java-core@1.2.1",
+        "vid1" : "cpe:2.3:a:amazon:aws_lambda:1.2.1:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "\n    Event interface definitions AWS services supported by AWS Lambda.\n  "
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/aws/build/distributions/lambda.zip/lib/aws-lambda-java-events-3.11.0.jar"
+      },
+      "hashes" : {
+        "md5" : "0908be5e74c2abd6eb46e5029bc4e1eb",
+        "sha1" : "04b75095a69f1095f37f763bc389475ce9fcc2ea",
+        "sha256" : "862628d15468888ad8ae845928f2fc72f8d041adb55444e21b8175c1e10c1f3c"
+      },
+      "properties" : {
+        "license" : "Apache License, Version 2.0: https://aws.amazon.com/apache2.0",
+        "id5" : "pkg:maven/com.amazonaws/aws-lambda-java-events@3.11.0",
+        "vid2" : "cpe:2.3:a:amazon:aws_lambda:3.11.0:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "Date and time library to replace JDK date handling"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/aws/build/distributions/lambda.zip/lib/joda-time-2.6.jar"
+      },
+      "hashes" : {
+        "md5" : "66450acd0e25d83b0445ac0e195d80e7",
+        "sha1" : "5015880733b0bc0ce813a3ed5601064c1d413671",
+        "sha256" : "5871f49d12b3bf93212df88974213c711fd53ec8dddd4572a694de509c72b168"
+      },
+      "properties" : {
+        "license" : "Apache 2: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id6" : "pkg:maven/joda-time/joda-time@2.6",
+        "vid3" : "cpe:2.3:a:time_project:time:2.6:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "Java Concurrency Tools Core Library"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/libs/local-0.1.0-SNAPSHOT-all.jar/META-INF/maven/org.jctools/jctools-core/pom.xml"
+      },
+      "hashes" : {
+        "md5" : "08e7326c64d7fd6ae4ea32e7eb4e5b79",
+        "sha1" : "9deceaba814dea198202b04fe0eec0d2dbf69ea9",
+        "sha256" : "acaf1b4c366f6794a734288a2c003f16af90a9c479cf4d7daade689764e4fb47"
+      },
+      "properties" : {
+        "license" : "Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id7" : "pkg:maven/org.jctools/jctools-core@3.1.0"
+      }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/libs/local-0.1.0-SNAPSHOT-all.jar"
+      },
+      "hashes" : {
+        "md5" : "a2be29f817e11aa2a6a877898bc9ed6c",
+        "sha1" : "689729855b4f93f846fdafeee9cf8f1f1d9da021",
+        "sha256" : "76e35b6ebee8cae671944311ea9b1e715cb27350111e0d1608a2805ac7b9c515"
+      },
+      "properties" : { }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/libs/local-0.1.0-SNAPSHOT-runner.jar"
+      },
+      "hashes" : {
+        "md5" : "803022dca61027ffc9cee4198b44b16a",
+        "sha1" : "ca163428568e491aaf6862d4b1b5ce32b604d2aa",
+        "sha256" : "45cb92fe042f62a7c2fed75ba8cb05b8541fad47fd8bd1ab47130f32863149b6"
+      },
+      "properties" : { }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/libs/local-0.1.0-SNAPSHOT.jar"
+      },
+      "hashes" : {
+        "md5" : "d3fa3b1d2fc41d53d31ea5ddb6ff0f41",
+        "sha1" : "222a8375b8563eaeddc02d5020774ed35fa06489",
+        "sha256" : "514a71eed2cc72bd9086043d40b69a7859ec5a4065f9601a086c9de168dd2fdc"
+      },
+      "properties" : { }
+    }, {
+      "description" : {
+        "text" : "Groovy: A powerful, dynamic language for the JVM"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/groovy-3.0.10.jar"
+      },
+      "hashes" : {
+        "md5" : "1125469744b5b7b9f404832279633442",
+        "sha1" : "b92c72a758f468e64b55e38abe06afa873decdba",
+        "sha256" : "dffefada8294865be5035515c0320fb679443d285f4a5f8adadcf00c1130e84c"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id8" : "pkg:maven/org.codehaus.groovy/groovy@3.0.10",
+        "vid4" : "cpe:2.3:a:apache:groovy:3.0.10:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "Core Jackson processing abstractions (aka Streaming API), implementation for JSON"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/jackson-core-2.13.2.jar"
+      },
+      "hashes" : {
+        "md5" : "c56433d75479665998ccbd50678480fa",
+        "sha1" : "0a6a0e0620d51833feffc67bccb51937b2345763",
+        "sha256" : "9bfa278ad05179fb68087851caf607652702ca25424bec8358a3716e751405c8"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id9" : "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.13.2",
+        "vid5" : "cpe:2.3:a:fasterxml:jackson-modules-java8:2.13.2:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "General data-binding functionality for Jackson: works on core streaming API"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/jackson-databind-2.13.2.2.jar"
+      },
+      "hashes" : {
+        "md5" : "055c97cb488b0956801e13abcc2a0cfe",
+        "sha1" : "ffeb635597d093509f33e1e94274d14be610f933",
+        "sha256" : "efb86b148712a838b94b3cfc95769785a116b3461f709b4cc510055a58b804b2"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id10" : "pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.13.2.2",
+        "vid6" : "cpe:2.3:a:fasterxml:jackson-databind:2.13.2.2:*:*:*:*:*:*:*",
+        "vid7" : "cpe:2.3:a:fasterxml:jackson-modules-java8:2.13.2.2:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "Jakarta Annotations API"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/jakarta.annotation-api-2.0.0.jar"
+      },
+      "hashes" : {
+        "md5" : "2ef9636790e49964e3f17016b02f7e1a",
+        "sha1" : "f3cd84cc45f583a0fdc42a8156d6c5b98d625c1a",
+        "sha256" : "2f0a0a2a5fe653794bdb1b9531bc9bea53c92c11e0b693e74cf8e396aa2ff325"
+      },
+      "properties" : {
+        "license" : "EPL 2.0: http://www.eclipse.org/legal/epl-2.0\nGPL2 w/ CPE: https://www.gnu.org/software/classpath/license.html",
+        "id11" : "pkg:maven/jakarta.annotation/jakarta.annotation-api@2.0.0",
+        "vid8" : "cpe:2.3:a:oracle:projects:2.0.0:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "Jakarta Dependency Injection"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/jakarta.inject-api-2.0.1.jar"
+      },
+      "hashes" : {
+        "md5" : "72003bf6efcc8455d414bbd7da86c11c",
+        "sha1" : "4c28afe1991a941d7702fe1362c365f0a8641d1e",
+        "sha256" : "f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id12" : "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1"
+      }
+    }, {
+      "description" : {
+        "text" : "Common Annotations for the JavaTM Platform API"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/javax.annotation-api-1.3.2.jar"
+      },
+      "hashes" : {
+        "md5" : "2ab1973eefffaa2aeec47d50b9e40b9d",
+        "sha1" : "934c04d3cfef185a8008e7bf34331b79730a9d43",
+        "sha256" : "e04ba5195bcd555dc95650f7cc614d151e4bcd52d29a10b8aa2197f3ab89ab9b"
+      },
+      "properties" : {
+        "license" : "CDDL + GPLv2 with classpath exception: https://github.com/javaee/javax.annotation/blob/master/LICENSE",
+        "id13" : "pkg:maven/javax.annotation/javax.annotation-api@1.3.2"
+      }
+    }, {
+      "description" : {
+        "text" : "logback-core module"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/logback-core-1.2.10.jar"
+      },
+      "hashes" : {
+        "md5" : "697b37f140ce9ac35a4ca3eaf4059f1a",
+        "sha1" : "5328406bfcae7bcdcc86810fcb2920d2c297170d",
+        "sha256" : "ba51a3fe56691f9dd7fe742e4a73c3ab4aaaa32202c73409ba56f18687399a08"
+      },
+      "properties" : {
+        "license" : "http://www.eclipse.org/legal/epl-v10.html, http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html",
+        "id14" : "pkg:maven/ch.qos.logback/logback-core@1.2.10",
+        "vid9" : "cpe:2.3:a:qos:logback:1.2.10:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-aop-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "ee781b3bcc9ccd8d0a7f11f8aaf188da",
+        "sha1" : "3e97060136e231cdb7a9b558a4625a02c0ea24c0",
+        "sha256" : "2648fa750a16b88d03c03933793f1f222d4e16338aac1e63c7a1fe9a99948561"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id15" : "pkg:maven/io.micronaut/micronaut-aop@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-buffer-netty-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "2a2573a03cd45b3d18404a34b9b01e51",
+        "sha1" : "078babeb3ad1259b6c2285d8f65be86d43286c0b",
+        "sha256" : "8be8f9c442875249dbfb73190bf42c871c01cbb8c1ed7953236ee2ce6e9fac7b"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id16" : "pkg:maven/io.micronaut/micronaut-buffer-netty@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-context-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "7f9822ee1aa4b804794247335df548c3",
+        "sha1" : "096642952b8dedc0266f4493874a38df767f12d1",
+        "sha256" : "69e86734e64ebc154de77a42401bfec834534642d2d71e02e6e8741d32414887"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id17" : "pkg:maven/io.micronaut/micronaut-context@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-core-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "a1460f73fc49ecc5a764a915742cdec2",
+        "sha1" : "2fc4193acaa9849db4a3b14c4e49fc3880b43708",
+        "sha256" : "2d16afee7bfa4478335df1a92194a7d3d753fc8a67e4df6f89d7bc8cd83c1405"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id18" : "pkg:maven/io.micronaut/micronaut-core@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-core-reactive-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "4bec629cdd190308bcb13644b4951247",
+        "sha1" : "781b9650405bfbd20692ab3c5799bd68f7d1282f",
+        "sha256" : "592297fe7f3aca8a73ea6028e46a534b30e2de24a5dd448445f38f831fc09d7b"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id19" : "pkg:maven/io.micronaut/micronaut-core-reactive@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-http-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "2e3b8cd25f4ad3e89af07e84df2ae3b0",
+        "sha1" : "384cf83ec0afe04010e5423f642cadaf95f06d59",
+        "sha256" : "940e4b7d46398e19ac12263f7e1dc3c6337378e5bf169e527eb784e6e58217df"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id20" : "pkg:maven/io.micronaut/micronaut-http@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-http-client-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "aaef3df97eeb85a5af03bdeddef07518",
+        "sha1" : "a1e74f78c9c9350530d3f0d3121c9eda77d6124e",
+        "sha256" : "d75c167c8caa79504ffd116cdb974c88efa26db431ddd3c1c722135fbefae6a9"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id21" : "pkg:maven/io.micronaut/micronaut-http-client@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-http-client-core-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "9525d53b44d7609630ffa62db4071c57",
+        "sha1" : "cb7e7aac5c82f893cdfaf47ca63467f47bb961ca",
+        "sha256" : "6c91a91cbff5cd41e181c72f30354193f7aab275e23763f37de4fbae023c8868"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id22" : "pkg:maven/io.micronaut/micronaut-http-client-core@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-http-netty-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "0a094afb8178afdd9343dd512aa971f6",
+        "sha1" : "884030928c00e4a49154b951c4c8a4b1f80120ac",
+        "sha256" : "1207561bcab69da355b91b5d87b120d2d7bfd9773870f102677f2ddae0ecdf57"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id23" : "pkg:maven/io.micronaut/micronaut-http-netty@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-http-server-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "8728284ac4a8edea969beba8dfd236a7",
+        "sha1" : "360635200af2b9a2e9530fc7422a9ef9acef2ab6",
+        "sha256" : "a7e3cd29ffbceff1b8077873359625b777e8449cc76ae5015da63ac45c274085"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id24" : "pkg:maven/io.micronaut/micronaut-http-server@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-http-server-netty-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "8bc998e278ec179f9bc913ae5de33b89",
+        "sha1" : "570812f2672ddb3c3f85863dcd0722f16b38a086",
+        "sha256" : "b6922655ce60cb4b913a8212325e3e9ee15c9a83caedd6820bf022a104e2944b"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id25" : "pkg:maven/io.micronaut/micronaut-http-server-netty@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-inject-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "32e3ea2d127b177ad317c0c868795369",
+        "sha1" : "73ae3f2b02dea776738c9edefa2369e4594f407f",
+        "sha256" : "7eacf7b86da96dc3d0bd141a6069be9011872861d760739de2cd108f24b5d9c7"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id26" : "pkg:maven/io.micronaut/micronaut-inject@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-jackson-core-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "3d634308be5557e577db073516d7c634",
+        "sha1" : "3c657cb45b4f6eae4e923f7734a8606107129ae2",
+        "sha256" : "7ccd2a59b27824239045f830854b01c7137f8c21fd1c99ff88538d54e5243123"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id27" : "pkg:maven/io.micronaut/micronaut-jackson-core@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-jackson-databind-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "4b84ccfe441f48e32e63121838554990",
+        "sha1" : "fdec68f08cd5fbad51a2f8f6b6c85cb60f89a647",
+        "sha256" : "fb9a1995ca62d050457d3e19c97f8b3f7bf7e2a1412d7569e22b004c0f88507a"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id28" : "pkg:maven/io.micronaut/micronaut-jackson-databind@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-json-core-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "561270b8c722573098e95b9c148b799c",
+        "sha1" : "d7b414f1de2fd5dc123847444ddbd583628dba20",
+        "sha256" : "c4024fae384ce6e28fc56b2cea9d0b32a0a174df4650986c8cfdb57d10e072f1"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id29" : "pkg:maven/io.micronaut/micronaut-json-core@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-router-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "3059bcc62ba436061a03493e95215d30",
+        "sha1" : "346d4e712edb38a09d161fcfb1c172e36dd18587",
+        "sha256" : "4c86657d166213c77296fa75fcdef8136c50e7a362c9cb04f9264286feafe055"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id30" : "pkg:maven/io.micronaut/micronaut-router@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-runtime-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "5b3dac48669488faf455510ce5f7815a",
+        "sha1" : "9cf7ebfd291d286a2fb445dcfde2764cca6d371d",
+        "sha256" : "982944fffe457b95366210f49d8940d786348516c3b25813062e56ae65e9c768"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id31" : "pkg:maven/io.micronaut/micronaut-runtime@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Projects that enhance the Micronaut and Groovy language experience"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-runtime-groovy-3.1.0.jar"
+      },
+      "hashes" : {
+        "md5" : "03a0c3f4fe83caae97636a92250c3c8b",
+        "sha1" : "f823e6a6d1f5b97899dfdcd05ab0f8aa661bce5f",
+        "sha256" : "87368935fdcce22f020ce80294bfa27799ca97a4d4c49ed7293b080a7e73e2c7"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id32" : "pkg:maven/io.micronaut.groovy/micronaut-runtime-groovy@3.1.0"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-validation-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "a706113d57297164e973a84edc553649",
+        "sha1" : "a8f41745a16c9e7138d06f7f946630e5461d439e",
+        "sha256" : "1c94e5fd6684339fe1ae8e2a9316ddc1c45db88408dfc05f81e8ccb778357b40"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id33" : "pkg:maven/io.micronaut/micronaut-validation@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Natively Cloud Native"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/micronaut-websocket-3.4.3.jar"
+      },
+      "hashes" : {
+        "md5" : "8c0598126aee67e7c6bb95665b670607",
+        "sha1" : "e1a4c5adcf03a1624b110b29db388b6994e2bf77",
+        "sha256" : "990df1b57f8ebf05c903b5d9dbb6e87f1dc19fc882b2456e82675e4fe3f57224"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id34" : "pkg:maven/io.micronaut/micronaut-websocket@3.4.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Netty is an asynchronous event-driven network application framework for    rapid development of maintainable high performance protocol servers and    clients."
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/netty-transport-4.1.76.Final.jar"
+      },
+      "hashes" : {
+        "md5" : "5a85cb00b4306cd2dd9e4c58e70102a7",
+        "sha1" : "f01d2f935005b6fdb2fedc23114d2ae717749c36",
+        "sha256" : "9b63cbec7f9b0acf3f567fffbcf3bd3c4aca5eec0696ba00c6bf499ed3198c0c"
+      },
+      "properties" : {
+        "license" : "https://www.apache.org/licenses/LICENSE-2.0",
+        "id35" : "pkg:maven/io.netty/netty-transport@4.1.76.Final",
+        "vid10" : "cpe:2.3:a:netty:netty:4.1.76:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "A Protocol for Asynchronous Non-Blocking Data Sequence"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/reactive-streams-1.0.3.jar"
+      },
+      "hashes" : {
+        "md5" : "69122b098fff1c6b1bf2cd3b355e7e03",
+        "sha1" : "d9fb7a7926ffa635b3dcaa5049fb2bfa25b3e7d0",
+        "sha256" : "1dee0481072d19c929b623e155e14d2f6085dc011529a0a0dbefc84cf571d865"
+      },
+      "properties" : {
+        "license" : "CC0: http://creativecommons.org/publicdomain/zero/1.0/",
+        "id36" : "pkg:maven/org.reactivestreams/reactive-streams@1.0.3"
+      }
+    }, {
+      "description" : {
+        "text" : "Non-Blocking Reactive Foundation for the JVM"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/reactor-core-3.4.15.jar"
+      },
+      "hashes" : {
+        "md5" : "48b8f57ce2a7c6d3ae777f00477e70ac",
+        "sha1" : "28ccf513fe64709c8ded30ea3f387fc718db9626",
+        "sha256" : "dc0b66eae3d82c22ae0b17be9ce2aaf4afd95d567d1984d1494435165dc96aea"
+      },
+      "properties" : {
+        "license" : "Apache License, Version 2.0: https://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id37" : "pkg:maven/io.projectreactor/reactor-core@3.4.15"
+      }
+    }, {
+      "description" : {
+        "text" : "The slf4j API"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/slf4j-api-1.7.32.jar"
+      },
+      "hashes" : {
+        "md5" : "fbcf58513bc25b80f075d812aad3e3cf",
+        "sha1" : "cdcff33940d9f2de763bc41ea05a0be5941176c3",
+        "sha256" : "3624f8474c1af46d75f98bc097d7864a323c81b3808aa43689a6e1c601c027be"
+      },
+      "properties" : {
+        "id38" : "pkg:maven/org.slf4j/slf4j-api@1.7.32"
+      }
+    }, {
+      "description" : {
+        "text" : "YAML 1.1 parser and emitter for Java"
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/snakeyaml-1.30.jar"
+      },
+      "hashes" : {
+        "md5" : "ba063b8ef3a8bfd591a1b56451166b14",
+        "sha1" : "8fde7fe2586328ac3c68db92045e1c8759125000",
+        "sha256" : "f43a4e40a946b8cdfd0321bc1c9a839bc3f119c57e4ca84fb87c367f51c8b2b3"
+      },
+      "properties" : {
+        "license" : "Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id39" : "pkg:maven/org.yaml/snakeyaml@1.30",
+        "vid11" : "cpe:2.3:a:snakeyaml_project:snakeyaml:1.30:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "\n        Bean Validation API\n    "
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/validation-api-2.0.1.Final.jar"
+      },
+      "hashes" : {
+        "md5" : "5d02c034034a7a16725ceff787e191d6",
+        "sha1" : "cb855558e6271b1b32e716d24cb85c7f583ce09e",
+        "sha256" : "9873b46df1833c9ee8f5bc1ff6853375115dadd8897bcb5a0dffb5848835ee6c"
+      },
+      "properties" : {
+        "license" : "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id40" : "pkg:maven/javax.validation/validation-api@2.0.1.Final"
+      }
+    }, {
+      "description" : {
+        "text" : "Add-on module for Jackson (http://jackson.codehaus.org) to support\nJDK 8 data types.\n  "
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.zip/local-0.1.0-SNAPSHOT/lib/jackson-datatype-jdk8-2.13.2.jar"
+      },
+      "hashes" : {
+        "md5" : "7693a537daa6acd34cc6da0a4a3dc2da",
+        "sha1" : "95f59cf63c3aadc1549578254af839a9c42ae84f",
+        "sha256" : "f4ee57e072c32946d32602569f50dd6a5890e8e64260dbf5e1bff7ec10c74520"
+      },
+      "properties" : {
+        "license" : "http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id41" : "pkg:maven/com.fasterxml.jackson.datatype/jackson-datatype-jdk8@2.13.2",
+        "vid12" : "cpe:2.3:a:fasterxml:jackson-modules-java8:2.13.2:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "Core annotations used for value types, used by Jackson data binding package.\n  "
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-shadow-0.1.0-SNAPSHOT.tar/local-shadow-0.1.0-SNAPSHOT/lib/local-0.1.0-SNAPSHOT-all.jar/META-INF/maven/com.fasterxml.jackson.core/jackson-annotations/pom.xml"
+      },
+      "hashes" : {
+        "md5" : "bafbf9e94915389a4885dcdd5ded0bcc",
+        "sha1" : "4777fb9704d7933684b717b9cef3975d109de0b7",
+        "sha256" : "6dd8038985dd16979bf6e92e6673f49783579374dbb755b2fe4ef03bc115a3df"
+      },
+      "properties" : {
+        "license" : "The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt",
+        "id42" : "pkg:maven/com.fasterxml.jackson.core/jackson-annotations@2.13.2",
+        "vid13" : "cpe:2.3:a:fasterxml:jackson-modules-java8:2.13.2:*:*:*:*:*:*:*"
+      }
+    }, {
+      "description" : {
+        "text" : "Add-on module to support JSR-310 (Java 8 Date & Time API) data types."
+      },
+      "location" : {
+        "uri" : "/src/score-engine/environments/local/build/distributions/local-shadow-0.1.0-SNAPSHOT.tar/local-shadow-0.1.0-SNAPSHOT/lib/local-0.1.0-SNAPSHOT-all.jar/META-INF/maven/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/pom.xml"
+      },
+      "hashes" : {
+        "md5" : "701cb2a2cc44a5ef56f956203202e2a0",
+        "sha1" : "5682ae6a490ec2e48fd2e1ed793bfeaaf7beeba3",
+        "sha256" : "656519b4b9f83b3c9681fa2ad4185878d0f801ca066de6ae759c8cf5af0a1a26"
+      },
+      "properties" : {
+        "id43" : "pkg:maven/com.fasterxml.jackson.datatype/jackson-datatype-jsr310@2.13.2",
+        "vid14" : "cpe:2.3:a:fasterxml:jackson-modules-java8:2.13.2:*:*:*:*:*:*:*"
+      }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/build/jacocoHtml/jacoco-resources/prettify.js"
+      },
+      "hashes" : {
+        "md5" : "4b337aaa3c606cfc1a6ff1986db2c8cb",
+        "sha1" : "290093755739da933c180ae7e7ebf283724dad1d",
+        "sha256" : "743c6c4cab9499cd0bfe18a5a62281eccce843f47ec75eedb32eeb29c755aa68"
+      },
+      "properties" : { }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/build/reports/tests/test/js/report.js"
+      },
+      "hashes" : {
+        "md5" : "de20378567ed128a8084bb84fa9a704c",
+        "sha1" : "e00fae3553098953945837c2dce0634b35ab1932",
+        "sha256" : "fc89c6d002d18f4662065c9887b2cda8f8486f2737d4ad0f2fdeac0ad58a44dc"
+      },
+      "properties" : { }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/build/libs/score-engine-0.1.0-SNAPSHOT.jar"
+      },
+      "hashes" : {
+        "md5" : "3e2e7f99c731dc6e669e975928c3c96c",
+        "sha1" : "15a3617a2eb1584737ab97111f01b8a9a30eaed7",
+        "sha256" : "48b81b241a6143be6dd4e749c788a20ed4d12fc51d5a4c5be69fd67af8958c9c"
+      },
+      "properties" : { }
+    }, {
+      "location" : {
+        "uri" : "/src/score-engine/build/jacocoHtml/jacoco-resources/sort.js"
+      },
+      "hashes" : {
+        "md5" : "727f663502fd1d85787ea703506b651e",
+        "sha1" : "cca2b01454d6bc3cd5083552e138e991b8fe8e35",
+        "sha256" : "3fd8dc27e9e0714d2dca4e1a16d775fefee2677962d968f36e05fc74b83a95cd"
+      },
+      "properties" : { }
+    } ],
+    "results" : [ {
+      "ruleId" : "CVE-2022-24823",
+      "level" : "warning",
+      "message" : {
+        "text" : "CVE-2022-24823 - Netty is an open-source, asynchronous event-driven network application framework. The package `io.netty:netty-codec-http` prior to version 4.1.77.Final contains an insufficient fix for CVE-2021-21290. When Netty's multipart decoders are used local information disclosure can occur via the local system temporary directory if temporary storing uploads on the disk is enabled. This only impacts applications running on Java version 6 and lower. Additionally, this vulnerability impacts code running on Unix-like systems, and very old versions of Mac OSX and Windows as they all share the system temporary directory between all users. Version 4.1.77.Final contains a patch for this vulnerability. As a workaround, specify one's own `java.io.tmpdir` when starting the JVM or use DefaultHttpDataFactory.setBaseDir(...) to set the directory to something that is only readable by the current user."
+      },
+      "partialFingerprints" : {
+        "vulnerabilityHash" : "f9066a800e3c40b07b50820d2b44de88"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "/src/score-engine/environments/local/build/distributions/local-0.1.0-SNAPSHOT.tar/local-0.1.0-SNAPSHOT/lib/netty-transport-4.1.76.Final.jar",
+            "index" : 40
+          }
+        },
+        "logicalLocations" : [ {
+          "fullyQualifiedName" : "pkg:maven/io.netty/netty-transport@4.1.76.Final"
+        } ]
+      } ]
+    } ]
+  } ]
+}

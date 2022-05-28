@@ -1,0 +1,47 @@
+# A workflow that tests this action
+
+name: SARIF comment workflow
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    name: Run the SARIF commenter
+
+    steps:
+
+      - name: Define the URL for this PR
+        id: define-url
+        run: |
+          url="https://github.com/${{ github.repository }}/pull/${{ github.event.number }}"
+          echo "::set-output name=url::$url"
+
+      - name: Owner and repo names
+        run: |
+          owner=`echo ${{ github.repository }} | awk -F[/] '{print $1}'`
+          echo "::set-output name=owner::$owner"
+          repo=`echo ${{ github.repository }} | awk -F[/] '{print $2}'`
+          echo "::set-output name=repo::$repo"
+        id: define-owner-repo
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Post SARIF findings in the pull request
+        if: github.event_name == 'pull_request'
+        uses: tomwillis608/sarif-to-comment-action@tom-create-action
+        with:
+            token:        ${{ secrets.GITHUB_TOKEN }}
+            url:          ${{ steps.define-url.outputs.url }}
+            repo:         ${{ steps.define-owner-repo.outputs.repo }}
+            owner:        ${{ steps.define-owner-repo.outputs.owner }}
+            branch:       ${{ github.head_ref }}
+            sarif-file:   "./test/fixtures/codeql.sarif"
+            dry-run:      'false'
