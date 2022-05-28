@@ -35,6 +35,7 @@ jobs:
           rm -f "test/test-*.txt"
           bash test/test.sh > test/test-result.txt
           echo "::set-output name=test-result::$(grep "Test result:" ${{ github.workspace }}/test/test-result.txt)"
+          ls -ltr ${{ github.workspace }}/test
         # continue-on-error: true
 
       - name: Read test details  file.
