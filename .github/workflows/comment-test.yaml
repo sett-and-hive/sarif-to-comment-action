@@ -36,7 +36,7 @@ jobs:
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: tomwillis608/sarif-to-comment-action@tom-create-action
+        uses: tomwillis608/sarif-to-comment-action@v1
         with:
             token:        ${{ secrets.GITHUB_TOKEN }}
             url:          ${{ steps.define-url.outputs.url }}
