@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "pre-commit": {
+    "enabled": true
+  },
+  "automerge": true,
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+  "stabilityDays": 3,
+  "transitiveRemediation": true,
+  "schedule": [
+    "after 8pm every weekday",
+    "before 8am every weekday",
+    "every weekend"
+  ],
+  "timezone": "America/Chicago",
+  "major": {
+    "automerge": false
+  },
+  "labels": ["renovate"]
+}
