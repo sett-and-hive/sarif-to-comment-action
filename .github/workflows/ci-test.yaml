@@ -17,12 +17,6 @@ jobs:
 
     steps:
 
-      - name: Dump the GH context
-        id: github_context_step
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -36,7 +30,6 @@ jobs:
           bash test/test.sh > test/test-result.txt
           echo "::set-output name=test-result::$(grep "Test result:" ${{ github.workspace }}/test/test-result.txt)"
           ls -ltr ${{ github.workspace }}/test
-        # continue-on-error: true
 
       - name: Read test details  file.
         id: details
