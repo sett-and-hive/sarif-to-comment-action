@@ -3,3 +3,4 @@ package*.json
 /*.sarif
 test/test-*.txt
 bin
+.actrc
