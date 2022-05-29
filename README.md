@@ -44,11 +44,6 @@ Default: `SARIF vulnerabilities report`.
 Flag to show or hide rule details.
 Default: true
 
-### `no-suppressed-result`
-
-Flag to hide or show results in SARIF suppressions.
-Default: false
-
 ### `dry-run`
 
 If true, do not post the results to a PR. If false, do post the results to the PR.

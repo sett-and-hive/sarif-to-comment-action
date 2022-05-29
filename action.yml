@@ -26,10 +26,6 @@ inputs:
     description: 'Flag to show or hide rule details.'
     default: 'true'
     required: false
-  no-suppressed-result:
-    description: 'Flag to hide or show results in SARIF suppressions.'
-    default: 'false'
-    required: false
   dry-run:
     description: 'Add "true" flag here for dry run mode. For testing.'
     default: 'false'
@@ -48,7 +44,6 @@ runs:
     - ${{ inputs.pr-number }}
     - ${{ inputs.title }}
     - ${{ inputs.show-rule-details }}
-    - ${{ inputs.no-suppressed-result }}
     - ${{ inputs.dry-run }}
 branding:
   icon: 'git-pull-request'
