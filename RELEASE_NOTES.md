@@ -13,3 +13,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
   * CodeQL SARIF dialect
   * OWASP Dependency Check dialect [https://github.com/tomwillis608/sarif-to-comment-action/issues/3]
 
+## Known run-time security vulnerabilities
+
+* None are known
