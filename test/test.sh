@@ -2,28 +2,67 @@
 #
 # Flip the mode value to control the --dryRun flag
 
-docker build . -t comment
+create_docker_image() {
+  TEST_IMAGE=comment-test-image
+  docker build . -t "$TEST_IMAGE" -q
+}
+
+run_docker() {
+  image="$1"
+  sarif_file="$2"
+  odc_sarif="$3"
+  docker run --rm -v "$(pwd)/test":/app/test "$image" "$sarif_file" "$TOKEN" "$REPOSITORY" "$BRANCH" "$PR_NUMBER" "$TITLE" "$SHOW_RULE_DETAILS" "$MODE" "$odc_sarif" 2>&1 | tee "$OUTPUTS_FILE"
+  echo "$OUTPUTS_FILE"
+}
+
+test_string() {
+  mode=$1
+  if [ "$mode" = "$DRY_RUN" ]; then
+    echo "## Results"
+  else
+    echo "HttpError: Bad credentials"
+  fi
+}
+
+test_result() {
+  if grep -Fxq "$TEST_STRING" "$OUTPUTS_FILE"; then
+    echo
+    echo "✅ Test result: passes"
+  else
+    echo
+    echo "❌ Test result: fails"
+    exit 1
+  fi
+}
+
+run_test() {
+  sarif_file="$1"
+  odc_sarif="$2"
+  run_docker "$IMAGE" "$sarif_file" "$odc_sarif"
+  TEST_STRING=$(test_string "$MODE")
+  test_result "$TEST_STRING"
+}
+
+###
+# Script starts here
+###
 export DRY_RUN="true"
 export LIVE_RUN="false"
 MODE=$DRY_RUN
 OUTPUTS_FILE=./test/test-outputs.txt
-FIXTURE_FILE=./test/fixtures/codeql.sarif
-PR_URL=https://github.com/tomwillis608/sarif-to-comment-action/pull/1
-OWNER=tomwillis608
-REPO=sarif-to-comment-action
+PR_NUMBER=1
+REPOSITORY=tomwillis608/sarif-to-comment-action
 BRANCH=fake-test-branch
-docker run --rm -v "$(pwd)/test":/app/test comment $FIXTURE_FILE fake-password $PR_URL $OWNER $REPO $BRANCH $MODE 2>&1 | tee $OUTPUTS_FILE
-if [ "$MODE" = "$DRY_RUN" ]; then
-  TEST_STRING="DryRun results:"
-else
-  TEST_STRING="HttpError: Bad credentials"
-fi
-if grep -Fxq "$TEST_STRING" "$OUTPUTS_FILE"; then
-  echo
-  echo "✅ Test result: passes"
+TOKEN=fake_password
+TITLE="Test security PR comment from build"
+SHOW_RULE_DETAILS=true
 
-else
-  echo
-  echo "❌ Test result: fails"
-  exit 1
-fi
+rm -f $OUTPUTS_FILE
+IMAGE=$(create_docker_image)
+echo "$IMAGE"
+
+CODEQL_FIXTURE="./test/fixtures/codeql.sarif"
+ODC_FIXTURE="./test/fixtures/odc.sarif"
+
+run_test "$CODEQL_FIXTURE" "false"
+run_test "$ODC_FIXTURE" "true"

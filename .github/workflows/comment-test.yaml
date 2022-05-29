@@ -13,35 +13,27 @@ permissions:
 jobs:
   comment:
     runs-on: ubuntu-latest
-    name: Run the SARIF commenter
+    name: Run the SARIF PR commenter
 
     steps:
 
-      - name: Define the URL for this PR
-        id: define-url
-        run: |
-          url="https://github.com/${{ github.repository }}/pull/${{ github.event.number }}"
-          echo "::set-output name=url::$url"
-
-      - name: Owner and repo names
-        run: |
-          owner=`echo ${{ github.repository }} | awk -F[/] '{print $1}'`
-          echo "::set-output name=owner::$owner"
-          repo=`echo ${{ github.repository }} | awk -F[/] '{print $2}'`
-          echo "::set-output name=repo::$repo"
-        id: define-owner-repo
+      - name: Harden Runner
+        uses: step-security/harden-runner@248ae51c2e8cc9622ecf50685c8bf7150c6e8813
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@d0651293c4a5a52e711f25b41b05b2212f385d28
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: tomwillis608/sarif-to-comment-action@v1
+        uses: tomwillis608/sarif-to-comment-action@issue/3/owasp-dependency-check
         with:
-            token:        ${{ secrets.GITHUB_TOKEN }}
-            url:          ${{ steps.define-url.outputs.url }}
-            repo:         ${{ steps.define-owner-repo.outputs.repo }}
-            owner:        ${{ steps.define-owner-repo.outputs.owner }}
-            branch:       ${{ github.head_ref }}
-            sarif-file:   "./test/fixtures/codeql.sarif"
-            dry-run:      'false'
+            token:      ${{ secrets.GITHUB_TOKEN }}
+            repository: ${{ github.repository }}
+            branch:     ${{ github.head_ref }}
+            pr-number:  ${{ github.event.number }}
+            sarif-file: "./test/fixtures/odc.sarif"
+            title:      "Test comment with security scanning results"
+            dry-run:    'false'
+            odc-sarif: true

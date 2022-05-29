@@ -9,9 +9,10 @@ currently being supported with security updates.
 | ------- | ------------------ |
 | main    | :white_check_mark: |
 
-
 ## Reporting a Vulnerability
 
-Please raise an issue and we'll triage it as soon as we can.
+Please raise a bug issue and label it with `SECURITY` and
+we'll triage it as soon as we can.
 
-We appreciate your efforts and responsible disclosure and will make every effort to acknowledge your contributions.
+We appreciate your efforts and responsible disclosure
+and will make every effort to acknowledge your contributions.
