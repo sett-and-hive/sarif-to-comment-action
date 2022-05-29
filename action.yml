@@ -30,6 +30,10 @@ inputs:
     description: 'Add "true" flag here for dry run mode. For testing.'
     default: 'false'
     required: false
+  odc-sarif:
+    description: 'SARIF file is in OWASP Dependency Check dialect.'
+    default: 'false'
+    required: false
 outputs:
   output:
     description: 'The output of the docker run.'
@@ -45,6 +49,7 @@ runs:
     - ${{ inputs.title }}
     - ${{ inputs.show-rule-details }}
     - ${{ inputs.dry-run }}
+    - ${{ inputs.odc-sarif }}
 branding:
   icon: 'git-pull-request'
   color: 'green'

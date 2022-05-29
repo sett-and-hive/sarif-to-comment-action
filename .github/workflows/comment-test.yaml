@@ -22,12 +22,13 @@ jobs:
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: tomwillis608/sarif-to-comment-action@issue/15/fix-api
+        uses: tomwillis608/sarif-to-comment-action@issue/3/owasp-dependency-check
         with:
             token:      ${{ secrets.GITHUB_TOKEN }}
             repository: ${{ github.repository }}
             branch:     ${{ github.head_ref }}
             pr-number:  ${{ github.event.number }}
-            sarif-file: "./test/fixtures/codeql.sarif"
+            sarif-file: "./test/fixtures/odc.sarif"
             title:      "Test comment with security scanning results"
             dry-run:    'false'
+            odc-sarif: true
