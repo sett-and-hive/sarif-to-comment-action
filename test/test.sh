@@ -14,9 +14,9 @@ BRANCH=fake-test-branch
 TOKEN=fake_password
 TITLE="Test title for comment"
 SHOW_RULE_DETAILS=true
-SHOW_SUPPRESSED_RESULT=true
+NO_SUPPRESSED_RESULT=false
 
-docker run --rm -v "$(pwd)/test":/app/test comment $FIXTURE_FILE $TOKEN $REPOSITORY $BRANCH $PR_NUMBER "$TITLE" $SHOW_RULE_DETAILS $SHOW_SUPPRESSED_RESULT $MODE 2>&1 | tee $OUTPUTS_FILE
+docker run --rm -v "$(pwd)/test":/app/test comment $FIXTURE_FILE $TOKEN $REPOSITORY $BRANCH $PR_NUMBER "$TITLE" $SHOW_RULE_DETAILS $NO_SUPPRESSED_RESULT $MODE 2>&1 | tee $OUTPUTS_FILE
 if [ "$MODE" = "$DRY_RUN" ]; then
   TEST_STRING="DryRun results:"
 else

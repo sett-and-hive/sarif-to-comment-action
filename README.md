@@ -41,13 +41,13 @@ Default: `SARIF vulnerabilities report`.
 
 ### `show-rule-details`
 
-Flag to determine whether or not to show rule details.'
+Flag to show or hide rule details.
 Default: true
 
-### `show-suppressed-result`
+### `no-suppressed-result`
 
-Flag to determine whether or not to show suppressed results.'
-Default: true
+Flag to hide or show results in SARIF suppressions.
+Default: false
 
 ### `dry-run`
 
@@ -75,7 +75,7 @@ the expected values of `url`, `repo`, and `owner` in the
     pr_number: ${{ github.event.number }}
     sarif-file: scan/results/xss.sarif
     title: My security issue
-    show-suppressed-result: false
+    no-suppressed-result: true
     dry-run: false
 ```
 
@@ -105,7 +105,7 @@ With a section in your `test` job similar to this:
     sarif-file: "./test/fixtures/codeql.sarif"
     title: My security issue
     dry-run: 'true' # will not post to PR
-    show-suppressed-result: false
+    show-suppressed-result: 'false'
 ```
 
 ### Sample action file
@@ -151,7 +151,6 @@ jobs:
           pr-number: ${{ github.event.number }}
           sarif-file: ./report/scan-findings.sarif
           title: "Security scanning results"
-          labels: security
           odc-sarif: false
 ```
 
