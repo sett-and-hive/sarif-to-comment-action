@@ -5,8 +5,6 @@
 This GitHub action converts a SARIF file with security vulnerability findings
 into a PR comment with the `@security-alert/sarif-to-comment` NPM package.
 
-To run `sarif-to-comment-action` you must determine these values.
-
 These are the inputs to Docker image.
 
 ## Inputs
