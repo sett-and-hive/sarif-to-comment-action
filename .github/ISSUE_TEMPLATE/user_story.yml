@@ -1,0 +1,41 @@
+name: 📇 User Story
+description: Suggest an user story for this repository
+title: 'story: '
+body:
+  - type: textarea
+    attributes:
+      label: Describe the User Story
+      description: Use the 'As a <role>, so that <value statement>, I want <what>'. _Do not_ indicate _how_ to do it.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Acceptance Criteria
+      description: A clear and concise list of acceptance criteria, to serve as conditions of satisfaction.
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Definition of Done
+      description: The criteria must be met before the work is considered complete.
+      options:
+        - label: Acceptance criteria met
+        - label: Usability tests passed - this user story should be easy to use by real users
+        - label: Code refactored for clarity - code must be clean, self-documenting code
+        - label: Dependency Rule followed - higher-level code should not depend directly on lower-level code
+        - label: Source code merged
+        - label: Unit test coverage of our code > 90%
+        - label: Security reviewed and reported - includes vulnerability and compliance scanning
+        - label: Code quality checks passed
+        - label: Build process updated if needed
+        - label: API documentation updated if needed
+  - type: textarea
+    attributes:
+      label: Additional Information
+      description: List any other information that is relevant to your issue.
+        Stack traces, related issues, suggestions on how to implement, Stack Overflow links, forum links, etc.
+        Please upload any screenshots that your think are relevant.
+  - type: textarea
+    attributes:
+      label: Related Feature Request
+      description: If this user story is the result of one or more feature requests, provide the links here.
