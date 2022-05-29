@@ -1,6 +1,7 @@
 # sarif-to-comment-action
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/tomwillis608/sarif-to-comment-action/main.svg)](https://results.pre-commit.ci/latest/github/tomwillis608/sarif-to-comment-action/main)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6080/badge)](https://bestpractices.coreinfrastructure.org/projects/6080)
 
 This GitHub action converts a SARIF file with security vulnerability findings
 into a PR comment with the `@security-alert/sarif-to-comment` NPM package.
@@ -163,6 +164,8 @@ There is a simple test that builds and runs the Dockerfile and does a dry run of
 test/test.sh
 ```
 
+All new functionality must be covered by tests.
+
 ## CI
 
 There are two files that perform different tests on the repository.
@@ -174,7 +177,7 @@ script used to develop the action in this repository, ``test/test.sh`.
 
 ## Contributing
 
-Pull requests and stars are always welcome.
+Pull requests and stars are always welcome.  All new functionality must be covered by tests.
 
 For bugs and feature requests, [please create an issue](https://github.com/tomwillis608/sarif-to-comment-action/issues).
 
