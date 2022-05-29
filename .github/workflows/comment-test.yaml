@@ -17,20 +17,6 @@ jobs:
 
     steps:
 
-      # - name: Define the URL for this PR
-      #   id: define-url
-      #   run: |
-      #     url="https://github.com/${{ github.repository }}/pull/${{ github.event.number }}"
-      #     echo "::set-output name=url::$url"
-
-      # - name: Owner and repo names
-      #   run: |
-      #     owner=`echo ${{ github.repository }} | awk -F[/] '{print $1}'`
-      #     echo "::set-output name=owner::$owner"
-      #     repo=`echo ${{ github.repository }} | awk -F[/] '{print $2}'`
-      #     echo "::set-output name=repo::$repo"
-      #   id: define-owner-repo
-
       - name: Checkout
         uses: actions/checkout@v3
 
