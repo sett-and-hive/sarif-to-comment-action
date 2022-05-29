@@ -70,7 +70,6 @@ the expected values of `url`, `repo`, and `owner` in the
     pr_number: ${{ github.event.number }}
     sarif-file: scan/results/xss.sarif
     title: My security issue
-    no-suppressed-result: true
     dry-run: false
 ```
 
@@ -100,7 +99,6 @@ With a section in your `test` job similar to this:
     sarif-file: "./test/fixtures/codeql.sarif"
     title: My security issue
     dry-run: 'true' # will not post to PR
-    show-suppressed-result: 'false'
 ```
 
 ### Sample action file
