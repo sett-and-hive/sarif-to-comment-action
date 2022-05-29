@@ -1,6 +1,7 @@
 # sarif-to-comment-action
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/tomwillis608/sarif-to-comment-action/main.svg)](https://results.pre-commit.ci/latest/github/tomwillis608/sarif-to-comment-action/main)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6080/badge)](https://bestpractices.coreinfrastructure.org/projects/6080)
 
 This GitHub action converts a SARIF file with security vulnerability findings
 into a PR comment with the `@security-alert/sarif-to-comment` NPM package.
