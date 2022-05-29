@@ -2,5 +2,6 @@ node_modules
 package*.json
 /*.sarif
 test/test-*.txt
+test/fixtures/*.mod
 bin
 .actrc

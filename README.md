@@ -50,6 +50,14 @@ If true, do not post the results to a PR. If false, do post the results to the P
 Required.
 Default: false
 
+### `odc-sarif`
+
+If true, the SARIF input is formatted in the
+[OWASP Dependency Check](https://owasp.org/www-project-dependency-check/)
+dialect and the input file will be modified so that the action can
+correctly parse the SARIF. If false, as for CodeQL SARIF, do nothing extra.
+Default: false
+
 ## Example usage
 
 Add this action to your own GitHub action yaml file, replacing the value in
@@ -99,6 +107,7 @@ With a section in your `test` job similar to this:
     sarif-file: "./test/fixtures/codeql.sarif"
     title: My security issue
     dry-run: 'true' # will not post to PR
+    odc-sarif: true
 ```
 
 ### Sample action file
@@ -164,18 +173,6 @@ There are two files that perform different tests on the repository.
 
 [cit-test.yaml workflow](./.github/workflow/ci-test.yaml) runs the same test
 script used to develop the action in this repository, ``test/test.sh`.
-
-## Notes
-
-### Support for OWASP dependency-check
-
-To make an OWASP dependency-check SARIF file work for the converter,
-you need to add an expected `defaultConfiguration` element to each `rules` object.
-
-```console
-jq '.runs[].tool.driver.rules[] |= . +
-  {"defaultConfiguration": { "level": "error"}}' test/fixtures/odc.sarif >odc-mod.sarif
-```
 
 ## Contributing
 
