@@ -27,7 +27,7 @@ jobs:
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: tomwillis608/sarif-to-comment-action@issue/3/owasp-dependency-check
+        uses: tomwillis608/sarif-to-comment-action@v1
         with:
             token:      ${{ secrets.GITHUB_TOKEN }}
             repository: ${{ github.repository }}
