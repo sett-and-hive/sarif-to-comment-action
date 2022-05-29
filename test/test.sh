@@ -8,11 +8,14 @@ export LIVE_RUN="false"
 MODE=$DRY_RUN
 OUTPUTS_FILE=./test/test-outputs.txt
 FIXTURE_FILE=./test/fixtures/codeql.sarif
-PR_URL=https://github.com/tomwillis608/sarif-to-comment-action/pull/1
-OWNER=tomwillis608
-REPO=sarif-to-comment-action
+PR_NUMBER=1
+REPOSITORY=tomwillis608/sarif-to-comment-action
 BRANCH=fake-test-branch
-docker run --rm -v "$(pwd)/test":/app/test comment $FIXTURE_FILE fake-password $PR_URL $OWNER $REPO $BRANCH $MODE 2>&1 | tee $OUTPUTS_FILE
+TOKEN=fake_password
+TITLE="Test title for comment"
+SHOW_RULE_DETAILS=true
+
+docker run --rm -v "$(pwd)/test":/app/test comment $FIXTURE_FILE $TOKEN $REPOSITORY $BRANCH $PR_NUMBER "$TITLE" $SHOW_RULE_DETAILS $MODE 2>&1 | tee $OUTPUTS_FILE
 if [ "$MODE" = "$DRY_RUN" ]; then
   TEST_STRING="DryRun results:"
 else

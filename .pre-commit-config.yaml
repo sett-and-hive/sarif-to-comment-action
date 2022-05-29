@@ -48,6 +48,17 @@ repos:
 
   # Detect secrets with GitLeaks
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.8.5
+    rev: v8.8.6
     hooks:
       - id: gitleaks-docker
+
+ci:
+    autofix_commit_msg: |
+        [pre-commit.ci] auto fixes from pre-commit.com hooks
+        for more information, see https://pre-commit.ci
+    autofix_prs: true
+    autoupdate_branch: ''
+    autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+    autoupdate_schedule: weekly
+    skip: [hadolint,markdownlint,shfmt-docker,gitleaks-docker]
+    submodules: false
