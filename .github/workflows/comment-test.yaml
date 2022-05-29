@@ -43,5 +43,5 @@ jobs:
             branch:     ${{ github.head_ref }}
             pr-number:  ${{ github.event.number }}
             sarif-file: "./test/fixtures/codeql.sarif"
-            title:      "Security scanning results"
+            title:      "Test comment with security scanning results"
             dry-run:    'true'
