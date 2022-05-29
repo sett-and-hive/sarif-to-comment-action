@@ -9,26 +9,31 @@ inputs:
   token:
     description: 'GitHub Access Token'
     required: true
-  url:
-    description: 'URL of the pull request to comment.'
-    required: true
-  repo:
-    description: 'GitHub repository with a pull request.'
-    required: true
-  owner:
-    description: 'Owner of the GitHub repository.'
+  repository:
+    description: 'GitHub repository as org/repo.'
     required: true
   branch:
     description: 'The branch for the pull request.'
     required: true
+  pr-number:
+    description: 'The number for the pull request.'
+    required: true
+  title:
+    description: 'The title of the issue'
+    default: 'SARIF vulnerabilities report'
+    required: false
+  show-rule-details:
+    description: 'Add "false" flag here to suppress rule details.'
+    default: 'true'
+    required: false
+  show-suppressed-result:
+    description: 'Add "false" flag here to suppress the list or suppressed results.'
+    default: 'true'
+    required: false
   dry-run:
     description: 'Add "true" flag here for dry run mode. For testing.'
     default: 'false'
-    required: true
-  sarif-folder:
-    description: 'The path of the folder where the SARIF file is.  For Docker volume mounting'
-    default: 'test'
-    required: true
+    required: false
 outputs:
   output:
     description: 'The output of the docker run.'
@@ -38,10 +43,12 @@ runs:
   args:
     - ${{ inputs.sarif-file }}
     - ${{ inputs.token }}
-    - ${{ inputs.url }}
-    - ${{ inputs.repo }}
-    - ${{ inputs.owner }}
+    - ${{ inputs.repository }}
     - ${{ inputs.branch }}
+    - ${{ inputs.pr-number }}
+    - ${{ inputs.title }}
+    - ${{ inputs.show-rule-details }}
+    - ${{ inputs.show-suppressed-result }}
     - ${{ inputs.dry-run }}
 branding:
   icon: 'git-pull-request'
