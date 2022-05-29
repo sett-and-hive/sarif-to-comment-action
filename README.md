@@ -4,7 +4,7 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6080/badge)](https://bestpractices.coreinfrastructure.org/projects/6080)
 
 This GitHub action converts a SARIF file with security vulnerability findings
-into a PR comment with the `@security-alert/sarif-to-comment` NPM package.
+into a GitHub pull request comment using the `@security-alert/sarif-to-comment` NPM package.
 
 These are the inputs to Docker image.
 
