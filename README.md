@@ -178,6 +178,8 @@ script used to develop the action in this repository, ``test/test.sh`.
 ## Contributing
 
 Pull requests and stars are always welcome.  All new functionality must be covered by tests.
+Please follow this [bash style guide](https://google.github.io/styleguide/shellguide.html)
+when updating or creating scripts.
 
 For bugs and feature requests, [please create an issue](https://github.com/tomwillis608/sarif-to-comment-action/issues).
 
