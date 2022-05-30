@@ -4,9 +4,7 @@ name: Sonarqube Nightly
 on:
   schedule:
     - cron: '4 4 * * *'
-  branches:
-    - main
-  workflow_request:
+  workflow_dispatch:
   push:
     branches: [ main ]
 
