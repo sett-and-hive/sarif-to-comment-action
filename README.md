@@ -6,7 +6,7 @@
 This GitHub action converts a SARIF file with security vulnerability findings
 into a GitHub pull request comment using the `@security-alert/sarif-to-comment` NPM package.
 
-These are the inputs to Docker image.
+These are the inputs to action image.
 
 ## Inputs
 
@@ -177,11 +177,13 @@ script used to develop the action in this repository, ``test/test.sh`.
 
 ## Contributing
 
-Pull requests and stars are always welcome.  All new functionality must be covered by tests.
+Pull requests and stars are always welcome.
+
+For bugs and feature requests, [please create an issue](https://github.com/tomwillis608/sarif-to-comment-action/issues).
+All new functionality must be covered by tests.
 Please follow this [bash style guide](https://google.github.io/styleguide/shellguide.html)
 when updating or creating scripts.
 
-For bugs and feature requests, [please create an issue](https://github.com/tomwillis608/sarif-to-comment-action/issues).
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
