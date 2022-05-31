@@ -4,7 +4,8 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6080/badge)](https://bestpractices.coreinfrastructure.org/projects/6080)
 
 This GitHub action converts a SARIF file with security vulnerability findings
-into a GitHub pull request comment using the `@security-alert/sarif-to-comment` NPM package.
+into a GitHub pull request comment using the `@security-alert/sarif-to-comment`
+NPM package.
 
 These are the inputs to action image.
 
@@ -183,7 +184,6 @@ For bugs and feature requests, [please create an issue](https://github.com/tomwi
 All new functionality must be covered by tests.
 Please follow this [bash style guide](https://google.github.io/styleguide/shellguide.html)
 when updating or creating scripts.
-
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`

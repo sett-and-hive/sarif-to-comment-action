@@ -1,6 +1,6 @@
 # Change Log
 
-*Pre-relase DRAFT*
+This is a *Pre-release DRAFT*
 
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
