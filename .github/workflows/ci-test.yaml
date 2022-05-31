@@ -34,13 +34,12 @@ jobs:
           rm -f "test/test-*.txt"
           bash test/test.sh > test/test-result.txt
           echo "::set-output name=test-result::$(grep -v sha256 ${{ github.workspace }}/test/test-result.txt)"
-          ls -ltr ${{ github.workspace }}/test
 
       - name: Read test details  file.
         id: details
         uses: juliangruber/read-file-action@v1
         with:
-          path: ${{ github.workspace }}/test/test-outputs.txt
+          path: ${{ github.workspace }}/test/all-test-outputs.txt
 
       - name: Update test script comment on pull request.
         if: github.event_name == 'pull_request' && ( ${{ success() }} || ${{ failure() }} )
