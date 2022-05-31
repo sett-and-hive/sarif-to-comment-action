@@ -12,8 +12,8 @@
 # $9 - odc-sarif
 
 set -o pipefail
-set -exu
-set -C
+set -eu
+# set -C
 
 fix_odc_sarif() {
   ord_sarif="$SARIF_FILE"
@@ -37,6 +37,33 @@ OWNER=$(echo "$REPOSITORY" | awk -F[/] '{print $1}')
 REPO=$(echo "$REPOSITORY" | awk -F[/] '{print $2}')
 URL="https://github.com/$REPOSITORY/pull/$PR_NUMBER"
 
+test_if_file_exists() {
+  if ! test -f "$SARIF_FILE"; then
+    echo "ERROR: No SARIF file found at $SARIF_FILE"
+    exit 2
+  fi
+}
+
+test_if_json_is_valid() {
+  if ! jq -e . "$SARIF_FILE" >/dev/null; then
+    echo "ERROR: Bad JSON in $SARIF_FILE"
+    exit 3
+  fi
+}
+
+test_if_sarif_has_runs() {
+  str=$(jq -e '.runs[].tool.driver.rules[]' "$SARIF_FILE")
+  if [ ${#str} = 0 ]; then
+    echo "ERROR: Bad SARIF format in $SARIF_FILE"
+    exit 4
+  fi
+}
+
+# Test for bad JSON here
+test_if_file_exists "$SARIF_FILE"
+test_if_json_is_valid "$SARIF_FILE"
+test_if_sarif_has_runs "$SARIF_FILE"
+
 if [ "$ODC_SARIF" == "true" ]; then
   fix_odc_sarif
 fi
@@ -52,4 +79,6 @@ echo "Convert SARIF file $1"
 # --ruleDetails
 # sarif-file-path
 npx @security-alert/sarif-to-comment --dryRun "$DRY_RUN" --token "$TOKEN" --commentUrl "$URL" --sarifContentOwner "$OWNER" --sarifContentRepo "$REPO" --sarifContentBranch "$BRANCH" --title "$TITLE" --ruleDetails "$SHOW_RULE_DETAILS" "$SARIF_FILE"
-echo "::set-output name=output::$?"
+RC=$?
+echo "::set-output name=output::$RC"
+exit "$RC"

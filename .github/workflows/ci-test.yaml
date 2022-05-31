@@ -18,12 +18,12 @@ jobs:
     steps:
 
       - name: Harden Runner
-        uses: step-security/harden-runner@248ae51c2e8cc9622ecf50685c8bf7150c6e8813
+        uses: step-security/harden-runner@dd5681a7d0c66fb362664d618ef4a90d656f6516
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: actions/checkout@d0651293c4a5a52e711f25b41b05b2212f385d28
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
 
       - name: Run test scripts
         working-directory: ${{ github.workspace }}
@@ -33,14 +33,15 @@ jobs:
           chmod +x "test/test.sh"
           rm -f "test/test-*.txt"
           bash test/test.sh > test/test-result.txt
-          echo "::set-output name=test-result::$(grep "Test result:" ${{ github.workspace }}/test/test-result.txt)"
-          ls -ltr ${{ github.workspace }}/test
+          echo "::set-output name=test-result::$(cat ${{ github.workspace }}/test/test-result.txt)"
+          echo
+          echo "${{ steps.test.outputs.test-result }}"
 
       - name: Read test details  file.
         id: details
         uses: juliangruber/read-file-action@v1
         with:
-          path: ${{ github.workspace }}/test/test-outputs.txt
+          path: ${{ github.workspace }}/test/all-test-outputs.txt
 
       - name: Update test script comment on pull request.
         if: github.event_name == 'pull_request' && ( ${{ success() }} || ${{ failure() }} )
@@ -51,7 +52,7 @@ jobs:
             Testing script results from test/test.sh
             ${{ steps.test.outputs.test-result }}
 
-            <details><summary>Test script outputs fro test/test.sh</summary>
+            <details><summary>Test script outputs from test/test.sh</summary>
             <p>
 
             ${{ steps.details.outputs.content }}

@@ -1,13 +1,13 @@
 # sarif-to-comment-action
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/tomwillis608/sarif-to-comment-action/main.svg)](https://results.pre-commit.ci/latest/github/tomwillis608/sarif-to-comment-action/main)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6080/badge)](https://bestpractices.coreinfrastructure.org/projects/6080)
 
 This GitHub action converts a SARIF file with security vulnerability findings
-into a PR comment with the `@security-alert/sarif-to-comment` NPM package.
+into a GitHub pull request comment using the `@security-alert/sarif-to-comment`
+NPM package.
 
-To run `sarif-to-comment-action` you must determine these values.
-
-These are the inputs to Docker image.
+These are the inputs to action image.
 
 ## Inputs
 
@@ -165,6 +165,8 @@ There is a simple test that builds and runs the Dockerfile and does a dry run of
 test/test.sh
 ```
 
+All new functionality must be covered by tests.
+
 ## CI
 
 There are two files that perform different tests on the repository.
@@ -179,6 +181,9 @@ script used to develop the action in this repository, ``test/test.sh`.
 Pull requests and stars are always welcome.
 
 For bugs and feature requests, [please create an issue](https://github.com/tomwillis608/sarif-to-comment-action/issues).
+All new functionality must be covered by tests.
+Please follow this [bash style guide](https://google.github.io/styleguide/shellguide.html)
+when updating or creating scripts.
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
