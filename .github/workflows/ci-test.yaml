@@ -33,7 +33,7 @@ jobs:
           chmod +x "test/test.sh"
           rm -f "test/test-*.txt"
           bash test/test.sh > test/test-result.txt
-          echo "::set-output name=test-result::$(grep "Test result:" ${{ github.workspace }}/test/test-result.txt)"
+          echo "::set-output name=test-result::$(grep -v sha256 ${{ github.workspace }}/test/test-result.txt)"
           ls -ltr ${{ github.workspace }}/test
 
       - name: Read test details  file.
@@ -51,7 +51,7 @@ jobs:
             Testing script results from test/test.sh
             ${{ steps.test.outputs.test-result }}
 
-            <details><summary>Test script outputs fro test/test.sh</summary>
+            <details><summary>Test script outputs from test/test.sh</summary>
             <p>
 
             ${{ steps.details.outputs.content }}
