@@ -17,6 +17,7 @@ run_docker() {
   docker run --rm -v "$(pwd)/test":/app/test "$image" "$sarif_file" "$TOKEN" "$REPOSITORY" "$BRANCH" "$PR_NUMBER" "$TITLE" "$SHOW_RULE_DETAILS" "$MODE" "$odc_sarif" 2>&1 | tee "$OUTPUTS_FILE"
   RC=$?
   echo "$OUTPUTS_FILE"
+  cat "$OUTPUTS_FILE" >>"$ALL_OUTPUTS_FILE"
   return "$RC"
 }
 
@@ -67,6 +68,7 @@ export DRY_RUN="true"
 export LIVE_RUN="false"
 MODE=$DRY_RUN
 OUTPUTS_FILE=./test/test-outputs.txt
+ALL_OUTPUTS_FILE=./test/all-test-outputs.txt
 PR_NUMBER=1
 REPOSITORY=tomwillis608/sarif-to-comment-action
 BRANCH=fake-test-branch
@@ -75,8 +77,10 @@ TITLE="Test security PR comment from build"
 SHOW_RULE_DETAILS=true
 
 rm -f $OUTPUTS_FILE
+rm -f "$ALL_OUTPUTS_FILE"
+touch "$ALL_OUTPUTS_FILE"
+
 IMAGE=$(create_docker_image)
-echo "$IMAGE"
 
 CODEQL_FIXTURE="./test/fixtures/codeql.sarif"
 ODC_FIXTURE="./test/fixtures/odc.sarif"
@@ -111,5 +115,7 @@ pass=$(run_test "$SHORT_FIXTURE" "false" "false")
 value=$(grep "Test result:" <<<"$pass")
 results_array+=("$value")
 
-echo "Test Summary"
-printf '<%s>\n' "${results_array[@]}"
+# Test Summary
+content=$(printf '%s\n' "${results_array[@]}")
+content="${content//$'\n'/'%0A'}" # make action runner happy
+echo "$content"
