@@ -23,18 +23,18 @@ jobs:
     steps:
 
       - name: Harden Runner
-        uses: step-security/harden-runner@dd5681a7d0c66fb362664d618ef4a90d656f6516
+        uses: step-security/harden-runner@dd5681a7d0c66fb362664d618ef4a90d656f6516 # tag=v1.4.3
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
 
       - name: "Checkout code"
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.0
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.0
         with:
           persist-credentials: false
 
       - name: "Run analysis"
-        uses: ossf/scorecard-action@8e9099b3f2ca132a066f5dd58e83215f081f035c # v1.0.4
+        uses: ossf/scorecard-action@cd3637b65cef198b9be1162b557eeaab7a0a8887 # tag=v1.0.4
         with:
           results_file: results.sarif
           results_format: sarif
@@ -49,7 +49,7 @@ jobs:
 
       # Upload the results as artifacts (optional).
       - name: "Upload artifact"
-        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.0.0
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # tag=v3.0.0
         with:
           name: SARIF file
           path: results.sarif
@@ -57,6 +57,6 @@ jobs:
 
       # Upload the results to GitHub's code scanning dashboard.
       - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@ccf479d3364c81503741a6f927bf29c573e35c82 # v1.0.26
+        uses: github/codeql-action/upload-sarif@822fe5ef9a15bd752ef127e9ff6eac38ec37dd9c # tag=v1.0.26
         with:
           sarif_file: results.sarif

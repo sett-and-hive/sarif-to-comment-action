@@ -18,16 +18,19 @@ jobs:
     steps:
 
       - name: Harden Runner
-        uses: step-security/harden-runner@dd5681a7d0c66fb362664d618ef4a90d656f6516
+        uses: step-security/harden-runner@dd5681a7d0c66fb362664d618ef4a90d656f6516 # tag=v1.4.3
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - name: Checkout
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+
+      - name: "Checkout code"
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.0
+        with:
+          persist-credentials: false
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: tomwillis608/sarif-to-comment-action@v1
+        uses: tomwillis608/sarif-to-comment-action@f25f23523e324735b06c5c54e23733884717758a # tag=v1
         with:
             token:      ${{ secrets.GITHUB_TOKEN }}
             repository: ${{ github.repository }}
