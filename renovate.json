@@ -10,7 +10,23 @@
   "automergeStrategy": "squash",
   "dependencyDashboard": true,
   "dependencyDashboardAutoclose": true,
-  "stabilityDays": 3,
+  "minor": {
+    "automerge": true,
+    "stabilityDays": 3,
+    "prCreation": "not-pending"
+  },
+  "patch": {
+    "automerge": true,
+    "stabilityDays": 0
+  },
+  "major": {
+    "automerge": false
+  },
+  "digest": {
+    "automerge": true,
+    "stabilityDays": 3,
+    "prCreation": "not-pending"
+  },
   "transitiveRemediation": true,
   "schedule": [
     "after 8pm every weekday",
@@ -18,8 +34,5 @@
     "every weekend"
   ],
   "timezone": "America/Chicago",
-  "major": {
-    "automerge": false
-  },
   "labels": ["renovate"]
 }
