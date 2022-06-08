@@ -24,8 +24,6 @@
   },
   "digest": {
     "automerge": true,
-    "stabilityDays": 3,
-    "prCreation": "not-pending"
   },
   "transitiveRemediation": true,
   "schedule": [
