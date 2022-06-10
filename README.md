@@ -1,6 +1,6 @@
 # sarif-to-comment-action
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/tomwillis608/sarif-to-comment-action/main.svg)](https://results.pre-commit.ci/latest/github/tomwillis608/sarif-to-comment-action/main)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sett-and-hive/sarif-to-comment-action/main.svg)](https://results.pre-commit.ci/latest/github/sett-and-hive/sarif-to-comment-action/main)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6080/badge)](https://bestpractices.coreinfrastructure.org/projects/6080)
 
 This GitHub action converts a SARIF file with security vulnerability findings
@@ -171,7 +171,7 @@ All new functionality must be covered by tests.
 
 There are two files that perform different tests on the repository.
 [comment-test.yaml workflow](./.github/workflow/comment-test.yaml) uses the
-`tomwillis608/sarif-to-comment-actio` action as one would in their own action workflow.
+`tomwillis608/sarif-to-comment-action` action as one would in their own action workflow.
 
 [cit-test.yaml workflow](./.github/workflow/ci-test.yaml) runs the same test
 script used to develop the action in this repository, ``test/test.sh`.
