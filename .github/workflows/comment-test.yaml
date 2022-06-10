@@ -30,7 +30,7 @@ jobs:
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: tomwillis608/sarif-to-comment-action@f25f23523e324735b06c5c54e23733884717758a # tag=v1
+        uses: sett-and-hive/sarif-to-comment-action@f25f23523e324735b06c5c54e23733884717758a # tag=v1
         with:
             token:      ${{ secrets.GITHUB_TOKEN }}
             repository: ${{ github.repository }}
