@@ -70,7 +70,7 @@ the expected values of `url`, `repo`, and `owner` in the
 ```yaml
 - name: Post SARIF findings in the pull request
   if: github.event_name == 'pull_request'
-  uses: tomwillis608/sarif-to-comment-action@v1
+  uses: sett-and-hive/sarif-to-comment-action@v1
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
     repository: ${{ github.repository }}
@@ -97,7 +97,7 @@ With a section in your `test` job similar to this:
 ```yaml
 - name: Post SARIF findings in the pull request
   if: github.event_name == 'pull_request'
-  uses: tomwillis608/sarif-to-comment-action@main
+  uses: sett-and-hive/sarif-to-comment-action@v1
   with:
     token: fake-secret
     # token: ${{ secrets.GITHUB_TOKEN }}
@@ -145,7 +145,7 @@ jobs:
             report-path: ./report/scan-findings.sarif
 
       - name: Post SARIF findings in the issue
-        uses: tomwillis608/sarif-to-issue-action@v1
+        uses: sett-and-hive/sarif-to-issue-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
@@ -171,7 +171,7 @@ All new functionality must be covered by tests.
 
 There are two files that perform different tests on the repository.
 [comment-test.yaml workflow](./.github/workflow/comment-test.yaml) uses the
-`tomwillis608/sarif-to-comment-action` action as one would in their own action workflow.
+`sett-and-hive/sarif-to-comment-action` action as one would in their own action workflow.
 
 [cit-test.yaml workflow](./.github/workflow/ci-test.yaml) runs the same test
 script used to develop the action in this repository, ``test/test.sh`.
@@ -180,7 +180,7 @@ script used to develop the action in this repository, ``test/test.sh`.
 
 Pull requests and stars are always welcome.
 
-For bugs and feature requests, [please create an issue](https://github.com/tomwillis608/sarif-to-comment-action/issues).
+For bugs and feature requests, [please create an issue](https://github.com/sett-and-hive/sarif-to-comment-action/issues).
 All new functionality must be covered by tests.
 Please follow this [bash style guide](https://google.github.io/styleguide/shellguide.html)
 when updating or creating scripts.
