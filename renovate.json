@@ -10,6 +10,7 @@
   "automergeStrategy": "squash",
   "dependencyDashboard": true,
   "dependencyDashboardAutoclose": true,
+  "separateMultipleMajor": true,
   "minor": {
     "automerge": true,
     "stabilityDays": 3,
