@@ -21,10 +21,11 @@
     "stabilityDays": 0
   },
   "major": {
-    "automerge": false
+    "automerge": true,
+    "stabilityDays": 9
   },
   "digest": {
-    "automerge": true,
+    "automerge": true
   },
   "transitiveRemediation": true,
   "schedule": [
