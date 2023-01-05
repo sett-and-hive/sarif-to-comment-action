@@ -40,6 +40,7 @@ jobs:
             production.cloudflare.docker.com:443
             registry-1.docker.io:443
             registry.npmjs.org:443
+            y2oiacprodeus2file6.blob.core.windows.net
 
       # Cache directory for trivy
       - uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # tag=v3.2.2
