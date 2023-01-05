@@ -1,0 +1,80 @@
+# A workflow that runs Trivy to scan the action Docker image
+
+name: Trivy workflow
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '43 12 * * 0'
+  workflow_dispatch:
+
+env:
+  BRANCH_NAME: ${{ github.ref_name }}
+
+permissions:
+  contents: read
+
+jobs:
+  trivy:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@248ae51c2e8cc9622ecf50685c8bf7150c6e8813
+        with:
+          egress-policy: block
+          disable-telemetry: true
+          allowed-endpoints: >
+            api.github.com:443
+            auth.docker.io:443
+            deb.debian.org:80
+            ghcr.io:443
+            github.com:443
+            pkg-containers.githubusercontent.com:443
+            production.cloudflare.docker.com:443
+            registry-1.docker.io:443
+            registry.npmjs.org:443
+
+      # Cache directory for trivy
+      - uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # tag=v3.2.2
+        with:
+          path: .trivy
+          key: ${{ runner.os }}-trivy-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-trivy-
+
+      - name: Checkout code
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # tag=v3.2.0
+
+      - name: Build an image from Dockerfile
+        run: |
+          docker build -t trivy-scan-image .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@9ab158e8597f3b310480b9a69402b419bc03dbd5 # tag=v0.8.0
+        with:
+          image-ref: trivy-scan-image
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          cache-dir: .trivy
+          exit-code: "1" # change to 1, if you want the build to break
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          security-checks: vuln
+
+      # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
+      - name: Correct Trivy cache permissions
+        if: ${{ success() }} || ${{ failure() }}
+        run: sudo chown -R "$USER":"$GROUP" .trivy
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: ${{ success() }} || ${{ failure() }}
+        uses: github/codeql-action/upload-sarif@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # tag=v21.3
+        with:
+          sarif_file: 'trivy-results.sarif'

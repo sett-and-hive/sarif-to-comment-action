@@ -22,6 +22,12 @@ repos:
         language: docker_image
         entry: ghcr.io/hadolint/hadolint:v2.10.0 hadolint
 
+  # Linter for GitHub Actoin workflow files
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.6.22
+    hooks:
+    - id: actionlint-docker
+
   # Linter for markdown files
   # This hook uses DavidAnson Node.js markdownlint in a Docker to minimize dev environment at the cost of speed
   - repo: https://github.com/igorshubovych/markdownlint-cli
@@ -60,5 +66,5 @@ ci:
     autoupdate_branch: ''
     autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
     autoupdate_schedule: weekly
-    skip: [hadolint,markdownlint,shfmt-docker,gitleaks-docker]
+    skip: [hadolint,markdownlint,shfmt-docker,gitleaks-docker,actionlint-docker]
     submodules: false

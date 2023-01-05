@@ -2,6 +2,7 @@
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sett-and-hive/sarif-to-comment-action/main.svg)](https://results.pre-commit.ci/latest/github/sett-and-hive/sarif-to-comment-action/main)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6080/badge)](https://bestpractices.coreinfrastructure.org/projects/6080)
+[![CI Tests](https://img.shields.io/github/actions/workflow/status/sett-and-hive/sarif-to-comment-action/ci-test.yaml)](https://img.shields.io/github/actions/workflow/status/sett-and-hive/sarif-to-comment-action/ci-test.yaml)
 
 This GitHub action converts a SARIF file with security vulnerability findings
 into a GitHub pull request comment using the `@security-alert/sarif-to-comment`
