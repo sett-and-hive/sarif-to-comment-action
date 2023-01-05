@@ -36,8 +36,10 @@ jobs:
           chmod +x "test/test.sh"
           rm -f "test/test-*.txt"
           bash test/test.sh > test/test-result.txt
-          echo "::set-output name=test-result::$(cat ${{ github.workspace }}/test/test-result.txt)"
+          echo "test-result=$(cat ${{ github.workspace }}/test/test-result.txt)" >>"$GITHUB_OUTPUT"
           echo
+
+      - run: |
           echo "${{ steps.test.outputs.test-result }}"
 
       - name: Read test details  file.
