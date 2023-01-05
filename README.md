@@ -8,6 +8,8 @@ This GitHub action converts a SARIF file with security vulnerability findings
 into a GitHub pull request comment using the `@security-alert/sarif-to-comment`
 NPM package.
 
+This is useful if you have do *not* have access GitHub Advanced Security, in a private repository or GitHub Enterprise.
+
 These are the inputs to action image.
 
 ## Inputs
