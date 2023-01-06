@@ -9,6 +9,7 @@ into a GitHub pull request comment using the `@security-alert/sarif-to-comment`
 NPM package.
 
 This is useful if you have do *not* have access GitHub Advanced Security, in a private repository or GitHub Enterprise.
+You could, for example, post CodeQL results to a GitHub Issue or PR as a comment.
 
 These are the inputs to action image.
 
