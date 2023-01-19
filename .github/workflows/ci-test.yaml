@@ -18,7 +18,7 @@ jobs:
     steps:
 
       - name: Harden Runner
-        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5 # v2.0.0
+        uses: step-security/harden-runner@18bf8ad2ca49c14cbb28b91346d626ccfb00c518 # v2.1.0
         with:
           egress-policy: block
           disable-telemetry: true
@@ -59,7 +59,7 @@ jobs:
 
       - name: Update test script comment on pull request.
         if: github.event_name == 'pull_request' && ( ${{ success() }} || ${{ failure() }} )
-        uses: thollander/actions-comment-pull-request@4159e62bc85fec21089efb305e83a9e7113074e8 # v2
+        uses: thollander/actions-comment-pull-request@632cf9ce90574d125be56b5f3405cda41a84e2fd # v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
