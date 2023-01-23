@@ -115,6 +115,11 @@ pass=$(run_test "$SHORT_FIXTURE" "false" "false")
 value=$(grep "Test result:" <<<"$pass")
 results_array+=("$value")
 
+# Run readme test
+pass=$(bash ./test-readme.sh)
+value=$(grep "Test result:" <<<"$pass")
+results_array+=("$value")
+
 # Test Summary
 content=$(printf '%s\n' "${results_array[@]}")
 content="${content//$'\n'/'%0A'}" # make action runner happy

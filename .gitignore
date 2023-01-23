@@ -6,3 +6,4 @@ test/all-test-*.txt
 test/fixtures/*.mod
 bin
 .actrc
+.vscode

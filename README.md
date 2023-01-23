@@ -8,8 +8,10 @@ This GitHub action converts a SARIF file with security vulnerability findings
 into a GitHub pull request comment using the `@security-alert/sarif-to-comment`
 NPM package.
 
-This is useful if you have do *not* have access GitHub Advanced Security, in a private repository or GitHub Enterprise.
-You could, for example, post CodeQL results to a GitHub Issue or PR as a comment.
+This is useful if you have do *not* have access GitHub Advanced Security,
+in a private repository or GitHub Enterprise.
+You could, for example, post CodeQL results to a GitHub Issue or
+PR as a comment.
 
 These are the inputs to action image.
 
@@ -79,7 +81,7 @@ the expected values of `url`, `repo`, and `owner` in the
     token: ${{ secrets.GITHUB_TOKEN }}
     repository: ${{ github.repository }}
     branch: ${{ github.head_ref }}
-    pr_number: ${{ github.event.number }}
+    pr-number: ${{ github.event.number }}
     sarif-file: scan/results/xss.sarif
     title: My security issue
     dry-run: false
@@ -106,7 +108,7 @@ With a section in your `test` job similar to this:
     token: fake-secret
     # token: ${{ secrets.GITHUB_TOKEN }}
     branch: 'your-branch'
-    pr_number: '1'
+    pr-number: '1'
     repository: ${{ github.repository }}
     sarif-file: "./test/fixtures/codeql.sarif"
     title: My security issue
