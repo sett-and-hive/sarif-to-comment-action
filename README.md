@@ -79,7 +79,7 @@ the expected values of `url`, `repo`, and `owner` in the
     token: ${{ secrets.GITHUB_TOKEN }}
     repository: ${{ github.repository }}
     branch: ${{ github.head_ref }}
-    pr_number: ${{ github.event.number }}
+    pr-number: ${{ github.event.number }}
     sarif-file: scan/results/xss.sarif
     title: My security issue
     dry-run: false
@@ -106,7 +106,7 @@ With a section in your `test` job similar to this:
     token: fake-secret
     # token: ${{ secrets.GITHUB_TOKEN }}
     branch: 'your-branch'
-    pr_number: '1'
+    pr-number: '1'
     repository: ${{ github.repository }}
     sarif-file: "./test/fixtures/codeql.sarif"
     title: My security issue
