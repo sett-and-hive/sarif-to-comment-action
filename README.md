@@ -40,6 +40,12 @@ Branch the PR is on.
 For example, `${{ github.head_ref }}`.
 Required.
 
+### `pr-number`
+
+Number of the pull request.
+For example, `${{ github.event.number }}`.
+Required.
+
 ### `title`
 
 Title for the issue.
