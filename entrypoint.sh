@@ -80,5 +80,6 @@ echo "Convert SARIF file $1"
 # sarif-file-path
 npx @security-alert/sarif-to-comment --dryRun "$DRY_RUN" --token "$TOKEN" --commentUrl "$URL" --sarifContentOwner "$OWNER" --sarifContentRepo "$REPO" --sarifContentBranch "$BRANCH" --title "$TITLE" --ruleDetails "$SHOW_RULE_DETAILS" "$SARIF_FILE"
 RC=$?
-echo "::set-output name=output::$RC"
+# echo "::set-output name=output::$RC"
+echo "{output}={$RC}" >>"$GITHUB_OUTPUT"
 exit "$RC"
