@@ -39,7 +39,7 @@ jobs:
             token:      ${{ secrets.GITHUB_TOKEN }}
             repository: ${{ github.repository }}
             branch:     ${{ github.head_ref }}
-            pr_number:  ${{ github.event.number }}
+            pr-number:  ${{ github.event.number }}
             sarif-file: "./test/fixtures/odc.sarif"
             title:      "Test comment with security scanning results"
             dry-run:    'false'
