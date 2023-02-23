@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:19-bullseye-slim@sha256:d205d6314aad59b3bfa83a98daeb81672854fdf162d3875708484c9c3153a626
+FROM node:19-bullseye-slim@sha256:8a4fc51c2c3b5a79fee36db5da5e3975f14257cb607f12b25b205ac923394c37
 
 WORKDIR /app
 
