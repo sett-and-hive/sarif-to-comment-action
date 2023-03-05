@@ -1,0 +1,62 @@
+# A workflow that runs security scanners to audit the repo
+# 1. Gitleaks secret scan
+
+name: Security Audits Workflow
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '42 12 * * 0'
+  workflow_dispatch:
+
+env:
+  BRANCH_NAME: ${{ github.ref_name }}
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Harden Runner
+        uses: step-security/harden-runner@74b568e8591fbb3115c70f3436a0c6b0909a8504 # tag=v1.4.4
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+          disable-telemetry: false
+
+      - name: Checkout
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        id: gitleaks
+        uses: DariuszPorowski/github-action-gitleaks@v2 # v2
+        with:
+          report_format: csv
+          fail: false
+
+      # (optional) It's just to see outputs from the Action
+      - name: Get the output from the gitleaks step
+        run: |
+          echo "exitcode: ${{ steps.gitleaks.outputs.exitcode }}"
+          echo "result: ${{ steps.gitleaks.outputs.result }}"
+          echo "output: ${{ steps.gitleaks.outputs.output }}"
+          echo "command: ${{ steps.gitleaks.outputs.command }}"
+          echo "report: ${{ steps.gitleaks.outputs.report }}"
+
+      - name: Upload Gitleaks report as attachment
+        if: steps.gitleaks.outputs.exitcode == 1
+        uses: actions/upload-artifact@v3 # tag=v3
+        with:
+          name: gitleaks results SARIF
+          path: ${{ steps.gitleaks.outputs.report }}
