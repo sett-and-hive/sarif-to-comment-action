@@ -7,3 +7,4 @@ test/fixtures/*.mod
 bin
 .actrc
 .vscode
+**.bak
