@@ -5,7 +5,7 @@
 #set -o pipefail
 
 TEST_STRING="pr_number" # bug issue #95
-README_FILE="../README.md"
+README_FILE="./README.md"
 
 echo "Scanning $README_FILE for unwanted value '$TEST_STRING'"
 if grep -F "$TEST_STRING" "$README_FILE"; then
