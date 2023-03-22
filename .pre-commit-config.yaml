@@ -46,7 +46,7 @@ repos:
   # Prettifier for shell scripts
   # Try to get close to Google style guide
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.6.0-1
+    rev: v3.6.0-2
     hooks:
       - id: shfmt-docker # Docker image (requires Docker to run)
         language: docker_image
