@@ -24,7 +24,7 @@ repos:
 
   # Linter for GitHub Actoin workflow files
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.6.23
+    rev: v1.6.24
     hooks:
     - id: actionlint-docker
 
