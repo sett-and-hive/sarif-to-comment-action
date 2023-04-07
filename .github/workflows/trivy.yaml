@@ -79,4 +79,6 @@ jobs:
       # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
       - name: Correct Trivy cache permissions
         if: ${{ success() }} || ${{ failure() }}
-        run: sudo chown -R "$USER":"$GROUP" .trivy
+        run: |
+          sudo chown -R "$USER":"$GROUP" .trivy
+          echo $?
