@@ -60,7 +60,8 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@9ab158e8597f3b310480b9a69402b419bc03dbd5 # tag=v0.8.0
         with:
-          image-ref: trivy-scan-image
+          scan-type: image
+          image-ref: "trivy-scan-image"
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
@@ -70,13 +71,13 @@ jobs:
           vuln-type: 'os,library'
           security-checks: vuln
 
-      # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
-      - name: Correct Trivy cache permissions
-        if: ${{ success() }} || ${{ failure() }}
-        run: sudo chown -R "$USER":"$GROUP" .trivy
-
       - name: Upload Trivy scan results to GitHub Security tab
         if: ${{ success() }} || ${{ failure() }}
         uses: github/codeql-action/upload-sarif@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # tag=v21.3
         with:
           sarif_file: 'trivy-results.sarif'
+
+      # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
+      - name: Correct Trivy cache permissions
+        if: ${{ success() }} || ${{ failure() }}
+        run: sudo chown -R "$USER":"$GROUP" .trivy
