@@ -116,7 +116,7 @@ value=$(grep "Test result:" <<<"$pass")
 results_array+=("$value")
 
 # Run readme test
-pass=$(bash ./test-readme.sh)
+pass=$(bash ./test/test-readme.sh)
 value=$(grep "Test result:" <<<"$pass")
 results_array+=("$value")
 
