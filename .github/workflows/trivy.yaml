@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@6dacdfc16caa5ebd987908a44ab5b425193385f6
+        uses: step-security/harden-runner@39fa126de8af73ab0d455b56764f8fe42b5e6a91
         with:
           egress-policy: block
           disable-telemetry: true
