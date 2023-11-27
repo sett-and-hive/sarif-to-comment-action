@@ -8,3 +8,4 @@ bin
 .actrc
 .vscode
 **.bak
+test/.trivy.sh.swp
