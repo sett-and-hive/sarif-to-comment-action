@@ -31,7 +31,7 @@ repos:
   # Linter for markdown files
   # This hook uses DavidAnson Node.js markdownlint in a Docker to minimize dev environment at the cost of speed
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.37.0
+    rev: v0.39.0
     hooks:
       - id: markdownlint
         language: docker_image
@@ -46,7 +46,7 @@ repos:
   # Prettifier for shell scripts
   # Try to get close to Google style guide
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.7.0-3
+    rev: v3.8.0-1
     hooks:
       - id: shfmt-docker # Docker image (requires Docker to run)
         language: docker_image
