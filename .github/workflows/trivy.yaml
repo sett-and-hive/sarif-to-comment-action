@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@dece11172ed6b762b5421b294513d628edad7f7d
+        uses: step-security/harden-runner@6c3b1c91e8873ae0c705b0709f957c7a6a5eaf10
         with:
           egress-policy: block
           disable-telemetry: true
@@ -43,7 +43,7 @@ jobs:
             y2oiacprodeus2file6.blob.core.windows.net
 
       # Cache directory for trivy
-      - uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # v3.3.3
+      - uses: actions/cache@13aacd865c20de90d75de3b17ebe84f7a17d57d2 # v4.0.0
         with:
           path: .trivy
           key: ${{ runner.os }}-trivy-${{ github.run_id }}

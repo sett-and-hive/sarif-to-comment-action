@@ -195,7 +195,8 @@ All new functionality must be covered by tests.
 
 ## Security testing
 
-There is a security test that builds and runs the `trivy` scanner on to test for vulnerabilities in the Dockerfile image.
+There is a security test that builds and runs the `trivy` scanner
+to test for vulnerabilities in the Dockerfile image.
 
 ```console
 test/trivy.sh
@@ -211,7 +212,10 @@ There are two files that perform different tests on the repository.
 [cit-test.yaml workflow](./.github/workflow/ci-test.yaml) runs the same test
 script used to develop the action in this repository, ``test/test.sh`.
 
-There is a security scanning workflow as well, [trivy workflow](./github/workflow/trivy.yaml), that scans each day and also scans each PR. There is a [gitleaks workflow](./github/workflow/gitleaks-workflow.yaml) that detects secrets, to keep them out of the repository.
+There is a security scanning workflow as well, [trivy workflow](./github/workflow/trivy.yaml),
+that scans each day and also scans each PR.
+There is a [gitleaks workflow](./github/workflow/gitleaks-workflow.yaml)
+that detects secrets, to keep them out of the repository.
 
 ## Contributing
 
