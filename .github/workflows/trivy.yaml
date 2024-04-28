@@ -25,10 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@6c3b1c91e8873ae0c705b0709f957c7a6a5eaf10
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
+          disable-sudo: false
           egress-policy: block
-          disable-telemetry: true
+          disable-telemetry: false
           allowed-endpoints: >
             api.github.com:443
             auth.docker.io:443
@@ -70,16 +71,17 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        if: ${{ success() }} || ${{ failure() }}
-        uses: github/codeql-action/upload-sarif@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # tag=v21.3
-        with:
-          sarif_file: 'trivy-results.sarif'
-
       # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
       - name: Correct Trivy cache permissions
-        if: ${{ success() }} || ${{ failure() }}
+        # shellcheck disable=all
+        if: always()
         continue-on-error: true
         run: |
           sudo chown -R "$USER":"$GROUP" .trivy
           echo $?
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@959cbb7472c4d4ad70cdfe6f4976053fe48ab394 # tag=v21.3
+        with:
+          sarif_file: 'trivy-results.sarif'
