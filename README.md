@@ -77,7 +77,7 @@ Add this action to your own GitHub action yaml file, replacing the value in
 and add to your pull request in this final step, likely the output of a
 security scanning tool.  There are additional helper steps to determine
 the expected values of `url`, `repo`, and `owner` in the
-[comment-test.yaml workflow](./.github/workflow/comment-test.yaml).
+[comment-test.yaml workflow](./.github/workflows/comment-test.yaml).
 
 ```yaml
 - name: Post SARIF findings in the pull request
@@ -192,15 +192,15 @@ test/trivy.sh
 
 There are two files that perform different tests on the repository.
 
-[comment-test.yaml workflow](./.github/workflow/comment-test.yaml) uses the
+[comment-test.yaml workflow](./.github/workflows/comment-test.yaml) uses the
 `sett-and-hive/sarif-to-comment-action` action as one would in their own action workflow.
 
-[cit-test.yaml workflow](./.github/workflow/ci-test.yaml) runs the same test
+[cit-test.yaml workflow](./.github/workflows/ci-test.yaml) runs the same test
 script used to develop the action in this repository, ``test/test.sh`.
 
-There is a security scanning workflow as well, [trivy workflow](./github/workflow/trivy.yaml),
+There is a security scanning workflow as well, [trivy workflow](./.github/workflows/trivy.yaml),
 that scans each day and also scans each PR.
-There is a [gitleaks workflow](./github/workflow/gitleaks-workflow.yaml)
+There is a [gitleaks workflow](./.github/workflows/gitleaks-workflow.yaml)
 that detects secrets, to keep them out of the repository.
 
 ## Contributing
