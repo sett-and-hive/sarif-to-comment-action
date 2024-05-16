@@ -82,7 +82,7 @@ the expected values of `url`, `repo`, and `owner` in the
 ```yaml
 - name: Post SARIF findings in the pull request
   if: github.event_name == 'pull_request'
-  uses: sett-and-hive/sarif-to-comment-action@v2
+  uses: sett-and-hive/sarif-to-comment-action@v2.0.1
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
     repository: ${{ github.repository }}
@@ -109,7 +109,7 @@ With a section in your `test` job similar to this:
 ```yaml
 - name: Post SARIF findings in the pull request
   if: github.event_name == 'pull_request'
-  uses: sett-and-hive/sarif-to-comment-action@v2
+  uses: sett-and-hive/sarif-to-comment-action@v2.0.1
   with:
     token: fake-secret
     # token: ${{ secrets.GITHUB_TOKEN }}
