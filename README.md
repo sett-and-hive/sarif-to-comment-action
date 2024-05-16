@@ -157,7 +157,7 @@ jobs:
             report-path: ./report/scan-findings.sarif
 
       - name: Post SARIF findings in the issue
-        uses: sett-and-hive/sarif-to-issue-action@v2
+        uses: sett-and-hive/sarif-to-issue-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
