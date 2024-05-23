@@ -9,3 +9,4 @@ bin
 .vscode
 **.bak
 test/.trivy.sh.swp
+.idea
