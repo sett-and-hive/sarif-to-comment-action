@@ -37,7 +37,9 @@ jobs:
 
       - name: Set npm cache path to user writable area
         run: |
-          mkdir -p ${{ github.workspace }}/.npm-2
+          rm -rf ${{ github.workspace }}/.npm-2 || true
+          mkdir -p ${{ github.workspace }}/.npm-2 || true
+          npm cache clean -f
 #          chown -R 1000:1000 ${{ github.workspace }}/.npm-2
 #          npm config set cache ${{ github.workspace }}/.npm --global
 
