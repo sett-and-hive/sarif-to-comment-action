@@ -34,14 +34,6 @@ jobs:
         with:
           persist-credentials: false
 
-      #      npm error Your cache folder contains root-owned files, due to a bug in
-      #      npm error previous versions of npm which has since been addressed.
-      #      npm error
-      #      npm error To permanently fix this problem, please run:
-      #      npm error   sudo chown -R 1000:1000 "/github/home/.npm"
-      - name: runner npm hack
-        run: sudo chown -R 1000:1000 "/github/home/.npm"
-
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
         uses: sett-and-hive/sarif-to-comment-action@main # This is a test, we want to dogfood main
@@ -54,3 +46,5 @@ jobs:
             title:      "Test comment with security scanning results"
             dry-run:    'false'
             odc-sarif: true
+        env:
+          CI: true
