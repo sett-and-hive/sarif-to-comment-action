@@ -10,7 +10,7 @@
 # $7 - show-rule-details
 # $8 - dry-run
 # $9 - odc-sarif
-set -x
+
 set -o pipefail
 set -eu
 
