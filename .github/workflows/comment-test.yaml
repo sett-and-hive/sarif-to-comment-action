@@ -20,7 +20,7 @@ jobs:
       - name: Harden Runner
         uses: step-security/harden-runner@a4aa98b93cab29d9b1101a6143fb8bce00e2eac4 # v2.7.1
         with:
-          disable-sudo: true
+          disable-sudo: false
           egress-policy: block
           disable-telemetry: false
           allowed-endpoints: >
@@ -33,6 +33,11 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
           persist-credentials: false
+
+      - name: Set npm cache path to user writable area
+        run: |
+          mkdir -p ${{ github.workspace }}/.npm
+          npm config set cache ${{ github.workspace }}/.npm --global
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
