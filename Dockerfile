@@ -10,5 +10,5 @@ RUN npm install @security-alert/sarif-to-comment@1.10.10 --ignore-scripts &&\
     rm -rf /var/lib/apt/lists/*
 
 COPY ./entrypoint.sh ./entrypoint.sh
-
+USER node
 ENTRYPOINT ["bash", "/app/entrypoint.sh"]
