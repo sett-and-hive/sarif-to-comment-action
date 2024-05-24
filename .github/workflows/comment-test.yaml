@@ -40,7 +40,7 @@ jobs:
       #      npm error To permanently fix this problem, please run:
       #      npm error   sudo chown -R 1000:1000 "/github/home/.npm"
       - name: runner npm hack
-        run: sudo chown -R 1000:1000 "/github/home/.npm"
+        run: chown -R 1000:1000 "/github/home/.npm"
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
