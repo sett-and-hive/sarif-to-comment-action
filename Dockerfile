@@ -9,7 +9,7 @@ RUN npm upgrade -g npm && \
     npm install @security-alert/sarif-to-comment@1.10.10 --ignore-scripts &&\
     apt-get update && apt-get install --no-install-recommends -y jq=1.6-2.1 &&\
     rm -rf /var/lib/apt/lists/*
-
+RUN chown -R 1000:1000 "/github/home/.npm"
 COPY ./entrypoint.sh ./entrypoint.sh
 USER node
 ENTRYPOINT ["bash", "/app/entrypoint.sh"]
