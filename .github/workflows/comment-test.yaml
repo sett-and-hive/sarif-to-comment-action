@@ -21,12 +21,13 @@ jobs:
         uses: step-security/harden-runner@a4aa98b93cab29d9b1101a6143fb8bce00e2eac4 # v2.7.1
         with:
           disable-sudo: false
-          egress-policy: block
+          egress-policy: audit
           disable-telemetry: false
           allowed-endpoints: >
             api.github.com:443
             github.com:443
             registry.npmjs.org:443
+            registry-1.docker.io:443
             pipelinesghubeus6.actions.githubusercontent.com:443
 
       - name: "Checkout code"
