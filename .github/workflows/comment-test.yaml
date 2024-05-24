@@ -43,7 +43,7 @@ jobs:
 
       - name: Run npm in Docker
         run: |
-          docker run --rm -v "$PWD":/workspace -w /workspace node:22 bash -c "npm config set cache /workspace/.npm-2 && npm install"
+          docker run --rm -v "$PWD":/workspace -w /workspace node:22 bash -c "npm config set cache /workspace/.npm-2"
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
