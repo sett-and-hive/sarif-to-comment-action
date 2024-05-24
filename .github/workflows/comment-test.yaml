@@ -36,7 +36,7 @@ jobs:
 
       - name: Set npm cache path to user writable area
         run: |
-          mkdir -p ${{ github.workspace }}/.npm
+          mkdir -p ${{ github.workspace }}/.npm-2
 #          npm config set cache ${{ github.workspace }}/.npm --global
 
       - name: Post SARIF findings in the pull request
@@ -53,4 +53,4 @@ jobs:
             odc-sarif: true
         env:
           CI: true
-          npm_config_cache: ${{ github.workspace }}/.npm
+          npm_config_cache: ${{ github.workspace }}/.npm-2
