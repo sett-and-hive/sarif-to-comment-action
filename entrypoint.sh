@@ -13,12 +13,10 @@
 
 set -o pipefail
 set -eu
-# set -C
 
 fix_odc_sarif() {
   ord_sarif="$SARIF_FILE"
-  mod_sarif="$SARIF_FILE.mod"
-  rm -f "$SARIF_FILE.mod"
+  mod_sarif=$(mktemp "/tmp/SARIF_FILE.XXXXXX.mod") || exit 5
   jq '.runs[].tool.driver.rules[] |= . + {"defaultConfiguration": { "level": "error"}}' "$ord_sarif" >"$mod_sarif"
   SARIF_FILE="$mod_sarif"
 }
