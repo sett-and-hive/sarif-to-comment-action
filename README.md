@@ -170,8 +170,10 @@ jobs:
 
 ## Running as a composite action
 
-Running this action as a composite action allows to run it on dockerized self-hosted runners and various operating systems as it
-does not require Docker. To run it as a composite action, add `/composite` to the action name:
+Running this action as a composite action allows to run it on dockerized
+self-hosted runners and various operating systems as it
+does not require Docker. To run it as a composite action, add `/composite`
+to the action name:
 
 ```yaml
 - name: Post SARIF findings in the pull request
@@ -180,7 +182,8 @@ does not require Docker. To run it as a composite action, add `/composite` to th
     ...
 ```
 
-Note that this will require node environment to be installed on your machine. You can install it with [Setup node action](https://github.com/actions/setup-node).
+Note that this will require node environment to be installed on your machine.
+You can install it with [Setup node action](https://github.com/actions/setup-node).
 
 ## Testing
 
