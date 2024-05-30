@@ -1,0 +1,50 @@
+# action.yml
+name: 'sarif-to-comment-action'
+author: tomwillis608
+description: 'Run @security-alert/sarif-to-comment to post the content of a SARIF file to a GitHub pull request.'
+inputs:
+  sarif-file:
+    description: 'Path to SARIF file to add to pull request comment'
+    required: true
+  token:
+    description: 'GitHub Access Token'
+    required: true
+  repository:
+    description: 'GitHub repository as org/repo.'
+    required: true
+  branch:
+    description: 'The branch for the pull request.'
+    required: true
+  pr-number:
+    description: 'The number for the pull request.'
+    required: true
+  title:
+    description: 'The title of the issue'
+    default: 'SARIF vulnerabilities report'
+    required: false
+  show-rule-details:
+    description: 'Flag to show or hide rule details.'
+    default: 'true'
+    required: false
+  dry-run:
+    description: 'Add "true" flag here for dry run mode. For testing.'
+    default: 'false'
+    required: false
+  odc-sarif:
+    description: 'SARIF file is in OWASP Dependency Check dialect.'
+    default: 'false'
+    required: false
+outputs:
+  output:
+    description: 'The output of the docker run.'
+runs:
+  using: 'composite'
+  steps:
+    - name: Download action
+      run: npm install @security-alert/sarif-to-comment@1.10.10
+      shell: bash
+    - run: '${{ github.action_path }}/../entrypoint.sh "${{ inputs.sarif-file }}" "${{ inputs.token }}" "${{ inputs.repository }}" "${{ inputs.branch }}" "${{ inputs.pr-number }}" "${{ inputs.title }}" "${{ inputs.show-rule-details }}" "${{ inputs.dry-run }}" "${{ inputs.odc-sarif }}"'
+      shell: bash
+branding:
+  icon: 'git-pull-request'
+  color: 'green'
