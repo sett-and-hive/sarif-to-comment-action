@@ -10,7 +10,7 @@ WORKDIR /app
 #    rm -rf /var/lib/apt/lists/*
 
 # Install dependencies
-RUN npm install -g npm@10.2.5 && \
+RUN npm install -g npm@10.8.1 && \
     npm install -g npx --force && \
     npm cache clean --force && \
     npm install -g @security-alert/sarif-to-comment@1.10.10 --ignore-scripts &&\
