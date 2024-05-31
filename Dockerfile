@@ -5,7 +5,7 @@ FROM node:22-bullseye-slim@sha256:5baa25a7a7d4fde6ae7180db579f930748b9c6cd9c2ccf
 WORKDIR /app
 
 # Install dependencies
-RUN npm install -g npm@9.8.1 && \
+RUN npm install -g npm@10.2.5 && \
     npm install -g npx --force && \
     npm cache clean --force && \
     npm install @security-alert/sarif-to-comment@1.10.10 --ignore-scripts &&\
