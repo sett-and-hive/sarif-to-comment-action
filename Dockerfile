@@ -6,6 +6,8 @@ WORKDIR /app
 
 # Install dependencies
 RUN npm install --global npm@10.8.1 && \
+    npm install --global npx --force && \
+    npm cache clean --force && \
     npm install --global @security-alert/sarif-to-comment@1.10.10 --ignore-scripts &&\
     apt-get update && apt-get install --no-install-recommends -y jq=1.6-2.1 &&\
     rm -rf /var/lib/apt/lists/*
