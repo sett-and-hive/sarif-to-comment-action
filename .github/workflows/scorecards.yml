@@ -33,8 +33,9 @@ jobs:
           disable-telemetry: false
           allowed-endpoints: >
             api.github.com:443
-            auth.docker.io:443
             api.osv.dev:443
+            api.scorecard.dev:443
+            auth.docker.io:443
             fulcio.sigstore.dev:443
             github.com:443
             index.docker.io:443

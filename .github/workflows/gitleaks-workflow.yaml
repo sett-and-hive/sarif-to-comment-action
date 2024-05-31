@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Gitleaks
         id: gitleaks
-        uses: DariuszPorowski/github-action-gitleaks@v2 # v2
+        uses: DariuszPorowski/github-action-gitleaks@5c3e70f794d4c928460daf621eff608f477c2510 # v2.0.9
         with:
           report_format: csv
           fail: false
@@ -59,7 +59,7 @@ jobs:
 
       - name: Upload Gitleaks report as attachment
         if: steps.gitleaks.outputs.exitcode == 1
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         with:
           name: gitleaks results SARIF
           path: ${{ steps.gitleaks.outputs.report }}
