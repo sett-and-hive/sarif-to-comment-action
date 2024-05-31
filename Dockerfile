@@ -15,7 +15,7 @@ RUN npm install -g npm@10.2.5 && \
     npm cache clean --force && \
     npm install -g @security-alert/sarif-to-comment@1.10.10 --ignore-scripts &&\
     apt-get update && apt-get install --no-install-recommends -y jq=1.6-2.1 &&\
-    rm -rf /var/lib/apt/lists/* \
+    rm -rf /var/lib/apt/lists/*
 
 COPY ./entrypoint.sh ./entrypoint.sh
 USER node
