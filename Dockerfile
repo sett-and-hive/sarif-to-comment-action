@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Install dependencies
 RUN npm upgrade -g npm && \
+    npm cache clean --force && \
     npm install @security-alert/sarif-to-comment@1.10.10 --ignore-scripts &&\
     apt-get update && apt-get install --no-install-recommends -y jq=1.6-2.1 &&\
     rm -rf /var/lib/apt/lists/*
