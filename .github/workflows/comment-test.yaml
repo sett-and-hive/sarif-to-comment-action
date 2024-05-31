@@ -37,21 +37,21 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set npm cache path to user writable area
-        run: |
-          rm -rf ${{ github.workspace }}/.npm-2 || true
-          mkdir -p ${{ github.workspace }}/.npm-2 || true
-          npm cache clean -f
-#          chown -R 1000:1000 ${{ github.workspace }}/.npm-2
-#          npm config set cache ${{ github.workspace }}/.npm --global
+#      - name: Set npm cache path to user writable area
+#        run: |
+#          rm -rf ${{ github.workspace }}/.npm-2 || true
+#          mkdir -p ${{ github.workspace }}/.npm-2 || true
+#          npm cache clean -f
+##          chown -R 1000:1000 ${{ github.workspace }}/.npm-2
+##          npm config set cache ${{ github.workspace }}/.npm --global
 
-      - name: Run npm in Docker
-        run: |
-          docker run --rm -v "$PWD":/workspace -w /workspace node:22 bash -c "npm config set cache /workspace/.npm-2"
+#      - name: Run npm in Docker
+#        run: |
+#          docker run --rm -v "$PWD":/workspace -w /workspace node:22 bash -c "npm config set cache /workspace/.npm-2"
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: sett-and-hive/sarif-to-comment-action@${{ github.head_ref }}" # This is a test, we want to dogfood main
+        uses: sett-and-hive/sarif-to-comment-action@chore/scorecard-egress # This is a test, we want to dogfood main
         with:
             token:      ${{ secrets.GITHUB_TOKEN }}
             repository: ${{ github.repository }}
@@ -63,4 +63,4 @@ jobs:
             odc-sarif: true
         env:
           CI: true
-          npm_config_cache: ${{ github.workspace }}/.npm-2
+#          npm_config_cache: ${{ github.workspace }}/.npm-2
