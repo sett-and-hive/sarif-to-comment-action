@@ -35,7 +35,7 @@ inputs:
     default: 'false'
     required: false
   failon:
-    description: 'Throw an exit error code 1 if an issue with that level was detected, warning, error, note, none, or all. List must be comma separated.'
+    description: 'Comma-separated list of levels (warning, error, note, none, all) that will cause the action to exit with error code 1 if detected.'
     default: ''
     required: false
 outputs:

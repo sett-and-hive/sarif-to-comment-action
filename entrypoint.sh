@@ -31,7 +31,16 @@ TITLE=$6
 SHOW_RULE_DETAILS=$7
 DRY_RUN=$8
 ODC_SARIF=$9
-FAILON=$([  -z "${10}" ] && echo "" || echo $(jq 'split(",")' -Rc <(echo "${10}") | jq -cr 'map(. |= "--failon \(.)") | join(" ")'))
+
+transform_failon() {
+  local input="$1"
+  if [ -z "$input" ]; then
+    echo ""
+  else
+    jq 'split(",")' -Rc <(echo "$input") | jq -cr 'map(. |= "--failon \(.)") | join(" ")'
+  fi
+}
+FAILON=$(transform_failon "${10}")
 
 OWNER=$(echo "$REPOSITORY" | awk -F[/] '{print $1}')
 REPO=$(echo "$REPOSITORY" | awk -F[/] '{print $2}')
