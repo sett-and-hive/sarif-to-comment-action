@@ -14,7 +14,7 @@ run_docker() {
   image="$1"
   sarif_file="$2"
   odc_sarif="$3"
-  docker run --rm -v "$(pwd)/test":/app/test "$image" "$sarif_file" "$TOKEN" "$REPOSITORY" "$BRANCH" "$PR_NUMBER" "$TITLE" "$SHOW_RULE_DETAILS" "$MODE" "$odc_sarif" 2>&1 | tee "$OUTPUTS_FILE"
+  docker run --rm -v "$(pwd)/test":/app/test "$image" "$sarif_file" "$TOKEN" "$REPOSITORY" "$BRANCH" "$PR_NUMBER" "$TITLE" "$SHOW_RULE_DETAILS" "$MODE" "$odc_sarif" "$failon" 2>&1 | tee "$OUTPUTS_FILE"
   RC=$?
   echo "$OUTPUTS_FILE"
   cat "$OUTPUTS_FILE" >>"$ALL_OUTPUTS_FILE"
@@ -55,7 +55,8 @@ run_test() {
   sarif_file="$1"
   is_odc_sarif="$2"
   expect_zero_docker_return="$3"
-  run_docker "$IMAGE" "$sarif_file" "$is_odc_sarif"
+  failon="$4"
+  run_docker "$IMAGE" "$sarif_file" "$is_odc_sarif" "$failon"
   RC=$?
   TEST_STRING=$(test_string "$MODE")
   test_result "$TEST_STRING" "$RC" "$expect_zero_docker_return"
@@ -113,6 +114,14 @@ results_array+=("$value")
 
 pass=$(run_test "$SHORT_FIXTURE" "false" "false")
 value=$(grep "Test result:" <<<"$pass")
+results_array+=("$value")
+
+pass=$(run_test "$CODEQL_FIXTURE" "false" "false" "warning,error")
+value="$(grep "Test result:" <<<"$pass")"
+results_array+=("$value")
+
+pass=$(run_test "$CODEQL_FIXTURE" "false" "true" "note")
+value="$(grep "Test result:" <<<"$pass")"
 results_array+=("$value")
 
 # Run readme test

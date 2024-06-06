@@ -34,6 +34,10 @@ inputs:
     description: 'SARIF file is in OWASP Dependency Check dialect.'
     default: 'false'
     required: false
+  failon:
+    description: 'Throw an exit error code 1 if an issue with that level was detected, warning, error, note, none, or all. List must be comma separated.'
+    default: ''
+    required: false
 outputs:
   output:
     description: 'The output of the docker run.'
@@ -50,6 +54,7 @@ runs:
     - ${{ inputs.show-rule-details }}
     - ${{ inputs.dry-run }}
     - ${{ inputs.odc-sarif }}
+    - ${{ inputs.failon }}
 branding:
   icon: 'git-pull-request'
   color: 'green'
