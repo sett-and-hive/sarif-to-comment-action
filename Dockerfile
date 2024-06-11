@@ -9,6 +9,7 @@ COPY package.json .
 RUN npm install --ignore-scripts  --global npm@10.8.1 && \
     npm install --ignore-scripts  --global npx --force && \
     npm cache clean --force && \
+    npm install --ignore-scripts  --global @security-alert/sarif-to-comment@1.10.10 &&\
     npm install --ignore-scripts  --global && \
     apt-get update && apt-get install --no-install-recommends -y jq=1.6-2.1 &&\
     rm -rf /var/lib/apt/lists/*
