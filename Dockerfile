@@ -5,10 +5,12 @@ FROM node:22-bullseye-slim@sha256:1399b299f2d236677007709378929b8216b41602ef4b0c
 WORKDIR /app
 
 # Install dependencies
+COPY package.json .
 RUN npm install --ignore-scripts  --global npm@10.8.1 && \
     npm install --ignore-scripts  --global npx --force && \
     npm cache clean --force && \
     npm install --ignore-scripts  --global @security-alert/sarif-to-comment@1.10.10 &&\
+    npm install --ignore-scripts  --global && \
     apt-get update && apt-get install --no-install-recommends -y jq=1.6-2.1 &&\
     rm -rf /var/lib/apt/lists/*
 
