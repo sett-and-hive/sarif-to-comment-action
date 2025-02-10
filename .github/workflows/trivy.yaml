@@ -70,6 +70,7 @@ jobs:
           exit-code: "1" # change to 1, if you want the build to break
           ignore-unfixed: true
           vuln-type: 'os'
+          skip-dirs: '/root/.npm/_cacache'
 
       # There are vulnerabilties in deep dependencies in @security-alert/sarif-to-comment@1.10.10
       # Log them but do not fail the build
@@ -86,7 +87,6 @@ jobs:
           exit-code: "0" # change to 1, if you want the build to break
           ignore-unfixed: true
           vuln-type: 'library'
-          skip-dirs: '/root/.npm/_cacache'
 
 #      # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
 #      - name: Correct Trivy cache permissions
