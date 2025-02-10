@@ -102,12 +102,13 @@ jobs:
         uses: github/codeql-action/upload-sarif@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
         with:
           sarif_file: 'trivy-os-results.sarif'
+          category: 'trivy-os'
 
       - name: Upload Trivy report as attachment
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: trivy results SARIF
+          name: trivy OS results SARIF
           path: 'trivy-os-results.sarif'
 
 
@@ -116,10 +117,11 @@ jobs:
         uses: github/codeql-action/upload-sarif@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
         with:
           sarif_file: 'trivy-library-results.sarif'
+          category: 'trivy-library'
 
       - name: Upload Trivy report as attachment
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: trivy results SARIF
+          name: trivy Library results SARIF
           path: 'trivy-library-results.sarif'
