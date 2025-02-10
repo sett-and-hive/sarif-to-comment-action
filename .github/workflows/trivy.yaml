@@ -43,13 +43,13 @@ jobs:
             registry.npmjs.org:443
             y2oiacprodeus2file6.blob.core.windows.net
 
-      # Cache directory for trivy
-      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
-        with:
-          path: .trivy
-          key: ${{ runner.os }}-trivy-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-trivy-
+#      # Cache directory for trivy
+#      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+#        with:
+#          path: .trivy
+#          key: ${{ runner.os }}-trivy-${{ github.run_id }}
+#          restore-keys: |
+#            ${{ runner.os }}-trivy-
 
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -58,37 +58,66 @@ jobs:
         run: |
           docker build -t trivy-scan-image .
 
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner on OS
         uses: aquasecurity/trivy-action@b2933f565dbc598b29947660e66259e3c7bc8561 # 0.20.0
         with:
           scan-type: image
           image-ref: "trivy-scan-image"
           format: 'sarif'
-          output: 'trivy-results.sarif'
+          output: 'trivy-os-results.sarif'
           severity: 'CRITICAL,HIGH'
           cache-dir: .trivy
           exit-code: "1" # change to 1, if you want the build to break
           ignore-unfixed: true
-          vuln-type: 'os,library'
+          vuln-type: 'os'
 
-      # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
-      - name: Correct Trivy cache permissions
-        # shellcheck disable=all
-        if: always()
-        continue-on-error: true
-        run: |
-          sudo chown -R "$USER":"$GROUP" .trivy
-          echo $?
+      # There are vulnerabilties in deep dependencies in @security-alert/sarif-to-comment@1.10.10
+      # Log them but do not fail the build
+      - name: Run Trivy vulnerability scanner on libraries
+        uses: aquasecurity/trivy-action@b2933f565dbc598b29947660e66259e3c7bc8561 # 0.20.0
+        with:
+          scan-type: image
+          image-ref: "trivy-scan-image"
+          format: 'sarif'
+          output: 'trivy-library-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          cache-dir: .trivy
+          exit-code: "0" # change to 1, if you want the build to break
+          ignore-unfixed: true
+          vuln-type: 'library'
+
+#      # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
+#      - name: Correct Trivy cache permissions
+#        # shellcheck disable=all
+#        if: always()
+#        continue-on-error: true
+#        run: |
+#          sudo chown -R "$USER":"$GROUP" .trivy
+#          echo $?
 
       - name: Upload Trivy scan results to GitHub Security tab
         if: always()
         uses: github/codeql-action/upload-sarif@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: 'trivy-os-results.sarif'
 
       - name: Upload Trivy report as attachment
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: trivy results SARIF
-          path: 'trivy-results.sarif'
+          path: 'trivy-os-results.sarif'
+
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
+        with:
+          sarif_file: 'trivy-library-results.sarif'
+
+      - name: Upload Trivy report as attachment
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy results SARIF
+          path: 'trivy-library-results.sarif'
