@@ -74,6 +74,7 @@ jobs:
       # There are vulnerabilties in deep dependencies in @security-alert/sarif-to-comment@1.10.10
       # Log them but do not fail the build
       - name: Run Trivy vulnerability scanner on libraries
+        if: always()
         uses: aquasecurity/trivy-action@b2933f565dbc598b29947660e66259e3c7bc8561 # 0.20.0
         with:
           scan-type: image
