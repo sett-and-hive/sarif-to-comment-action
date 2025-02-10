@@ -85,6 +85,7 @@ jobs:
           exit-code: "0" # change to 1, if you want the build to break
           ignore-unfixed: true
           vuln-type: 'library'
+          skip-dirs: '/root/.npm'
 
 #      # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
 #      - name: Correct Trivy cache permissions
