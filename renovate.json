@@ -34,5 +34,22 @@
     "every weekend"
   ],
   "timezone": "America/Chicago",
-  "labels": ["renovate"]
+  "labels": ["renovate"],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackagePatterns": [".*"],
+      "groupName": "Docker base images",
+      "schedule": ["weekly"]
+    },
+    {
+      "matchDatasources": ["apt"],
+      "matchPackagePatterns": [".*"],
+      "groupName": "APT Security Updates",
+      "schedule": ["daily"],
+      "stabilityDays": 3,
+      "matchUpdateTypes": ["security"],
+      "pinDigests": true
+    }
+  ]
 }
