@@ -50,6 +50,13 @@
       "stabilityDays": 3,
       "matchUpdateTypes": ["security"],
       "pinDigests": true
+    },
+    {
+      "matchDatasources": ["npm"],
+      "matchPackagePatterns": ["@security-alert/sarif-to-comment"],
+      "groupName": "NPM Security Patches",
+      "schedule": ["weekly"],
+      "matchUpdateTypes": ["patch", "minor"]
     }
   ]
 }
