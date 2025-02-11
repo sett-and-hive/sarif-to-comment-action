@@ -5,7 +5,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -16,7 +16,7 @@ repos:
   # Lint Dockerfiles
   # This hook uses hadolint in a Docker to minimize dev environment at the cost of speed
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.13.0-beta
+    rev: v2.13.1-beta
     hooks:
       - id: hadolint
         language: docker_image
@@ -24,14 +24,14 @@ repos:
 
   # Linter for GitHub Actoin workflow files
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.3
+    rev: v1.7.7
     hooks:
     - id: actionlint-docker
 
   # Linter for markdown files
   # This hook uses DavidAnson Node.js markdownlint in a Docker to minimize dev environment at the cost of speed
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.41.0
+    rev: v0.44.0
     hooks:
       - id: markdownlint
         language: docker_image
@@ -46,7 +46,7 @@ repos:
   # Prettifier for shell scripts
   # Try to get close to Google style guide
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.9.0-1
+    rev: v3.10.0-2
     hooks:
       - id: shfmt-docker # Docker image (requires Docker to run)
         language: docker_image
@@ -54,7 +54,7 @@ repos:
 
   # Detect secrets with GitLeaks
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.18.4
+    rev: v8.23.3
     hooks:
       - id: gitleaks-docker
 
