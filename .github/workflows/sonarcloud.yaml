@@ -28,13 +28,13 @@ jobs:
             ea6ne4j2sb.execute-api.eu-central-1.amazonaws.com:443
 
       - name: "Checkout code"
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           persist-credentials: false
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@49e6cd3b187936a73b8280d59ffd9da69df63ec9 # v2.1
+        uses: SonarSource/sonarcloud-github-action@eb211723266fe8e83102bac7361f0a05c3ac1d1b # v3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
