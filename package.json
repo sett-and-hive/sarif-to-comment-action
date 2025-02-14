@@ -10,6 +10,7 @@
   "license": "MIT",
   "bugs": "https://github.com/sett-and-hive/sarif-to-comment-action/issues",
   "dependencies": {
+    "npm": "11.1.0",
     "@security-alert/sarif-to-comment": "1.10.10"
   },
   "overrides": {
