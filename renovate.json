@@ -57,6 +57,10 @@
       "groupName": "NPM Security Patches",
       "schedule": ["weekly"],
       "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
+      "matchPackageNames": ["zricethezav/gitleaks"],
+      "allowedVersions": "<=8.21.2"
     }
   ]
 }
