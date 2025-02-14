@@ -10,8 +10,9 @@ COPY package.json package.json
 #RUN npm install --ignore-scripts  --global npm@11.1.0 && \
 #    npm install --ignore-scripts  --global npx --force
 
+RUN npm install --global npm@11.1.0 npx@11.1.0 --force && npm cache clean --force
 
-RUN npm install --ignore-scripts --omit=dev --no-audit --no-fund && \
+RUN npm install --ignore-scripts --omit=dev --no-audit --no-fund  && \
     npm cache clean --force
 
 # && \
