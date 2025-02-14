@@ -4,11 +4,18 @@
 FROM node:22-bullseye-slim@sha256:78d58cb33cd6508d24dc07b6b9825d4669275b094ea2aafc9ae10610991d8945
 WORKDIR /app
 
+COPY package.json package.json
+
 # Install node dependencies and update vulnerable packages
-RUN npm install --ignore-scripts  --global npm@11.1.0 && \
-    npm install --ignore-scripts  --global npx --force && \
-    npm cache clean --force && \
-    npm install --ignore-scripts  --global @security-alert/sarif-to-comment@1.10.10 --omit=dev --no-audit --no-fund
+#RUN npm install --ignore-scripts  --global npm@11.1.0 && \
+#    npm install --ignore-scripts  --global npx --force
+
+
+RUN npm install --ignore-scripts --omit=dev --no-audit --no-fund && \
+    npm cache clean --force
+
+# && \
+# npm install --ignore-scripts  --global @security-alert/sarif-to-comment@1.10.10 --omit=dev --no-audit --no-fund
 
 # Remove unnecessary cache and temp files to reduce attack surface
 RUN rm -rf /root/.npm /root/.cache

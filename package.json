@@ -1,12 +1,6 @@
 {
   "name": "sarif-to-comment-action-image",
-  "version": "1.0.0",
-  "dependencies": {
-    "@security-alert/sarif-to-comment": "1.10.10",
-    "ansi-regex": "6.0.1",
-    "npm": "10.8.1",
-    "npx": "10.8.1"
-  },
+  "version": "1.1.0",
   "keywords": [
     "security",
     "sarif",
@@ -14,5 +8,11 @@
   ],
   "author": "tomwillis608",
   "license": "MIT",
-  "bugs": "https://github.com/sett-and-hive/sarif-to-comment-action/issues"
+  "bugs": "https://github.com/sett-and-hive/sarif-to-comment-action/issues",
+  "dependencies": {
+    "@security-alert/sarif-to-comment": "1.10.10"
+  },
+  "overrides": {
+    "ansi-regex": "3.0.1"
+  }
 }
