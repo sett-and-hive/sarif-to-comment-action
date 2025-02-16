@@ -1,62 +1,87 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "pre-commit": {
-    "enabled": true
-  },
-  "automerge": true,
-  "automergeType": "pr",
-  "automergeStrategy": "squash",
-  "dependencyDashboard": true,
-  "dependencyDashboardAutoclose": true,
-  "separateMultipleMajor": true,
-  "minor": {
-    "automerge": true,
-    "stabilityDays": 3,
-    "prCreation": "not-pending"
-  },
-  "patch": {
-    "automerge": true,
-    "stabilityDays": 0
-  },
-  "major": {
-    "automerge": true,
-    "stabilityDays": 9
-  },
-  "digest": {
-    "automerge": true
-  },
-  "transitiveRemediation": true,
-  "schedule": [
-    "after 8pm every weekday",
-    "before 8am every weekday",
-    "every weekend"
-  ],
-  "timezone": "America/Chicago",
-  "labels": ["renovate"],
-  "packageRules": [
-    {
-      "matchDatasources": ["docker"],
-      "matchPackagePatterns": [".*"],
-      "groupName": "Docker base images",
-      "schedule": ["weekly"]
+    "extends": [
+        "config:base"
+    ],
+    "pre-commit": {
+        "enabled": true
     },
-    {
-      "matchDatasources": ["apt"],
-      "matchPackagePatterns": [".*"],
-      "groupName": "APT Security Updates",
-      "schedule": ["daily"],
-      "stabilityDays": 3,
-      "matchUpdateTypes": ["security"],
-      "pinDigests": true
+    "automerge": true,
+    "automergeType": "pr",
+    "automergeStrategy": "squash",
+    "dependencyDashboard": true,
+    "dependencyDashboardAutoclose": true,
+    "separateMultipleMajor": true,
+    "minor": {
+        "automerge": true,
+        "stabilityDays": 3,
+        "prCreation": "not-pending"
     },
-    {
-      "matchDatasources": ["npm"],
-      "matchPackagePatterns": ["@security-alert/sarif-to-comment"],
-      "groupName": "NPM Security Patches",
-      "schedule": ["weekly"],
-      "matchUpdateTypes": ["patch", "minor"]
-    }
-  ]
+    "patch": {
+        "automerge": true,
+        "stabilityDays": 0
+    },
+    "major": {
+        "automerge": true,
+        "stabilityDays": 9
+    },
+    "digest": {
+        "automerge": true
+    },
+    "transitiveRemediation": true,
+    "schedule": [
+        "after 8pm every weekday",
+        "before 8am every weekday",
+        "every weekend"
+    ],
+    "timezone": "America/Chicago",
+    "labels": [
+        "renovate"
+    ],
+    "packageRules": [
+        {
+            "matchDatasources": [
+                "docker"
+            ],
+            "matchPackagePatterns": [
+                ".*"
+            ],
+            "groupName": "Docker base images",
+            "schedule": [
+                "weekly"
+            ]
+        },
+        {
+            "matchDatasources": [
+                "apt"
+            ],
+            "matchPackagePatterns": [
+                ".*"
+            ],
+            "groupName": "APT Security Updates",
+            "schedule": [
+                "daily"
+            ],
+            "stabilityDays": 3,
+            "matchUpdateTypes": [
+                "security"
+            ],
+            "pinDigests": true
+        },
+        {
+            "matchDatasources": [
+                "npm"
+            ],
+            "matchPackagePatterns": [
+                "@security-alert/sarif-to-comment"
+            ],
+            "groupName": "NPM Security Patches",
+            "schedule": [
+                "weekly"
+            ],
+            "matchUpdateTypes": [
+                "patch",
+                "minor"
+            ]
+        }
+    ]
 }
