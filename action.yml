@@ -54,7 +54,7 @@ runs:
     - ${{ inputs.show-rule-details }}
     - ${{ inputs.dry-run }}
     - ${{ inputs.odc-sarif }}
-    - ${{ inputs.show-suppressed }}
+    - ${{ inputs.hide-suppressed }}
 branding:
   icon: 'git-pull-request'
   color: 'green'
