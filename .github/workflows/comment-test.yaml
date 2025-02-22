@@ -36,6 +36,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set npm cache directory to a writable location
+        run: npm config set cache /tmp/.npm
+
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
         uses: sett-and-hive/sarif-to-comment-action@story/173/support-sarif-to-comment-optional-no-suppressedresults-flag # This is a test, we want to dogfood main
