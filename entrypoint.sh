@@ -80,7 +80,7 @@ echo "Convert SARIF file $1"
 # --no-suppressedResults
 # sarif-file-path
 
-if "$HIDE_SUPPRESSED"; then
+if [ "$HIDE_SUPPRESSED" == "true" ]; then
   HIDE_SUPPRESSED_STRING="--no-suppressedResults"
 else
   HIDE_SUPPRESSED_STRING=""
