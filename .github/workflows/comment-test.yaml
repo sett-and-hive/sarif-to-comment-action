@@ -67,7 +67,7 @@ jobs:
         env:
           CI: true
 
-      - name: Post SARIF findings in the pull request - no suppression
+      - name: Post SARIF findings in the pull request - with suppression
         if: github.event_name == 'pull_request'
         uses: sett-and-hive/sarif-to-comment-action@story/173/support-sarif-to-comment-optional-no-suppressedresults-flag # This is a test, we want to dogfood main
         with:
