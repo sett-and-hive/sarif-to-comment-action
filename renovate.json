@@ -1,6 +1,6 @@
 {
     "extends": [
-        "config:base"
+        "config:recommended"
     ],
     "pre-commit": {
         "enabled": true
@@ -13,21 +13,20 @@
     "separateMultipleMajor": true,
     "minor": {
         "automerge": true,
-        "stabilityDays": 3,
+        "minimumReleaseAge": "3 days",
         "prCreation": "not-pending"
     },
     "patch": {
         "automerge": true,
-        "stabilityDays": 0
+        "minimumReleaseAge": null
     },
     "major": {
         "automerge": true,
-        "stabilityDays": 9
+        "minimumReleaseAge": "9 days"
     },
     "digest": {
         "automerge": true
     },
-    "transitiveRemediation": true,
     "schedule": [
         "after 8pm every weekday",
         "before 8am every weekday",
@@ -42,28 +41,28 @@
             "matchDatasources": [
                 "docker"
             ],
-            "matchPackagePatterns": [
-                ".*"
-            ],
             "groupName": "Docker base images",
             "schedule": [
                 "after 8pm every weekend"
+            ],
+            "matchPackageNames": [
+                "/.*/"
             ]
         },
         {
             "matchDatasources": [
                 "apt"
             ],
-            "matchPackagePatterns": [
-                ".*"
-            ],
             "groupName": "APT Security Updates",
             "schedule": [
-                "after 8pm every day"
+                "after 8pm"
             ],
-            "stabilityDays": 3,
+            "minimumReleaseAge": "3 days",
             "matchUpdateTypes": [
                 "security"
+            ],
+            "matchPackageNames": [
+                "/.*/"
             ]
         },
         {
@@ -84,8 +83,10 @@
             ]
         },
         {
-          "matchPackageNames": ["zricethezav/gitleaks"],
-          "allowedVersions": "<=8.21.2"
+            "matchPackageNames": [
+                "zricethezav/gitleaks"
+            ],
+            "allowedVersions": "<=8.21.2"
         }
     ]
 }
