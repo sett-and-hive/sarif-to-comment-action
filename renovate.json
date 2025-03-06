@@ -47,7 +47,7 @@
             ],
             "groupName": "Docker base images",
             "schedule": [
-                "weekly"
+                "after 8pm every weekend"
             ]
         },
         {
@@ -75,7 +75,7 @@
             ],
             "groupName": "NPM Security Patches",
             "schedule": [
-                "after 8pm every Sunday"
+                "after 8pm every weekend"
             ],
             "matchUpdateTypes": [
                 "patch",
