@@ -59,28 +59,28 @@
             ],
             "groupName": "APT Security Updates",
             "schedule": [
-                "daily"
+                "after 8pm every day"
             ],
             "stabilityDays": 3,
             "matchUpdateTypes": [
                 "security"
-            ],
-            "pinDigests": true
+            ]
         },
         {
             "matchDatasources": [
                 "npm"
             ],
-            "matchPackagePatterns": [
+            "matchPackageNames": [
                 "@security-alert/sarif-to-comment"
             ],
             "groupName": "NPM Security Patches",
             "schedule": [
-                "weekly"
+                "after 8pm every Sunday"
             ],
             "matchUpdateTypes": [
                 "patch",
-                "minor"
+                "minor",
+                "security"
             ]
         }
     ]
