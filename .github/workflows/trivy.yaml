@@ -59,7 +59,7 @@ jobs:
           docker build -t trivy-scan-image .
 
       - name: Run Trivy vulnerability scanner on OS
-        uses: aquasecurity/trivy-action@b2933f565dbc598b29947660e66259e3c7bc8561 # 0.20.0
+        uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # 0.29.0
         with:
           scan-type: image
           image-ref: "trivy-scan-image"
@@ -76,7 +76,7 @@ jobs:
       # Log them but do not fail the build
       - name: Run Trivy vulnerability scanner on libraries
         if: always()
-        uses: aquasecurity/trivy-action@b2933f565dbc598b29947660e66259e3c7bc8561 # 0.20.0
+        uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # 0.29.0
         with:
           scan-type: image
           image-ref: "trivy-scan-image"
