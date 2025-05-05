@@ -46,7 +46,7 @@ repos:
   # Prettifier for shell scripts
   # Try to get close to Google style guide
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.10.0-2
+    rev: v3.11.0-1
     hooks:
       - id: shfmt-docker # Docker image (requires Docker to run)
         language: docker_image
@@ -54,7 +54,7 @@ repos:
 
   # Detect secrets with GitLeaks
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.23.3
+    rev: v8.25.1
     hooks:
       - id: gitleaks-docker
 
