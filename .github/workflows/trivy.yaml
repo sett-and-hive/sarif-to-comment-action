@@ -44,6 +44,7 @@ jobs:
             y2oiacprodeus2file6.blob.core.windows.net
             cdn.fwupd.org:443
             ghcr.io:443
+            mirror.mirror.gcr.io:443
             objects.githubusercontent.com:443
 
 #      # Cache directory for trivy
