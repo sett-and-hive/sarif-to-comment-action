@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # latest node-bullseye image 9 February 2024
-FROM node:22-bullseye-slim@sha256:a0368d5282fd3caa1cefd3fc38ba666f3fd42ac1ab3ecb312b76008fbe56e6a7
+FROM node:22-bullseye-slim@sha256:550b434f7edc3a1875860657a3e306752358029c957280809ae6395ab296faeb
 WORKDIR /app
 
 # Install node dependencies and update vulnerable packages
