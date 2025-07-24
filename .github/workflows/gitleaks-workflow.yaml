@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Gitleaks
         id: gitleaks
-        uses: DariuszPorowski/github-action-gitleaks@5c3e70f794d4c928460daf621eff608f477c2510 # v2.0.9
+        uses: DariuszPorowski/github-action-gitleaks@a027585cb1f2780aa441f20f4d0aabf8b1a0d90e # v2.1.0
         with:
           report_format: csv
           fail: false
