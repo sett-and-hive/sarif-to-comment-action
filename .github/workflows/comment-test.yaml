@@ -79,7 +79,7 @@ jobs:
             branch:     ${{ github.head_ref }}
             pr-number:  ${{ github.event.number }}
             sarif-file: "./test/fixtures/suppressions.sarif"
-            title:      "Test comment with no suppression security scanning results"
+            title:      "Test comment with suppressed security scanning results hidden"
             dry-run:    'false'
             odc-sarif: true
             hide-suppressed: true
