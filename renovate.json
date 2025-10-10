@@ -1,6 +1,6 @@
 {
     "extends": [
-        "config:base"
+        "config:recommended"
     ],
     "pre-commit": {
         "enabled": true
@@ -13,21 +13,20 @@
     "separateMultipleMajor": true,
     "minor": {
         "automerge": true,
-        "stabilityDays": 3,
+        "minimumReleaseAge": "3 days",
         "prCreation": "not-pending"
     },
     "patch": {
         "automerge": true,
-        "stabilityDays": 0
+        "minimumReleaseAge": null
     },
     "major": {
         "automerge": true,
-        "stabilityDays": 9
+        "minimumReleaseAge": "9 days"
     },
     "digest": {
         "automerge": true
     },
-    "transitiveRemediation": true,
     "schedule": [
         "after 8pm every weekday",
         "before 8am every weekday",
@@ -42,46 +41,52 @@
             "matchDatasources": [
                 "docker"
             ],
-            "matchPackagePatterns": [
-                ".*"
-            ],
             "groupName": "Docker base images",
             "schedule": [
-                "weekly"
+                "after 8pm every weekend"
+            ],
+            "matchPackageNames": [
+                "/.*/"
             ]
         },
         {
             "matchDatasources": [
                 "apt"
             ],
-            "matchPackagePatterns": [
-                ".*"
-            ],
             "groupName": "APT Security Updates",
             "schedule": [
-                "daily"
+                "after 8pm"
             ],
-            "stabilityDays": 3,
+            "minimumReleaseAge": "3 days",
             "matchUpdateTypes": [
                 "security"
             ],
-            "pinDigests": true
+            "matchPackageNames": [
+                "/.*/"
+            ]
         },
         {
             "matchDatasources": [
                 "npm"
             ],
-            "matchPackagePatterns": [
+            "matchPackageNames": [
                 "@security-alert/sarif-to-comment"
             ],
             "groupName": "NPM Security Patches",
             "schedule": [
-                "weekly"
+                "after 8pm every weekend"
             ],
             "matchUpdateTypes": [
                 "patch",
-                "minor"
+                "minor",
+                "security"
             ]
+        },
+        {
+            "matchPackageNames": [
+                "zricethezav/gitleaks"
+            ],
+            "allowedVersions": "<=8.21.2"
         }
     ]
 }
