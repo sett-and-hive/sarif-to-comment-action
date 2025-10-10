@@ -35,7 +35,7 @@ inputs:
     default: 'false'
     required: false
   hide-suppressed:
-    description: 'Flag to hide or show suppressed rules details. Show by default (false)'
+    description: 'Flag to hide or show suppressed rule details. Show by default (false)'
     default: 'false'
     required: false
 outputs:
