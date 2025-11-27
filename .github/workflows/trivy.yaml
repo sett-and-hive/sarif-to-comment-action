@@ -23,8 +23,8 @@ concurrency:
 
 env:
   TRIVY_SEVERITY: CRITICAL,HIGH
-  APP_IMAGE_TAG: docker-opp-capture-app:latest
-  DOCKERFILE_PATH: devops/docker/Dockerfile
+  APP_IMAGE_TAG: docker-sarif-to-comment:latest
+  DOCKERFILE_PATH: Dockerfile
   TRIVY_CACHE_DIR: .trivy
 
 jobs:
