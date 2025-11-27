@@ -1,7 +1,7 @@
 # Threat Model: SARIF to Comment Action
 
-**Target:** [sett-and-hive/sarif-to-comment-action](https://github.com/sett-and-hive/sarif-to-comment-action)  
-**Date:** November 27, 2025  
+**Target:** [sett-and-hive/sarif-to-comment-action](https://github.com/sett-and-hive/sarif-to-comment-action)
+**Date:** November 27, 2025
 **Methodology:** STRIDE (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege)
 
 ## System Overview
