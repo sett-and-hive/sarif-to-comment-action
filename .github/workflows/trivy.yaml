@@ -95,7 +95,7 @@ jobs:
         run: |
           {
             echo "### 🛡️ Trivy Scan Results"
-            
+
             if [[ -s trivy-config.txt ]]; then
               echo "#### Config Scan"
               echo "<details><summary>Expand Details</summary>"
