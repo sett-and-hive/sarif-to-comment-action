@@ -3,125 +3,224 @@
 name: Trivy workflow
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    types: [opened, synchronize, reopened]
   schedule:
     - cron: '43 12 * * 0'
   workflow_dispatch:
 
-env:
-  BRANCH_NAME: ${{ github.ref_name }}
-
 permissions:
   contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: trivy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  TRIVY_SEVERITY: CRITICAL,HIGH
+  APP_IMAGE_TAG: docker-sarif-to-comment:latest
+  DOCKERFILE_PATH: Dockerfile
+  TRIVY_CACHE_DIR: .trivy
 
 jobs:
-  trivy:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    name: Build
+  build-and-scan:
     runs-on: ubuntu-latest
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
-          disable-sudo: false
-          egress-policy: block
-          disable-telemetry: false
-          allowed-endpoints: >
-            api.github.com:443
-            auth.docker.io:443
-            deb.debian.org:80
-            docker.io:443
-            ghcr.io:443
-            github.com:443
-            pkg-containers.githubusercontent.com:443
-            production.cloudflare.docker.com:443
-            registry-1.docker.io:443
-            registry.npmjs.org:443
-            y2oiacprodeus2file6.blob.core.windows.net
+          egress-policy: audit
 
-#      # Cache directory for trivy
-#      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
-#        with:
-#          path: .trivy
-#          key: ${{ runner.os }}-trivy-${{ github.run_id }}
-#          restore-keys: |
-#            ${{ runner.os }}-trivy-
+      - name: Checkout source
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
 
-      - name: Checkout code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      # 1. Manual Cache Control: Solves "stale version" errors
+      # We cache the .trivy directory. If the Trivy version changes or DB corrupts,
+      # you can clear cache via GitHub UI or change the key prefix.
+      - name: Cache Trivy DB
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+        with:
+          path: ${{ env.TRIVY_CACHE_DIR }}
+          # unique key ensures we save a new cache every run
+          key: ${{ runner.os }}-trivy-db-${{ github.run_id }}
+          # restore-keys allows us to fetch the most recent previous cache
+          restore-keys: |
+            ${{ runner.os }}-trivy-db-
 
-      - name: Build an image from Dockerfile
+      # 2. Setup Buildx for faster builds (layer caching)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
+
+      - name: Build and load app image
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          file: ${{ env.DOCKERFILE_PATH }}
+          tags: ${{ env.APP_IMAGE_TAG }}
+          load: true # Essential: loads image into docker daemon so Trivy can see it
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # 3. Scan Config (Terraform/Dockerfiles)
+      - name: Run Trivy config scanner
+        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+        with:
+          scan-type: config
+          hide-progress: false
+          output: trivy-config.txt
+          severity: CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN
+          ignore-unfixed: true
+          cache-dir: ${{ env.TRIVY_CACHE_DIR }} # Use our manual cache
+
+      # 4. Scan The Built Image
+      - name: Run Trivy image scanner on App
+        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+        with:
+          scan-type: image
+          image-ref: "${{ env.APP_IMAGE_TAG }}"
+          hide-progress: false
+          output: trivy-app-image.txt
+          severity: ${{ env.TRIVY_SEVERITY }}
+          ignore-unfixed: true
+          cache-dir: ${{ env.TRIVY_CACHE_DIR }} # Use our manual cache
+          # exit-code: 1 # Uncomment if you want to fail build on detection
+
+      - name: Publish Trivy Output to Summary
+        if: always()
         run: |
-          docker build -t trivy-scan-image .
+          {
+            echo "### 🛡️ Trivy Scan Results"
 
-      - name: Run Trivy vulnerability scanner on OS
-        uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # 0.29.0
-        with:
-          scan-type: image
-          image-ref: "trivy-scan-image"
-          format: 'sarif'
-          output: 'trivy-os-results.sarif'
-          severity: 'CRITICAL,HIGH'
-          cache-dir: .trivy
-          exit-code: "1" # change to 1, if you want the build to break
-          ignore-unfixed: true
-          vuln-type: 'os'
-          skip-dirs: '/root/.npm/_cacache'
+            if [[ -s trivy-config.txt ]]; then
+              echo "#### Config Scan"
+              echo "<details><summary>Expand Details</summary>"
+              echo ""
+              echo '```'
+              cat trivy-config.txt
+              echo '```'
+              echo "</details>"
+            fi
 
-      # There are vulnerabilties in deep dependencies in @security-alert/sarif-to-comment@1.10.10
-      # Log them but do not fail the build
-      - name: Run Trivy vulnerability scanner on libraries
+            if [[ -s trivy-app-image.txt ]]; then
+              echo "#### Image Scan (${{ env.APP_IMAGE_TAG }})"
+              echo "<details><summary>Expand Details</summary>"
+              echo ""
+              echo '```'
+              cat trivy-app-image.txt
+              echo '```'
+              echo "</details>"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Trivy reports
         if: always()
-        uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # 0.29.0
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          scan-type: image
-          image-ref: "trivy-scan-image"
-          format: 'sarif'
-          output: 'trivy-library-results.sarif'
-          severity: 'CRITICAL,HIGH'
-          cache-dir: .trivy
-          exit-code: "0" # change to 1, if you want the build to break
-          ignore-unfixed: true
-          vuln-type: 'library'
+            name: trivy-app-reports
+            path: |
+              trivy-config.txt
+              trivy-app-image.txt
 
-#      # https://github.com/aquasecurity/trivy-action/issues/12 for an explanation
-#      - name: Correct Trivy cache permissions
-#        # shellcheck disable=all
-#        if: always()
-#        continue-on-error: true
-#        run: |
-#          sudo chown -R "$USER":"$GROUP" .trivy
-#          echo $?
+      # 5. PR Commenting Logic
+      - name: Prepare PR comment
+        if: github.event_name == 'pull_request'
+        id: prep-comment
+        run: |
+          CONFIG_REPORT="trivy-config.txt"
+          IMAGE_REPORT="trivy-app-image.txt"
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        if: always()
-        uses: github/codeql-action/upload-sarif@3c3833e0f8c1c83d449a7478aa59c036a9165498 # v3.29.11
+          BODY="## 🛡️ Trivy Scan Report
+          "
+
+          # Config Section
+          if [[ -f "$CONFIG_REPORT" ]] && grep -q "Total: " "$CONFIG_REPORT"; then
+            BODY+="### 🔧 Config Scan: ⚠️ Issues Found
+            <details><summary>Show Findings</summary>
+
+            \`\`\`terraform
+            $(cat "$CONFIG_REPORT")
+            \`\`\`
+            </details>
+            "
+          else
+            BODY+="### 🔧 Config Scan: ✅ Clean
+            "
+          fi
+
+          # Image Section
+          if grep -q "Total: " "$IMAGE_REPORT"; then
+            BODY+="### 🐳 Image Scan: ❌ Vulnerabilities Found
+            <details><summary>Show Findings</summary>
+
+            \`\`\`
+            $(cat $IMAGE_REPORT)
+            \`\`\`
+            </details>"
+          else
+            BODY+="### 🐳 Image Scan: ✅ Clean"
+          fi
+
+          BODY+=""
+          echo "$BODY" > pr-comment-body.md
+
+      - name: Find existing comment
+        if: ${{ github.event_name == 'pull_request' }}
+        id: fc
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4.0.0
         with:
-          sarif_file: 'trivy-os-results.sarif'
-          category: 'trivy-os'
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '🛡️ Trivy Scan Report'
 
-      - name: Upload Trivy report as attachment
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Post findings to PR
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
-          name: trivy OS results SARIF
-          path: 'trivy-os-results.sarif'
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: pr-comment-body.md
+          edit-mode: replace
 
+  # 6. Issue Creation Logic (Kept largely the same)
+  create-vulnerability-issues:
+    runs-on: ubuntu-latest
+    needs: build-and-scan
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        if: always()
-        uses: github/codeql-action/upload-sarif@3c3833e0f8c1c83d449a7478aa59c036a9165498 # v3.29.11
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
-          sarif_file: 'trivy-library-results.sarif'
-          category: 'trivy-library'
+          egress-policy: audit
 
-      - name: Upload Trivy report as attachment
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Checkout source
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Download Trivy reports
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
-          name: trivy Library results SARIF
-          path: 'trivy-library-results.sarif'
+          name: trivy-app-reports
+          # No merge-multiple needed as we only have one source now
+
+      - name: Setup Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Create GitHub issues for vulnerabilities
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          # Ensure your python script looks for 'trivy-app-image.txt' and 'trivy-config.txt'
+          python .github/scripts/create_trivy_issues.py
