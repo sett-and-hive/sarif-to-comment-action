@@ -278,11 +278,10 @@ def main():
 
     print(f"🔍 Checking for vulnerabilities in repository: {github_repository}")
 
-    # Parse both reports
-    ollama_vulns = parse_trivy_report("trivy-ollama-image.txt", "ollama")
+    # Parse app image report
     app_vulns = parse_trivy_report("trivy-app-image.txt", "app")
 
-    all_vulns = ollama_vulns + app_vulns
+    all_vulns = app_vulns
 
     if not all_vulns:
         print("✅ No vulnerabilities found in any reports")
