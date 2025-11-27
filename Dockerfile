@@ -19,11 +19,17 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # We update to 2.83.1 (Nov 2025) to fix CVE-2024-45337 (x/crypto)
 # and ensure the binary was compiled with a modern Go runtime (fixing stdlib CVEs).
 ARG GH_VERSION=2.83.1
-RUN curl -fsSL https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz -o gh.tar.gz \
-    && tar -xzf gh.tar.gz \
-    && mv gh_${GH_VERSION}_linux_amd64/bin/gh /usr/local/bin/gh \
-    && rm -rf gh.tar.gz gh_${GH_VERSION}_linux_amd64 \
-    && gh --version
++# Download and verify GitHub CLI via published SHA256 checksums to reduce supply-chain risk.
++RUN set -e; \
++    GH_BASE_URL="https://github.com/cli/cli/releases/download/v${GH_VERSION}"; \
++    curl -fsSL "${GH_BASE_URL}/gh_${GH_VERSION}_linux_amd64.tar.gz" -o gh.tar.gz; \
++    curl -fsSL "${GH_BASE_URL}/gh_${GH_VERSION}_checksums.txt" -o gh_checksums.txt; \
++    grep " gh_${GH_VERSION}_linux_amd64.tar.gz\$" gh_checksums.txt > gh_checksums_filtered.txt; \
++    sha256sum -c gh_checksums_filtered.txt; \
++    tar -xzf gh.tar.gz; \
++    mv "gh_${GH_VERSION}_linux_amd64/bin/gh" /usr/local/bin/gh; \
++    rm -rf gh.tar.gz gh_checksums.txt gh_checksums_filtered.txt "gh_${GH_VERSION}_linux_amd64"; \
++    gh --version
 
 # 4. Install & Patch Node Dependencies
 # FIX: Added --ignore-scripts to ALL commands to prevent 'node-gyp' from
