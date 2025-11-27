@@ -16,11 +16,11 @@ RUN rm -rf /root/.npm /root/.cache
 # Install jq and dependency security patches
 RUN apt-get update && apt-get install --no-install-recommends -y jq=1.6-2.1+deb11u1 \
         e2fsprogs=1.46.2-2+deb11u1 \
-        libsystemd0=247.3-7+deb11u6 \
+        libsystemd0=247.3-7+deb11u7 \
         logsave=1.46.2-2+deb11u1 \
         perl-base=5.32.1-4+deb11u4 \
         libcom-err2=1.46.2-2+deb11u1 \
-        libudev1=247.3-7+deb11u6 \
+        libudev1=247.3-7+deb11u7 \
         libss2=1.46.2-2+deb11u1 \
         && \
     rm -rf /var/lib/apt/lists/*
