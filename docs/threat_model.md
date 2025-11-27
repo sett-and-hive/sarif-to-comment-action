@@ -30,6 +30,29 @@ graph LR
     Action -->|POST| API[GitHub API]
 ```
 
+## Sequence Diagram (SD)
+
+```mermaid
+sequenceDiagram
+    actor Developer
+    participant CI as CI_System
+    participant Runner as GitHub_Action_Runner
+    participant Action as SARIF_to_Comment_Action
+    participant Dep as sarif_to_comment_dependency
+    participant API as GitHub_API
+
+    Developer->>CI: Push code or open PR
+    CI->>Runner: Start workflow job
+    Runner->>Action: Execute with inputs (token, repo, branch, sarif_path)
+    Action->>Runner: Read SARIF file from workspace
+    Action->>Dep: Parse SARIF JSON
+    Dep-->>Action: Formatted findings
+    Action->>API: POST PR summary comment
+    API-->>Action: Response (success or error)
+    Action-->>Runner: Exit status
+    Runner-->>CI: Report job result
+```
+
 ## Trust Boundaries
 
 ### Boundary 1 (Input)
@@ -212,7 +235,11 @@ individual comments for each (or updates the same comment too frequently), it ma
 
 ##### Impact
 
-CI fails for all developers.Mitigation: The action should aggregate findings into a single summary comment.
+CI fails for all developers.
+
+##### Mitigation
+
+The action should aggregate findings into a single summary comment.
 
 ### E - Elevation of Privilege
 
@@ -235,7 +262,7 @@ Medium. Depends on implementation (using exec vs spawn or API calls).
 
 ##### Mitigation
 
-Avoid shell execution. Use the GitHub REST API libraries (@actions/github, octokit) directly. specific
+Avoid shell execution. Use the GitHub REST API libraries (@actions/github, octokit) directly. Specific
 inputs should be validated against an allowlist (alphanumeric only).
 
 ## Summary of Critical Findings
