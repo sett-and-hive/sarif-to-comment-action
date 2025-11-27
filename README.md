@@ -70,6 +70,11 @@ dialect and the input file will be modified so that the action can
 correctly parse the SARIF. If false, as for CodeQL SARIF, do nothing extra.
 Default: false
 
+### `hide-suppressed`
+
+If true, then suppressed rules details will be hidden. If false, they will be shown, as before.
+Default: false
+
 ## Example usage
 
 Add this action to your own GitHub action yaml file, replacing the value in
@@ -166,6 +171,7 @@ jobs:
           sarif-file: ./report/scan-findings.sarif
           title: "Security scanning results"
           odc-sarif: false
+          hide-suppressed: true
 ```
 
 ## Running as a composite action

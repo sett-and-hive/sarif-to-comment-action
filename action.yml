@@ -34,6 +34,10 @@ inputs:
     description: 'SARIF file is in OWASP Dependency Check dialect.'
     default: 'false'
     required: false
+  hide-suppressed:
+    description: 'Flag to hide or show suppressed rule details. Show by default (false)'
+    default: 'false'
+    required: false
 outputs:
   output:
     description: 'The output of the docker run.'
@@ -50,6 +54,7 @@ runs:
     - ${{ inputs.show-rule-details }}
     - ${{ inputs.dry-run }}
     - ${{ inputs.odc-sarif }}
+    - ${{ inputs.hide-suppressed }}
 branding:
   icon: 'git-pull-request'
   color: 'green'

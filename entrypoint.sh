@@ -10,6 +10,7 @@
 # $7 - show-rule-details
 # $8 - dry-run
 # $9 - odc-sarif
+# $10 - hide-suppressed
 
 set -o pipefail
 set -eu
@@ -30,6 +31,7 @@ TITLE=$6
 SHOW_RULE_DETAILS=$7
 DRY_RUN=$8
 ODC_SARIF=$9
+HIDE_SUPPRESSED=${10}
 
 OWNER=$(echo "$REPOSITORY" | awk -F[/] '{print $1}')
 REPO=$(echo "$REPOSITORY" | awk -F[/] '{print $2}')
@@ -75,8 +77,16 @@ echo "Convert SARIF file $1"
 # --sarifContentBranch
 # --dryRun
 # --ruleDetails
+# --no-suppressedResults
 # sarif-file-path
-npx @security-alert/sarif-to-comment --dryRun "$DRY_RUN" --token "$TOKEN" --commentUrl "$URL" --sarifContentOwner "$OWNER" --sarifContentRepo "$REPO" --sarifContentBranch "$BRANCH" --title "$TITLE" --ruleDetails "$SHOW_RULE_DETAILS" "$SARIF_FILE"
+
+if [ "$HIDE_SUPPRESSED" = "true" ]; then
+  HIDE_SUPPRESSED_STRING="--no-suppressedResults"
+else
+  HIDE_SUPPRESSED_STRING=""
+fi
+
+npx @security-alert/sarif-to-comment --dryRun "$DRY_RUN" --token "$TOKEN" --commentUrl "$URL" --sarifContentOwner "$OWNER" --sarifContentRepo "$REPO" --sarifContentBranch "$BRANCH" --title "$TITLE" --ruleDetails "$SHOW_RULE_DETAILS" "$HIDE_SUPPRESSED_STRING" "$SARIF_FILE"
 RC=$?
 #echo "output={$RC}" >>"$GITHUB_OUTPUT"
 echo "RC = $RC"
