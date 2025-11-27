@@ -217,7 +217,7 @@ def create_github_issue(repo: str, token: str, vuln: Vulnerability) -> bool:
 2. **Apply Fix**: If a fixed version is available ({vuln.fixed_version}), update the dependency
 3. **Update .trivyignore**: If the vulnerability cannot be fixed immediately, add it to `.trivyignore` with justification
 4. **Update Threat Model**: Document this vulnerability in `docs/threat_model.md` under the "Risk Mitigation" section
-5. **Update uv.lock**: Update `uc.lock` with the latest version of all packages, as needed
+5. **Update uv.lock**: Update `uv.lock` with the latest version of all packages, as needed
 
 ### Acceptance Criteria
 
