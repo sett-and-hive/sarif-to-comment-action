@@ -13,7 +13,7 @@ create_docker_image() {
 run_trivy() {
   image="$1"
   echo "image: $image"
-  trivy image "$image" --scanners vuln --format table --timeout 15m --ignore-unfixed --severity HIGH,CRITICAL
+  trivy image "$image" --ignorefile .trivyignore --scanners vuln --format table --timeout 15m --ignore-unfixed --severity HIGH,CRITICAL
 }
 
 # Fail if trivy is not found
