@@ -19,17 +19,23 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # We update to 2.83.1 (Nov 2025) to fix CVE-2024-45337 (x/crypto)
 # and ensure the binary was compiled with a modern Go runtime (fixing stdlib CVEs).
 ARG GH_VERSION=2.83.1
-+# Download and verify GitHub CLI via published SHA256 checksums to reduce supply-chain risk.
-+RUN set -e; \
-+    GH_BASE_URL="https://github.com/cli/cli/releases/download/v${GH_VERSION}"; \
-+    curl -fsSL "${GH_BASE_URL}/gh_${GH_VERSION}_linux_amd64.tar.gz" -o gh.tar.gz; \
-+    curl -fsSL "${GH_BASE_URL}/gh_${GH_VERSION}_checksums.txt" -o gh_checksums.txt; \
-+    grep " gh_${GH_VERSION}_linux_amd64.tar.gz\$" gh_checksums.txt > gh_checksums_filtered.txt; \
-+    sha256sum -c gh_checksums_filtered.txt; \
-+    tar -xzf gh.tar.gz; \
-+    mv "gh_${GH_VERSION}_linux_amd64/bin/gh" /usr/local/bin/gh; \
-+    rm -rf gh.tar.gz gh_checksums.txt gh_checksums_filtered.txt "gh_${GH_VERSION}_linux_amd64"; \
-+    gh --version
+# Download and verify GitHub CLI via published SHA256 checksums to reduce supply-chain risk.
+RUN set -e; \
+    GH_BASE_URL="https://github.com/cli/cli/releases/download/v${GH_VERSION}"; \
+    # 1. Define the official filename expected by the checksum file
+    GH_FILENAME="gh_${GH_VERSION}_linux_amd64.tar.gz"; \
+    # 2. Download artifacts using the OFFICIAL name (Critical for sha256sum)
+    curl -fsSL "${GH_BASE_URL}/${GH_FILENAME}" -o "${GH_FILENAME}"; \
+    curl -fsSL "${GH_BASE_URL}/gh_${GH_VERSION}_checksums.txt" -o gh_checksums.txt; \
+    # 3. Verify (Grep ensures we only check the linux_amd64 hash)
+    grep " ${GH_FILENAME}\$" gh_checksums.txt > gh_checksums_filtered.txt; \
+    sha256sum -c gh_checksums_filtered.txt; \
+    # 4. Extract & Install
+    tar -xzf "${GH_FILENAME}"; \
+    mv "gh_${GH_VERSION}_linux_amd64/bin/gh" /usr/local/bin/gh; \
+    # 5. Cleanup
+    rm -rf "${GH_FILENAME}" gh_checksums.txt gh_checksums_filtered.txt "gh_${GH_VERSION}_linux_amd64"; \
+    gh --version
 
 # 4. Install & Patch Node Dependencies
 # FIX: Added --ignore-scripts to ALL commands to prevent 'node-gyp' from
