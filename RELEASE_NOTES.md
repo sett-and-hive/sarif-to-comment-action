@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * Support SARIF to PR conversion
   * CodeQL SARIF dialect
-  * OWASP Dependency Check dialect [https://github.com/sett-and-hive/sarif-to-comment-action/issues/3]
+  * OWASP Dependency Check dialect [<https://github.com/sett-and-hive/sarif-to-comment-action/issues/3>]
 
 ## Known run-time security vulnerabilities
 
