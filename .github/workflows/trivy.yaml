@@ -138,12 +138,12 @@ jobs:
           "
 
           # Config Section
-          if grep -q "Total: " "$CONFIG_REPORT"; then
+          if [[ -f "$CONFIG_REPORT" ]] && grep -q "Total: " "$CONFIG_REPORT"; then
             BODY+="### 🔧 Config Scan: ⚠️ Issues Found
             <details><summary>Show Findings</summary>
 
             \`\`\`terraform
-            $(cat $CONFIG_REPORT)
+            $(cat "$CONFIG_REPORT")
             \`\`\`
             </details>
             "
