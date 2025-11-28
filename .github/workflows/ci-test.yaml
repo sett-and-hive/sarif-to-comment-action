@@ -78,7 +78,7 @@ jobs:
 
       - name: Setup Bats and bats libs
         id: setup-bats
-        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad5 # 3.0.1
+        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad507 # 3.0.1
 
       - name: Bats testing
         shell: bash
