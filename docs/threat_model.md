@@ -294,17 +294,19 @@ Update documentation to recommend minimal permissions (`permissions: pull-reques
 This section documents specific security findings that have been analyzed, triaged as false positives or acceptable risks, and suppressed in the CI pipeline to maintain a clean build signal.
 
 ### CVE-2024-52308: GitHub CLI (gh) Remote Code Execution
+
 * **Component:** `usr/local/bin/gh` (Go Binary)
 * **Scanner:** Trivy
 * **Severity:** High
 * **Status:** **False Positive / Suppressed**
 * **Analysis:**
-    * **The Finding:** Trivy flags the embedded module `github.com/cli/cli/v2` as vulnerable to CVE-2024-52308, stating the fixed version is `2.62.0`.
-    * **The Error:** Trivy misinterprets the Go pseudo-version string inside the binary (`v2.0.0-20251113...`) as semver `2.0.0`, which appears older than `2.62.0`.
-    * **Verification:** We explicitly install `gh` version **2.83.1** (Released November 2025) in the Dockerfile. This version is significantly newer than the patch requirement (`2.62.0`).
+  * **The Finding:** Trivy flags the embedded module `github.com/cli/cli/v2` as vulnerable to CVE-2024-52308, stating the fixed version is `2.62.0`.
+  * **The Error:** Trivy misinterprets the Go pseudo-version string inside the binary (`v2.0.0-20251113...`) as semver `2.0.0`, which appears older than `2.62.0`.
+  * **Verification:** We explicitly install `gh` version **2.83.1** (Released November 2025) in the Dockerfile. This version is significantly newer than the patch requirement (`2.62.0`).
 * **Mitigation:** The vulnerability is patched in the installed binary. The finding is suppressed via `.trivyignore` to resolve the scanner parsing error.
 
 ### General Dependency Policy
+
 * **OS Level:** The container is built on `node:22-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.
 * **Node Level:** Native dependencies are compiled/fetched using `--ignore-scripts` to prevent arbitrary code execution during the build phase.
 * **Supply Chain:** Sub-dependencies of the wrapped library are force-updated during the Docker build (`npm update --depth 99`) to ensure critical patches are applied even if the upstream `package.json` is stale.
