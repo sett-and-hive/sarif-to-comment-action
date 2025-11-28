@@ -43,4 +43,4 @@ cd "$PROJECT_ROOT" || {
 echo "Running in:"
 pwd
 
-bats --recursive --verbose-run --recursive unit
+bats --verbose-run --recursive unit
