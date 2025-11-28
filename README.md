@@ -202,6 +202,10 @@ but will be removed in the future.
 
 To get started locally with bats, install it with `sudo apt-get install bats` on Debian/Ubuntu.
 
+```console
+test/run_tests.sh
+```
+
 ## Security testing
 
 There is a security test that builds and runs the `trivy` scanner
