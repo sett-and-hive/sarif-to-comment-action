@@ -61,6 +61,7 @@ test_if_sarif_has_runs() {
 # Use a throwaway home and cache inside the container filesystem.
 export HOME=/tmp/npm-home
 export NPM_CONFIG_CACHE="$HOME/.npm"
+export npm_config_cache="$NPM_CONFIG_CACHE"
 
 mkdir -p "$NPM_CONFIG_CACHE"
 chmod 700 "$HOME" "$NPM_CONFIG_CACHE" || true
