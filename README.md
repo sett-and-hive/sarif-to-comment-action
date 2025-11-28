@@ -201,6 +201,7 @@ We are migrating to [`bats`](https://github.com/bats-core/bats-core) for testing
 but will be removed in the future.
 
 To get started locally with bats:
+
 - On Debian/Ubuntu, install it with `sudo apt-get install bats`
 - On macOS, install it with Homebrew: `brew install bats-core`
 - For other platforms or installation methods, see the [official bats-core installation documentation](https://github.com/bats-core/bats-core#installation)
