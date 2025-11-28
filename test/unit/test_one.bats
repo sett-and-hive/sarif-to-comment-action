@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-@setup() {
+setup() {
   load '../test_helper.sh'
   _test_helper
 }
