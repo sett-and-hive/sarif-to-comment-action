@@ -40,9 +40,6 @@ repos:
         # MD024: Duplicate heading names allowed for repeated section structures.
         # MD024: Duplicate headings allowed to support generated/versioned documentation sections.
         args: [ --disable, "MD013,MD033,MD036,MD024", --fix, --output-format, "github" ]
-        # MD036: Emphasis style (bold/italic) flexibility needed for legacy docs.
-        args: [ --disable, "MD013,MD033,MD036,MD024", --fix, --output-format, "github" ]
-
 
   # Linter for shell scripts
   - repo: https://github.com/shellcheck-py/shellcheck-py
