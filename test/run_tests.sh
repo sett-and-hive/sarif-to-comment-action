@@ -30,7 +30,7 @@ echo "Built docker image"
 
 # 2 Invoke bats
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" || {
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" || {
   echo "⚠️  Error: cannot find project root. Skipping integration tests." >&2
   exit 1
 }
