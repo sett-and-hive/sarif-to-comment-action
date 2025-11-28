@@ -3,7 +3,7 @@
 # BATS runner
 
 # set -x
-set -o pipefail
+set -euo pipefail
 
 create_docker_image() {
   TEST_IMAGE=comment-test-image
