@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# test/test_helper.bash
+# test/test_helper.sh
 
 set -euo pipefail
 
