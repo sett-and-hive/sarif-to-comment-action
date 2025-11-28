@@ -39,7 +39,7 @@ jobs:
 
       - name: Post SARIF findings in the pull request
         if: github.event_name == 'pull_request'
-        uses: sett-and-hive/sarif-to-comment-action@main # This is a test, we want to dogfood main
+        uses: ./ # use action from this branch # sett-and-hive/sarif-to-comment-action@main # This is a test, we want to dogfood main
         with:
             token:      ${{ secrets.GITHUB_TOKEN }}
             repository: ${{ github.repository }}
