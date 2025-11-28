@@ -135,7 +135,7 @@ Bats tests are written in Bash using Bats-specific conventions (`@test`, `run`, 
 **Mitigations**
 
 - Keep most domain logic in functions that are also exercised by higher-level tests (e.g., Python/Go integration tests, application-level tests), so Bats is not the *only* safety net.
-- Keep test helpers (`test_helper.bash`, custom assertions) small and well-factored to reduce migration cost if we ever move away from Bats.
+- Keep test helpers (`test_helper.sh`, custom assertions) small and well-factored to reduce migration cost if we ever move away from Bats.
 
 #### Bash-specific behavior vs. POSIX portability
 
