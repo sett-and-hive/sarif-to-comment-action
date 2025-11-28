@@ -13,7 +13,7 @@ We will use Architectural Decisions Records (ADRs).  We will use the same format
 ## Context
 
 ADRs are originally described by [Michael Nygard in an article](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) and more robustly detailed and demonstrated [on GitHub](https://adr.github.io).
-We favor a [lightweight ARD](https://github.com/peter-evans/lightweight-architecture-decision-records) approach.
+We favor a [lightweight ADR](https://github.com/peter-evans/lightweight-architecture-decision-records) approach.
 
 We want to record our architectural decisions so that...
 
