@@ -54,4 +54,6 @@ COPY ./entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 
 USER node
+ENV NPM_CONFIG_CACHE=/tmp/npm-cache
+RUN mkdir -p /tmp/npm-cache
 ENTRYPOINT ["bash", "/app/entrypoint.sh"]
