@@ -8,7 +8,7 @@ Accepted.
 
 ## Decision
 
-We will use Architectural Decisions Records (ADRs).  We will use the same format as this ADR.
+We will use Architectural Decision Records (ADRs).  We will use the same format as this ADR.
 
 ## Context
 
