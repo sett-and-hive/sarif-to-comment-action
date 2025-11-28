@@ -44,7 +44,7 @@ Conventions:
   - Sets `PROJECT_ROOT` to the root of the project.
   - Set `PATH`
   - Tests for running Docker
-  - Tests for presence of `bat`
+  - Tests for presence of `bats`
   - All bats tests source `test_helper.sh`.
 - Test files should be executable: `chmod +x`
 - Tests use `$BATS_TEST_TMPDIR` and mocks instead of real global state or production endpoints.
