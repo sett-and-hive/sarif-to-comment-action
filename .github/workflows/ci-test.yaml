@@ -75,3 +75,14 @@ jobs:
 
             </p>
             </details>
+
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad5 # 3.0.1
+
+      - name: Bats testing
+        shell: bash
+        env:
+         BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+         TERM: xterm
+        run: bats --verbose-run --recursive test/unit
