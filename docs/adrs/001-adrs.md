@@ -22,7 +22,7 @@ We want to record our architectural decisions so that...
 
 ## Impact
 
-The outcomes of the decision, both positive and negative. This section should explain the impact of the decision, such as trade-offs, risks, and what needs to be done to implement it.
+This section describes the outcomes of the decision, both positive and negative, including trade-offs, risks, and what needs to be done to implement it.
 
 ### Positive
 
