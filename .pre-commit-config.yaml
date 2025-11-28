@@ -37,6 +37,7 @@ repos:
         # MD013: Line length rule disabled to allow long URLs and code blocks.
         # MD033: Inline HTML allowed for custom formatting in documentation.
         # MD036: Emphasis style (bold/italic) flexibility needed for legacy docs.
+        # MD024: Duplicate heading names allowed for repeated section structures.
         # MD024: Duplicate headings allowed to support generated/versioned documentation sections.
         args: [ --disable, "MD013,MD033,MD036,MD024", --fix, --output-format, "github" ]
         # MD036: Emphasis style (bold/italic) flexibility needed for legacy docs.
