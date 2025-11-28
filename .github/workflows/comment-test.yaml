@@ -4,7 +4,9 @@ name: SARIF comment workflow
 
 on:
   pull_request:
-    branches: [main]
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -40,7 +42,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Post SARIF findings in the pull request
+      - name: Integration test of posting SARIF findings in the pull request from this branch
         if: github.event_name == 'pull_request'
         uses: ./ # use action from this branch # sett-and-hive/sarif-to-comment-action@main # This is a test, we want to dogfood main
         with:
@@ -49,7 +51,22 @@ jobs:
             branch:     ${{ github.head_ref }}
             pr-number:  ${{ github.event.number }}
             sarif-file: "./test/fixtures/odc.sarif"
-            title:      "Test comment with security scanning results"
+            title:      "PR smoke test of comment with security scanning results"
+            dry-run:    'false'
+            odc-sarif: true
+        env:
+          CI: true
+
+      - name: Dogfood test of posting SARIF findings with the main branch
+        if: github.event_name == 'push'
+        uses: sett-and-hive/sarif-to-comment-action@main # This is a test, we want to dogfood main
+        with:
+            token:      ${{ secrets.GITHUB_TOKEN }}
+            repository: ${{ github.repository }}
+            branch:     ${{ github.head_ref }}
+            pr-number:  ${{ github.event.number }}
+            sarif-file: "./test/fixtures/odc.sarif"
+            title:      "PR smoke test of comment with security scanning results"
             dry-run:    'false'
             odc-sarif: true
         env:
