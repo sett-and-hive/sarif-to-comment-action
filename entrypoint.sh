@@ -57,6 +57,14 @@ test_if_sarif_has_runs() {
   fi
 }
 
+# Isolate npm completely from /github/home (GitHub overrides HOME to /github/home)
+# Use a throwaway home and cache inside the container filesystem.
+export HOME=/tmp/npm-home
+export npm_config_cache="$HOME/.npm"
+
+mkdir -p "$npm_config_cache"
+chmod 700 "$HOME" "$npm_config_cache" || true
+
 # Test for bad JSON here
 test_if_file_exists "$SARIF_FILE"
 test_if_json_is_valid "$SARIF_FILE"
