@@ -195,6 +195,21 @@ test/test.sh
 
 All new functionality must be covered by tests.
 
+### Testing with `bats`
+
+We are migrating to [`bats`](https://github.com/bats-core/bats-core) for testing. The old test script is still available
+but will be removed in the future.
+
+To get started locally with bats:
+
+- On Debian/Ubuntu, install it with `sudo apt-get install bats`
+- On macOS, install it with Homebrew: `brew install bats-core`
+- For other platforms or installation methods, see the [official bats-core installation documentation](https://github.com/bats-core/bats-core#installation)
+
+```console
+test/run_tests.sh
+```
+
 ## Security testing
 
 There is a security test that builds and runs the `trivy` scanner

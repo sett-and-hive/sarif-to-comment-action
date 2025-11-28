@@ -75,3 +75,26 @@ jobs:
 
             </p>
             </details>
+
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@42fcc8700f773c075a16a90eb11674c0318ad507 # 3.0.1
+        with:
+          bats-version: 1.13.0
+          support-install: false
+          assert-install: false
+          detik-install: false
+          file-install: false
+          # Install libs into workspace (under $HOME) to avoid sudo
+#          support-path: "${{ github.workspace }}/tests/bats-support"
+#          assert-path: "${{ github.workspace }}/tests/bats-assert"
+#          detik-path: "${{ github.workspace }}/tests/bats-detik"
+#          file-path: "${{ github.workspace }}/tests/bats-file"
+
+      - name: Bats testing
+        shell: bash
+        env:
+         BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+         TERM: xterm
+        run: |
+          bats --verbose-run --recursive test/unit
