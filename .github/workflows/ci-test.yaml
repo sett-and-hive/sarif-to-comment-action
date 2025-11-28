@@ -32,7 +32,7 @@ jobs:
             production.cloudflare.docker.com:443
             registry-1.docker.io:443
             registry.npmjs.org:443
-            pipelinesghubeus6.actions.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
 
       - name: "Checkout code"
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
