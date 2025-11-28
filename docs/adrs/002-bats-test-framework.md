@@ -40,12 +40,12 @@ Conventions:
 - Every script in the root should have a corresponding test file in `test/unit`.
 - Every multi-script workflow should have a corresponding test file in `test/integration`.
 - Test files should be named `*.bats`.
-- Test helper functions should be defined in `test/test_helper.bash`.
+- Test helper functions should be defined in `test/test_helper.sh`.
   - Sets `PROJECT_ROOT` to the root of the project.
   - Set `PATH`
   - Tests for running Docker
   - Tests for presence of `bat`
-  - All bats tests source `test_helper.bash`.
+  - All bats tests source `test_helper.sh`.
 - Test files should be executable: `chmod +x`
 - Tests use `$BATS_TEST_TMPDIR` and mocks instead of real global state or production endpoints.
 
