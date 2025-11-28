@@ -29,13 +29,17 @@ repos:
     - id: actionlint-docker
 
   # Linter for markdown files
-  # This hook uses DavidAnson Node.js markdownlint in a Docker to minimize dev environment at the cost of speed
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.46.0
+  # This hook uses fast rumdl, based on DavidAnson Node.js markdownlint, for speed
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: v0.0.179
     hooks:
-      - id: markdownlint
-        language: docker_image
-        entry: ghcr.io/igorshubovych/markdownlint-cli:v0.31.1
+      - id: rumdl
+        # MD013: Line length rule disabled to allow long URLs and code blocks.
+        # MD033: Inline HTML allowed for custom formatting in documentation.
+        # MD036: Emphasis style (bold/italic) flexibility needed for legacy docs.
+        # MD024: Duplicate heading names allowed for repeated section structures.
+        # MD024: Duplicate headings allowed to support generated/versioned documentation sections.
+        args: [ --disable, "MD013,MD033,MD036,MD024", --fix, --output-format, "github" ]
 
   # Linter for shell scripts
   - repo: https://github.com/shellcheck-py/shellcheck-py
@@ -66,5 +70,5 @@ ci:
     autoupdate_branch: ''
     autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
     autoupdate_schedule: weekly
-    skip: [hadolint,markdownlint,shfmt-docker,gitleaks-docker,actionlint-docker]
+    skip: [hadolint,shfmt-docker,gitleaks-docker,actionlint-docker]
     submodules: false
