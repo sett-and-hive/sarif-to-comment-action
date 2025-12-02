@@ -2,7 +2,7 @@
 
 # 1. Base Image: Use official LTS (Node 22) on Debian 12 (Bookworm)
 # This instantly fixes the "ancient npm" vulnerabilities.
-FROM node:22-bookworm-slim
+FROM node:24-bookworm-slim
 
 WORKDIR /app
 
