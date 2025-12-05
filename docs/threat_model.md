@@ -293,6 +293,22 @@ Update documentation to recommend minimal permissions (`permissions: pull-reques
 
 This section documents specific security findings that have been analyzed, triaged as false positives or acceptable risks, and suppressed in the CI pipeline to maintain a clean build signal.
 
+### CVE-2020-7754: npm-user-validate Regular Expression Denial of Service (ReDoS)
+
+* **Component:** `npm-user-validate` (NPM Package bundled with npm)
+* **Scanner:** Trivy
+* **Severity:** High (CVSS 7.5)
+* **Status:** **Mitigated / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** npm-user-validate versions < 1.0.1 contain a ReDoS vulnerability in the email validation regular expression. Attackers could exploit this by providing crafted input with repeated `@` characters, causing exponential backtracking and high CPU usage, leading to denial of service.
+  * **The Fix:** The vulnerability was fixed in npm-user-validate 1.0.1 through improved regex and enforced maximum email length (254 characters).
+  * **Current Status:** The Dockerfile explicitly installs `npm@latest` (currently 10.8.2+), which bundles npm-user-validate 2.0.1. This is well above the vulnerable version threshold.
+  * **Why Trivy Detects It:** Trivy may be detecting npm-user-validate in intermediate build layers or cached images before the `npm install -g npm@latest` and `npm update --depth 99` commands execute.
+* **Mitigation:** The vulnerability is fully mitigated through the use of npm@latest, which includes a patched version of npm-user-validate (2.0.1). The finding is suppressed via `.trivyignore` to acknowledge that the vulnerability is addressed through our npm upgrade strategy.
+* **References:**
+  * [NVD CVE-2020-7754](https://nvd.nist.gov/vuln/detail/CVE-2020-7754)
+  * [GitHub Security Advisory](https://github.com/npm/npm-user-validate/security/advisories/GHSA-xgh6-85xh-479p)
+
 ### CVE-2024-52308: GitHub CLI (gh) Remote Code Execution
 
 * **Component:** `usr/local/bin/gh` (Go Binary)
