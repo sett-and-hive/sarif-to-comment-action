@@ -8,3 +8,10 @@ CVE-2020-7754
 # False Positive: Trivy misidentifies gh cli v2.83.1 as v2.0.0
 # The CVE was fixed in v2.62.0. We are on v2.83.1.
 CVE-2024-52308
+
+# Accepted Risk: Go stdlib DoS in crypto/x509 (CVE-2025-61729)
+# GitHub CLI v2.83.1 is compiled with Go 1.25.3, which is vulnerable.
+# Fixed in Go 1.25.5 and 1.24.11. Waiting for upstream gh CLI to rebuild with patched Go.
+# Risk is low: requires malicious TLS cert during GitHub API communication.
+# Acceptance date: 2025-12-06
+CVE-2025-61729
