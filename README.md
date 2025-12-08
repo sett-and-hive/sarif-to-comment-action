@@ -234,6 +234,11 @@ that scans each day and also scans each PR.
 There is a [gitleaks workflow](./.github/workflows/gitleaks-workflow.yaml)
 that detects secrets, to keep them out of the repository.
 
+There is also a [review-trivyignore workflow](./.github/workflows/review-trivyignore.yaml)
+that runs monthly to review vulnerabilities listed in `.trivyignore` and check if patches 
+have become available. This helps ensure we don't continue ignoring vulnerabilities after 
+fixes are released. The workflow creates or updates a tracking issue with findings.
+
 ## Contributing
 
 Pull requests and stars are always welcome.

@@ -13,7 +13,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -264,7 +264,7 @@ def generate_issue_body(results: List[Dict]) -> str:
     Returns:
         Markdown formatted issue body
     """
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
     body = f"""# 🔄 .trivyignore Review Report
 
@@ -340,7 +340,7 @@ This automated report reviews vulnerabilities in `.trivyignore` to check if patc
 
             if advisory:
                 url = advisory.url
-                updated = advisory.updated_at[:10] if advisory.updated_at else "Unknown"
+                updated = advisory.updated_at[:10] if advisory.updated_at and len(advisory.updated_at) >= 10 else advisory.updated_at or "Unknown"
                 body += f"| [{vuln_id}]({url}) | {acceptance} | {reason} | {updated} |\n"
             else:
                 body += f"| {vuln_id} | {acceptance} | {reason} | Unknown |\n"
@@ -362,8 +362,10 @@ This automated report reviews vulnerabilities in `.trivyignore` to check if patc
         if advisory:
             body += f"- **Severity**: {advisory.severity}\n"
             body += f"- **Summary**: {advisory.summary}\n"
-            body += f"- **Published**: {advisory.published_at[:10] if advisory.published_at else 'Unknown'}\n"
-            body += f"- **Last Updated**: {advisory.updated_at[:10] if advisory.updated_at else 'Unknown'}\n"
+            published = advisory.published_at[:10] if advisory.published_at and len(advisory.published_at) >= 10 else advisory.published_at or 'Unknown'
+            updated = advisory.updated_at[:10] if advisory.updated_at and len(advisory.updated_at) >= 10 else advisory.updated_at or 'Unknown'
+            body += f"- **Published**: {published}\n"
+            body += f"- **Last Updated**: {updated}\n"
 
             if advisory.withdrawn_at:
                 body += f"- **Withdrawn**: {advisory.withdrawn_at} ✅\n"
