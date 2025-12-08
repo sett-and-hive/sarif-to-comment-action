@@ -1,0 +1,59 @@
+# A workflow that periodically reviews .trivyignore entries for available patches
+
+name: Review .trivyignore
+
+on:
+  schedule:
+    # Run monthly on the 1st at 9:00 UTC
+    - cron: '0 9 1 * *'
+  workflow_dispatch:
+    inputs:
+      trivyignore_path:
+        description: 'Path to .trivyignore file'
+        required: false
+        default: '.trivyignore'
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  review-trivyignore:
+    runs-on: ubuntu-latest
+    name: Review ignored vulnerabilities
+
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+        with:
+          egress-policy: audit
+
+      - name: Checkout source
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Setup Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Review .trivyignore entries
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          TRIVYIGNORE_PATH: ${{ inputs.trivyignore_path || '.trivyignore' }}
+        run: |
+          python .github/scripts/review_trivyignore.py
+
+      - name: Publish summary
+        if: always()
+        run: |
+          echo "### 🔄 .trivyignore Review Completed" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "The review of vulnerabilities in \`.trivyignore\` has been completed." >> "$GITHUB_STEP_SUMMARY"
+          echo "Check the tracking issue for detailed findings." >> "$GITHUB_STEP_SUMMARY"
