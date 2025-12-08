@@ -338,6 +338,30 @@ This section documents specific security findings that have been analyzed, triag
   * [Snyk Vulnerability Database](https://snyk.io/vuln/npm:tough-cookie:20170905)
   * [GitHub Issue #92](https://github.com/salesforce/tough-cookie/issues/92)
 
+### CVE-2025-61729: Go Standard Library (stdlib) Denial of Service in crypto/x509
+
+* **Component:** `stdlib` (Go standard library embedded in `gh` binary)
+* **Scanner:** Trivy
+* **Severity:** High
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** Go stdlib versions prior to 1.24.11 and 1.25.5 contain a vulnerability in the crypto/x509 package. The HostnameError.Error() method can print an unbounded number of hostnames using repeated string concatenation, resulting in quadratic runtime. A malicious certificate can cause excessive CPU and memory consumption, leading to denial-of-service (DoS).
+  * **The Fix:** The vulnerability was fixed in Go 1.25.5 and Go 1.24.11 by limiting the number of hosts printed and optimizing the string concatenation method.
+  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.83.1** (Released November 13, 2025), which was built with Go 1.25.3 (vulnerable version). As of this documentation (December 2025), version 2.83.1 remains the latest GitHub CLI release.
+  * **Why We Cannot Upgrade:** The GitHub CLI upstream project has not released a version compiled with Go 1.25.5+ or Go 1.24.11+. We are dependent on the upstream project to rebuild with a patched Go version.
+* **Risk Assessment:**
+  * **Likelihood:** Low. Exploitation requires the action to process a malicious TLS certificate during GitHub API communication, which would require a compromised GitHub.com infrastructure or successful MITM attack.
+  * **Impact:** Medium. DoS would affect only the single workflow run processing the malicious certificate.
+* **Mitigation Strategy:**
+  1. Monitor the GitHub CLI releases for a version built with Go 1.25.5+ or Go 1.24.11+
+  2. Update the Dockerfile immediately when a patched version becomes available
+  3. The finding is suppressed via `.trivyignore` as an accepted risk until upstream fix is available
+* **Acceptance Date:** 2025-12-06
+* **References:**
+  * [NVD CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729)
+  * [Go Issue Tracker #76445](https://github.com/golang/go/issues/76445)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2025-61729)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:22-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.
