@@ -362,6 +362,30 @@ This section documents specific security findings that have been analyzed, triag
   * [Go Issue Tracker #76445](https://github.com/golang/go/issues/76445)
   * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2025-61729)
 
+### CVE-2025-66564: Sigstore Timestamp Authority Denial of Service
+
+* **Component:** `github.com/sigstore/timestamp-authority` (Go Package bundled in GitHub CLI)
+* **Scanner:** Trivy
+* **Severity:** High (CVSS 7.5)
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** Sigstore Timestamp Authority versions < v2.0.3 contain a vulnerability that allows remote attackers to cause denial of service through excessive memory allocation. The vulnerability occurs in the `api.ParseJSONRequest` and `api.getContentType` functions which use `strings.Split` on untrusted input without limits. An attacker can send specially crafted JSON payloads with very long OIDs containing many periods, or HTTP headers with malformed Content-Type strings, causing the service to allocate memory proportional to the number of splits.
+  * **The Fix:** The vulnerability was fixed in timestamp-authority v2.0.3 by replacing unlimited `strings.Split` with `strings.SplitN` to introduce explicit limits on string splits and enforce stricter input validation.
+  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.83.1** (Released November 2025), which bundles an older version of sigstore/timestamp-authority (< v2.0.3). As of this documentation (December 2025), version 2.83.1 remains the latest GitHub CLI release.
+  * **Why We Cannot Upgrade:** The GitHub CLI upstream project has not released a version with the updated timestamp-authority dependency. We are dependent on the upstream project to rebuild with the patched version.
+* **Risk Assessment:**
+  * **Likelihood:** Low. The action does not directly use timestamp authority features. Exploitation would require an attacker to intercept or manipulate network requests during GitHub API communication, or for GitHub itself to send malicious responses.
+  * **Impact:** Medium. DoS would affect only the single workflow run processing the malicious request.
+* **Mitigation Strategy:**
+  1. Monitor the GitHub CLI releases for a version built with timestamp-authority v2.0.3 or later
+  2. Update the Dockerfile immediately when a patched version becomes available
+  3. The finding is suppressed via `.trivyignore` as an accepted risk until upstream fix is available
+* **Acceptance Date:** 2025-12-08
+* **References:**
+  * [NVD CVE-2025-66564](https://nvd.nist.gov/vuln/detail/CVE-2025-66564)
+  * [GitHub Security Advisory](https://github.com/sigstore/timestamp-authority/security/advisories/GHSA-4qg8-fj49-pxjh)
+  * [Fix Commit](https://github.com/sigstore/timestamp-authority/commit/0cae34e197d685a14904e0bad135b89d13b69421)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:22-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.

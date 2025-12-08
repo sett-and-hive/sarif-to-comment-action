@@ -24,3 +24,11 @@ CVE-2017-15010
 # Risk is low: requires malicious TLS cert during GitHub API communication.
 # Acceptance date: 2025-12-06
 CVE-2025-61729
+
+# Accepted Risk: Sigstore Timestamp Authority DoS (CVE-2025-66564)
+# GitHub CLI v2.83.1 bundles sigstore/timestamp-authority < v2.0.3, which is vulnerable.
+# Fixed in timestamp-authority v2.0.3. Waiting for upstream gh CLI to update dependency.
+# Risk is low: requires crafted requests with malicious OID or Content-Type headers.
+# The action does not directly use timestamp authority features.
+# Acceptance date: 2025-12-08
+CVE-2025-66564
