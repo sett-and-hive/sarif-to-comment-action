@@ -4,8 +4,8 @@ name: Review .trivyignore
 
 on:
   schedule:
-    # Run monthly on the 1st at 9:00 UTC
-    - cron: '0 9 1 * *'
+    # Run every Wednesday at 10:00 AM Chicago time (4:00 PM UTC, accounting for CST UTC-6)
+    - cron: '0 16 * * 3'
   workflow_dispatch:
     inputs:
       trivyignore_path:
@@ -53,7 +53,9 @@ jobs:
       - name: Publish summary
         if: always()
         run: |
-          echo "### 🔄 .trivyignore Review Completed" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "The review of vulnerabilities in \`.trivyignore\` has been completed." >> "$GITHUB_STEP_SUMMARY"
-          echo "Check the tracking issue for detailed findings." >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### 🔄 .trivyignore Review Completed"
+            echo ""
+            echo "The review of vulnerabilities in \`.trivyignore\` has been completed."
+            echo "Check the tracking issue for detailed findings."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -3,9 +3,10 @@
 setup() {
   load '../test_helper.sh'
   _test_helper
-  
+
   # Create temporary test directory
-  export TEST_DIR=$(mktemp -d)
+  TEST_DIR=$(mktemp -d)
+  export TEST_DIR
   export SCRIPT_PATH="${PWD}/.github/scripts/review_trivyignore.py"
 }
 
@@ -21,31 +22,31 @@ teardown() {
 
 @test "script fails when GITHUB_TOKEN is not set" {
   cd "$TEST_DIR"
-  
+
   # Create a simple .trivyignore
-  cat > .trivyignore << 'EOF'
+  cat >.trivyignore <<'EOF'
 CVE-2020-7754
 EOF
-  
+
   # Run without GITHUB_TOKEN
   run python "$SCRIPT_PATH"
   [ "$status" -eq 1 ]
-  [[ "$output" =~ "GITHUB_TOKEN environment variable not set" ]]
+  [[ $output =~ "GITHUB_TOKEN environment variable not set" ]]
 }
 
 @test "script fails when GITHUB_REPOSITORY is not set" {
   cd "$TEST_DIR"
-  
+
   # Create a simple .trivyignore
-  cat > .trivyignore << 'EOF'
+  cat >.trivyignore <<'EOF'
 CVE-2020-7754
 EOF
-  
+
   # Run with GITHUB_TOKEN but without GITHUB_REPOSITORY
   # Unset GITHUB_REPOSITORY in the subprocess
   run bash -c "unset GITHUB_REPOSITORY && export GITHUB_TOKEN='test-token' && python '$SCRIPT_PATH'"
   [ "$status" -eq 1 ]
-  [[ "$output" =~ "GITHUB_REPOSITORY environment variable not set" ]]
+  [[ $output =~ "GITHUB_REPOSITORY environment variable not set" ]]
 }
 
 @test "script parses .trivyignore with CVE entries" {
