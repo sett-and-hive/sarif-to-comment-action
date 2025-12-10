@@ -1,4 +1,8 @@
 {
+    // SHAI-HULUD FREEZE:
+    // Flip this to true or remove this flag when it is safe
+    // to re-enable Renovate.
+    "enabled": false,
     "extends": [
         "config:recommended"
     ],
