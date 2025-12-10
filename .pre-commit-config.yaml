@@ -31,7 +31,7 @@ repos:
   # Linter for markdown files
   # This hook uses fast rumdl, based on DavidAnson Node.js markdownlint, for speed
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.191
+    rev: v0.0.192
     hooks:
       - id: rumdl
         # MD013: Line length rule disabled to allow long URLs and code blocks.
