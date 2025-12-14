@@ -411,6 +411,6 @@ This section documents specific security findings that have been analyzed, triag
 
 ### General Dependency Policy
 
-* **OS Level:** The container is built on `node:22-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.
+* **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.
 * **Node Level:** Native dependencies are compiled/fetched using `--ignore-scripts` to prevent arbitrary code execution during the build phase.
 * **Supply Chain:** Sub-dependencies of the wrapped library are force-updated during the Docker build (`npm update --depth 99`) to ensure critical patches are applied even if the upstream `package.json` is stale.
