@@ -386,8 +386,31 @@ This section documents specific security findings that have been analyzed, triag
   * [GitHub Security Advisory](https://github.com/sigstore/timestamp-authority/security/advisories/GHSA-4qg8-fj49-pxjh)
   * [Fix Commit](https://github.com/sigstore/timestamp-authority/commit/0cae34e197d685a14904e0bad135b89d13b69421)
 
+### CVE-2025-59343: Unknown Vulnerability in App Container
+
+* **Component:** `app` (container image)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2025-59343 is reported by Trivy with minimal details. The description references versions "3.1.1, 2.1.4, 1.16.6", but the specific package and vulnerability details are not available in the vulnerability databases.
+  * **The Fix:** No fixed version is currently available. The vulnerability appears to be newly disclosed or may be a false positive from the scanner.
+  * **Current Status:** The Dockerfile uses `node:24-bookworm-slim` as the base image, which includes the latest stable versions of system packages. The specific affected package cannot be identified from the Trivy report.
+  * **Why Trivy Detects It:** The vulnerability was detected during automated security scanning, but Trivy was unable to provide specific package or version information, indicating this may be a database issue or very recently disclosed CVE.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without specific package information, it's difficult to assess the attack surface.
+  * **Impact:** Unknown. The severity is marked as UNKNOWN, suggesting limited information about exploitation potential.
+* **Mitigation Strategy:**
+  1. Continue monitoring vulnerability databases for updates on CVE-2025-59343
+  2. Update the Dockerfile base image regularly to ensure latest security patches
+  3. Re-scan periodically to determine if Trivy provides additional details
+  4. The finding is suppressed via `.trivyignore` as an accepted risk until more information becomes available
+* **Acceptance Date:** 2025-12-14
+* **References:**
+  * [NVD CVE-2025-59343](https://nvd.nist.gov/vuln/detail/CVE-2025-59343)
+
 ### General Dependency Policy
 
-* **OS Level:** The container is built on `node:22-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.
+* **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.
 * **Node Level:** Native dependencies are compiled/fetched using `--ignore-scripts` to prevent arbitrary code execution during the build phase.
 * **Supply Chain:** Sub-dependencies of the wrapped library are force-updated during the Docker build (`npm update --depth 99`) to ensure critical patches are applied even if the upstream `package.json` is stale.

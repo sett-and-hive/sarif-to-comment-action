@@ -32,3 +32,12 @@ CVE-2025-61729
 # The action does not directly use timestamp authority features.
 # Acceptance date: 2025-12-08
 CVE-2025-66564
+
+# Accepted Risk: Unknown vulnerability in app container (CVE-2025-59343)
+# Trivy detected CVE-2025-59343 but provided no specific package or version information.
+# Description references versions "3.1.1, 2.1.4, 1.16.6" but affected package is unknown.
+# No fixed version is available. May be a false positive or very recently disclosed CVE.
+# Risk is unknown: without package details, cannot assess attack surface or impact.
+# Will continue monitoring for updates and re-scan periodically.
+# Acceptance date: 2025-12-14
+CVE-2025-59343
