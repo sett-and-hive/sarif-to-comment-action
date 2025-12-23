@@ -70,6 +70,11 @@ dialect and the input file will be modified so that the action can
 correctly parse the SARIF. If false, as for CodeQL SARIF, do nothing extra.
 Default: false
 
+### `simple`
+
+If true, simplify the output to only give findings grouped by rule
+Default: false
+
 ## Example usage
 
 Add this action to your own GitHub action yaml file, replacing the value in
