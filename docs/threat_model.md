@@ -419,14 +419,14 @@ This section documents specific security findings that have been analyzed, triag
   * **The Vulnerability:** y18n versions < 3.2.2, < 4.0.1, and < 5.0.5 contain a prototype pollution vulnerability. The vulnerability allows attackers to modify the prototype of a base object, potentially leading to denial of service, unauthorized access to data, or code execution depending on how the polluted object is used.
   * **The Fix:** The vulnerability was fixed in y18n versions 3.2.2, 4.0.1, and 5.0.5 by implementing proper input validation and preventing prototype chain manipulation.
   * **Current Status (as of December 2025):** Comprehensive dependency analysis confirms that y18n is NOT present in the dependency tree:
-    - Analysis of the current `@security-alert/sarif-to-comment` package shows no y18n dependency
-    - The base image `node:24-bookworm-slim` with npm 11.6.2+ does not bundle y18n
-    - The Dockerfile's `npm install -g npm@latest` command ensures the latest npm version
-    - The `npm update --depth 99` command ensures all transitive dependencies are updated
+    * Analysis of the current `@security-alert/sarif-to-comment` package shows no y18n dependency
+    * The base image `node:24-bookworm-slim` with npm 11.6.2+ does not bundle y18n
+    * The Dockerfile's `npm install -g npm@latest` command ensures the latest npm version
+    * The `npm update --depth 99` command ensures all transitive dependencies are updated
   * **Why Trivy Detects It:** Trivy may be detecting y18n in:
-    - Intermediate build layers or cached images before dependency updates execute
-    - Stale cache artifacts from previous builds
-    - Misidentification due to scanner database issues
+    * Intermediate build layers or cached images before dependency updates execute
+    * Stale cache artifacts from previous builds
+    * Misidentification due to scanner database issues
 * **Risk Assessment:**
   * **Likelihood:** None. The package is not present in the actual runtime container.
   * **Impact:** None. No attack surface exists for this vulnerability.
