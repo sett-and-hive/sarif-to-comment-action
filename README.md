@@ -5,7 +5,7 @@
 [![CI Tests](https://img.shields.io/github/actions/workflow/status/sett-and-hive/sarif-to-comment-action/ci-test.yaml)](https://img.shields.io/github/actions/workflow/status/sett-and-hive/sarif-to-comment-action/ci-test.yaml)
 
 This GitHub action converts a SARIF file with security vulnerability findings
-into a GitHub pull request comment using the `@security-alert/sarif-to-comment`
+into a GitHub pull request comment using the [@security-alert/sarif-to-comment](https://github.com/security-alert/security-alert/tree/master/packages/sarif-to-comment)
 NPM package.
 
 This is useful if you have do *not* have access GitHub Advanced Security,
