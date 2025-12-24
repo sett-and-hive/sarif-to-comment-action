@@ -448,7 +448,7 @@ This section documents specific security findings that have been analyzed, triag
   * **The Fix:** The maintainers backported the fix to multiple minor releases: 6.2.4, 6.3.3, 6.4.1, 6.5.3, 6.6.1, 6.7.3, 6.8.3, 6.9.7, and 6.10.3. Any version at or above these patch levels is protected. Express users should upgrade to Express 4.17.3 or newer.
   * **Current Status (as of December 2025):** The qs package is a transitive dependency of `@security-alert/sarif-to-comment@1.10.10`. The Dockerfile implements aggressive dependency updating:
     * The `npm install -g npm@latest` command ensures the latest npm version
-    * The `npm update --depth 99 --omit=dev` command ensures all transitive dependencies, including qs, are updated to their latest compatible versions
+    * The `npm update --depth 99` command ensures all transitive dependencies, including qs, are updated to their latest compatible versions
     * This update strategy applies security patches even if the upstream package's `package.json` has stale version ranges
   * **Why Trivy Detects It:** Trivy may be detecting vulnerable qs versions in:
     * Intermediate build layers or cached images before the `npm update --depth 99` command executes
