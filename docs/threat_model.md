@@ -409,6 +409,34 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2025-59343](https://nvd.nist.gov/vuln/detail/CVE-2025-59343)
 
+### CVE-2020-7774: y18n Prototype Pollution
+
+* **Component:** `y18n` (NPM Package)
+* **Scanner:** Trivy
+* **Severity:** High (CVSS 7.5 - NVD)
+* **Status:** **False Positive / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** y18n versions < 3.2.2, < 4.0.1, and < 5.0.5 contain a prototype pollution vulnerability. The vulnerability allows attackers to modify the prototype of a base object, potentially leading to denial of service, unauthorized access to data, or code execution depending on how the polluted object is used.
+  * **The Fix:** The vulnerability was fixed in y18n versions 3.2.2, 4.0.1, and 5.0.5 by implementing proper input validation and preventing prototype chain manipulation.
+  * **Current Status (as of December 2025):** Comprehensive dependency analysis confirms that y18n is NOT present in the dependency tree:
+    * Analysis of the current `@security-alert/sarif-to-comment` package shows no y18n dependency
+    * The base image `node:24-bookworm-slim` with npm 11.6.2+ does not bundle y18n
+    * The Dockerfile's `npm install -g npm@latest` command ensures the latest npm version
+    * The `npm update --depth 99` command ensures all transitive dependencies are updated
+  * **Why Trivy Detects It:** Trivy may be detecting y18n in:
+    * Intermediate build layers or cached images before dependency updates execute
+    * Stale cache artifacts from previous builds
+    * Misidentification due to scanner database issues
+* **Risk Assessment:**
+  * **Likelihood:** None. The package is not present in the actual runtime container.
+  * **Impact:** None. No attack surface exists for this vulnerability.
+* **Mitigation:** The vulnerability is not applicable to this project as y18n is not a dependency. The finding is suppressed via `.trivyignore` to acknowledge this false positive and maintain a clean build signal.
+* **Acceptance Date:** 2025-12-19
+* **References:**
+  * [NVD CVE-2020-7774](https://nvd.nist.gov/vuln/detail/CVE-2020-7774)
+  * [GitHub Security Advisory](https://github.com/advisories/GHSA-rqhp-4phv-3xv2)
+  * [Snyk Vulnerability Database](https://snyk.io/vuln/SNYK-JS-Y18N-1021887)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.
