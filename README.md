@@ -75,7 +75,7 @@ Default: false
 Add this action to your own GitHub action yaml file, replacing the value in
 `sarif-file` with the path to the file you want to convert
 and add to your pull request in this final step, likely the output of a
-security scanning tool.  There are additional helper steps to determine
+security scanning tool. There are additional helper steps to determine
 the expected values of `url`, `repo`, and `owner` in the
 [comment-test.yaml workflow](./.github/workflows/comment-test.yaml).
 
@@ -97,7 +97,7 @@ You will need to give you job write permissions for issues for this action to su
 
 If you want to test locally with [`nektos/act`](https://github.com/nektos/act),
 you will need to add choose a VM runner with `docker` so the tests work locally with
-`act`.  Make sure you use an [action VM runner](https://github.com/nektos/act#runners)
+`act`. Make sure you use an [action VM runner](https://github.com/nektos/act#runners)
 that contains the Docker client, like `ubuntu-latest=catthehacker`.
 
 ```console
