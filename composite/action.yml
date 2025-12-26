@@ -34,6 +34,10 @@ inputs:
     description: 'SARIF file is in OWASP Dependency Check dialect.'
     default: 'false'
     required: false
+  simple:
+    description: 'Simplify the output to only give findings grouped by rule.'
+    default: 'false'
+    required: false
 outputs:
   output:
     description: 'The output of the docker run.'
@@ -43,7 +47,7 @@ runs:
     - name: Download action
       run: npm install @security-alert/sarif-to-comment@1.10.10
       shell: bash
-    - run: '${{ github.action_path }}/../entrypoint.sh "${{ inputs.sarif-file }}" "${{ inputs.token }}" "${{ inputs.repository }}" "${{ inputs.branch }}" "${{ inputs.pr-number }}" "${{ inputs.title }}" "${{ inputs.show-rule-details }}" "${{ inputs.dry-run }}" "${{ inputs.odc-sarif }}"'
+    - run: '${{ github.action_path }}/../entrypoint.sh "${{ inputs.sarif-file }}" "${{ inputs.token }}" "${{ inputs.repository }}" "${{ inputs.branch }}" "${{ inputs.pr-number }}" "${{ inputs.title }}" "${{ inputs.show-rule-details }}" "${{ inputs.dry-run }}" "${{ inputs.odc-sarif }}" "${{ inputs.simple }}"'
       shell: bash
 branding:
   icon: 'git-pull-request'

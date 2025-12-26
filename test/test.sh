@@ -14,7 +14,7 @@ run_docker() {
   image="$1"
   sarif_file="$2"
   odc_sarif="$3"
-  docker run --rm -v "$(pwd)/test":/app/test "$image" "$sarif_file" "$TOKEN" "$REPOSITORY" "$BRANCH" "$PR_NUMBER" "$TITLE" "$SHOW_RULE_DETAILS" "$MODE" "$odc_sarif" 2>&1 | tee "$OUTPUTS_FILE"
+  docker run --rm -v "$(pwd)/test":/app/test "$image" "$sarif_file" "$TOKEN" "$REPOSITORY" "$BRANCH" "$PR_NUMBER" "$TITLE" "$SHOW_RULE_DETAILS" "$MODE" "$odc_sarif" "$SIMPLE" 2>&1 | tee "$OUTPUTS_FILE"
   RC=$?
   echo "$OUTPUTS_FILE"
   cat "$OUTPUTS_FILE" >>"$ALL_OUTPUTS_FILE"
@@ -75,6 +75,7 @@ BRANCH=fake-test-branch
 TOKEN=fake_password
 TITLE="Test security PR comment from build"
 SHOW_RULE_DETAILS=true
+SIMPLE=false
 
 rm -f $OUTPUTS_FILE
 rm -f "$ALL_OUTPUTS_FILE"
