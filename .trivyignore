@@ -50,3 +50,13 @@ CVE-2025-59343
 # The Dockerfile's npm update --depth 99 command ensures all dependencies are up-to-date.
 # Acceptance date: 2025-12-19
 CVE-2020-7774
+
+# Mitigated: qs Prototype Pollution vulnerability (CVE-2022-24999)
+# The CVE affects qs versions < 6.2.4, < 6.3.3, < 6.4.1, < 6.5.3, < 6.6.1, < 6.7.3, < 6.8.3, < 6.9.7, or < 6.10.3.
+# Fixed in qs versions: 6.2.4, 6.3.3, 6.4.1, 6.5.3, 6.6.1, 6.7.3, 6.8.3, 6.9.7, 6.10.3 or later.
+# qs is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including qs, are updated to their latest compatible versions.
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2025-12-24
+CVE-2022-24999
