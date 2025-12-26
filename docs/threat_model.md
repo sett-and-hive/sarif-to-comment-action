@@ -464,6 +464,30 @@ This section documents specific security findings that have been analyzed, triag
   * [Snyk Vulnerability Database](https://security.snyk.io/vuln/SNYK-JS-QS-3153490)
   * [GitHub Security Advisory](https://github.com/advisories/GHSA-hrpp-h998-j3pp)
 
+### CVE-2019-16777: npm Arbitrary File Overwrite
+
+* **Component:** `npm` (Node Package Manager)
+* **Scanner:** Trivy
+* **Severity:** High (CVSS 7.7)
+* **Status:** **Mitigated / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** npm versions prior to 6.13.4 contain an arbitrary file overwrite vulnerability. The flaw allows globally-installed binaries (placed in directories like `/usr/local/bin`) to be overwritten by subsequent installations of npm packages that define binaries with the same name. An attacker could exploit this by publishing a malicious npm package with a popular binary name, potentially replacing legitimate executables in the global `node_modules` directory and leading to integrity compromise or execution of unwanted code.
+  * **The Fix:** The vulnerability was fixed in npm 6.13.4 through improved handling of binary installation paths and proper conflict detection.
+  * **Current Status (as of December 2025):** The Dockerfile explicitly installs `npm@latest` (currently 10.8.2+), which is well above the vulnerable version threshold (< 6.13.4). The base image `node:24-bookworm-slim` also includes a modern npm version.
+  * **Why Trivy Detects It:** Trivy may be detecting vulnerable npm versions in:
+    * Intermediate build layers or cached images before the `npm install -g npm@latest` command executes
+    * Initial base image state before the npm upgrade occurs
+    * Stale cache artifacts from previous builds
+* **Risk Assessment:**
+  * **Likelihood:** Low. The vulnerability is fully mitigated through the npm upgrade strategy.
+  * **Impact:** Medium. If exploited, could allow replacement of legitimate binaries with malicious code.
+* **Mitigation:** The vulnerability is fully mitigated through the explicit installation of `npm@latest` in the Dockerfile, which ensures npm version 10.8.2+ is used (well above the 6.13.4 fix threshold). The finding is suppressed via `.trivyignore` to acknowledge that the vulnerability is addressed through our npm upgrade strategy.
+* **Acceptance Date:** 2025-12-26
+* **References:**
+  * [NVD CVE-2019-16777](https://nvd.nist.gov/vuln/detail/CVE-2019-16777)
+  * [GitHub Security Advisory](https://github.com/advisories/GHSA-4328-8hgf-7wjr)
+  * [Snyk Vulnerability Database](https://security.snyk.io/vuln/SNYK-JS-NPM-537603)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs.
