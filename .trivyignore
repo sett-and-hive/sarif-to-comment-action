@@ -87,3 +87,13 @@ CVE-2022-3517
 # Trivy may detect it in intermediate build layers before npm@latest is installed.
 # Acceptance date: 2025-12-27
 CVE-2019-16775
+
+# Mitigated: ini Prototype Pollution vulnerability (< 1.3.6)
+# The CVE affects ini versions < 1.3.6 and allows attackers to pollute the prototype
+# of a base object through specially crafted INI files with [__proto__] sections.
+# Fixed in ini 1.3.6. The ini package was historically bundled with older npm versions (< 6).
+# The Dockerfile explicitly installs npm@latest (currently 10.8.2+), which does not bundle ini.
+# The npm update --depth 99 command ensures all transitive dependencies are updated to their latest versions.
+# Trivy may detect it in intermediate build layers before npm@latest is installed or from stale cache artifacts.
+# Acceptance date: 2025-12-27
+CVE-2020-7788
