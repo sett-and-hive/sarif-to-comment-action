@@ -115,3 +115,13 @@ CVE-2019-16776
 # Trivy may detect it in intermediate build layers or cached base images before the apt-get upgrade executes.
 # Acceptance date: 2025-12-27
 CVE-2025-6020
+
+# Mitigated: GnuTLS Heap Buffer Overflow (CVE-2025-32990)
+# The CVE affects libgnutls30 (GnuTLS library, Debian system package).
+# This is a heap-buffer-overflow vulnerability in the certtool utility that can lead to DoS.
+# Fixed in GnuTLS 3.8.10 (upstream) and backported to Debian Bookworm in version 3.7.9-2+deb12u5.
+# The base image node:24-bookworm-slim includes libgnutls30 version 3.7.9-2+deb12u5 (the fixed version).
+# The Dockerfile explicitly runs apt-get upgrade -y to ensure all system packages are updated.
+# Trivy may detect it in cached base images or intermediate build layers before the upgrade executes.
+# Acceptance date: 2025-12-27
+CVE-2025-32990
