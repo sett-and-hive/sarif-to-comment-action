@@ -78,3 +78,12 @@ CVE-2019-16777
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2025-12-26
 CVE-2022-3517
+
+# Mitigated: npm Arbitrary File Write vulnerability (CVE-2019-16775)
+# The CVE affects npm versions < 6.13.3 and allows packages to create symlinks outside node_modules
+# via the bin field in package.json. Fixed in npm 6.13.3.
+# The Dockerfile explicitly installs npm@latest (currently 10.8.2+),
+# which is well above the vulnerable version threshold.
+# Trivy may detect it in intermediate build layers before npm@latest is installed.
+# Acceptance date: 2025-12-27
+CVE-2019-16775
