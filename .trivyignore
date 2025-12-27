@@ -68,3 +68,13 @@ CVE-2022-24999
 # Trivy may detect it in intermediate build layers before npm@latest is installed.
 # Acceptance date: 2025-12-26
 CVE-2019-16777
+
+# Mitigated: minimatch ReDoS vulnerability (< 3.0.5)
+# The CVE affects minimatch versions < 3.0.5 and allows for Regular Expression Denial of Service
+# through the braceExpand function. Fixed in minimatch 3.0.5.
+# minimatch is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including minimatch, are updated to their latest compatible versions.
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2025-12-26
+CVE-2022-3517
