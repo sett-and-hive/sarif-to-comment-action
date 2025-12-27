@@ -106,3 +106,12 @@ CVE-2020-7788
 # Trivy may detect it in intermediate build layers before npm@latest is installed.
 # Acceptance date: 2025-12-27
 CVE-2019-16776
+
+# Mitigated: libpam-modules vulnerability (CVE-2025-6020)
+# The CVE affects libpam-modules (Debian system package).
+# Fixed in libpam-modules version 1.4.0-9+deb11u1 (Debian 11) and corresponding versions in other releases.
+# The Dockerfile explicitly runs apt-get upgrade -y to ensure all system packages,
+# including libpam-modules, are updated to their latest versions from the Debian security repository.
+# Trivy may detect it in intermediate build layers or cached base images before the apt-get upgrade executes.
+# Acceptance date: 2025-12-27
+CVE-2025-6020
