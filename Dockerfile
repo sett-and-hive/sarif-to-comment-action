@@ -6,9 +6,11 @@ FROM node:24-bookworm-slim
 
 WORKDIR /app
 
-# 2. Install System Dependencies
+# 2. Install System Dependencies and Security Updates
 # We include curl/ca-certificates to fetch the GH CLI manually.
-RUN apt-get update && apt-get install --no-install-recommends -y \
+# Upgrade all system packages to get latest security patches (including libpam-modules for CVE-2025-6020)
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install --no-install-recommends -y \
     curl \
     ca-certificates \
     jq \
