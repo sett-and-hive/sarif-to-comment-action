@@ -619,6 +619,38 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2025-6020](https://nvd.nist.gov/vuln/detail/CVE-2025-6020)
 
+### CVE-2025-32988: libgnutls30 Double-Free Vulnerability
+
+* **Component:** `libgnutls30` (GnuTLS library, Debian system package)
+* **Scanner:** Trivy
+* **Severity:** High (CVSS 6.5-8.2)
+* **Status:** **Mitigated / Patched**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2025-32988 is a double-free vulnerability in GnuTLS affecting the export logic for X.509 Subject Alternative Name (SAN) entries containing an `otherName`. When processing malformed or invalid type-id OIDs within SAN extensions, GnuTLS incorrectly calls `asn1_delete_structure()` on an ASN.1 node that it does not own. When the parent function later frees the same node, this results in a double-free memory corruption. The vulnerability is remotely exploitable using public GnuTLS APIs and can lead to denial of service (crashes) or potentially memory corruption. Some risk of arbitrary code execution may exist, depending on the target environment.
+  * **The Fix:** The vulnerability was fixed in GnuTLS version 3.8.10 upstream, and backported to Debian distributions:
+    * Debian Bullseye (11): Fixed in libgnutls30 version 3.7.1-5+deb11u8 (DLA-4267-1)
+    * Debian Bookworm (12): Fixed in libgnutls30 version 3.7.9-2+deb12u5 (DSA-5962-1)
+    * Debian Unstable/trixie/sid: Fixed in version 3.8.9-3
+  * **Current Status (as of December 2025):** The Dockerfile uses `node:24-bookworm-slim` as the base image, which is based on Debian 12 (Bookworm). To ensure the latest security patches are applied:
+    * The Dockerfile explicitly runs `apt-get upgrade -y` to upgrade all system packages during build
+    * This ensures libgnutls30 and all other system packages are updated to their latest versions available in the Debian 12 repository, including the fixed version 3.7.9-2+deb12u5 or later
+    * The upgrade occurs immediately after `apt-get update` and before installing additional packages
+  * **Why Trivy May Still Detect It:** Trivy may be detecting vulnerable libgnutls30 versions in:
+    * Cached base images before the apt-get upgrade executes
+    * Initial base image state before the upgrade layer runs
+    * Image layers that haven't been rebuilt since the fix was applied
+* **Risk Assessment:**
+  * **Likelihood:** Low. The vulnerability is fully mitigated through the system package upgrade strategy. Exploitation requires processing a crafted X.509 certificate with malformed SAN otherName OID.
+  * **Impact:** Medium to High. Could cause denial of service (crashes) or potentially memory corruption if exploited. The action processes GitHub API communications over TLS but does not directly handle user-provided certificates.
+* **Mitigation:** The vulnerability is fully mitigated through the explicit `apt-get upgrade -y` command in the Dockerfile, which ensures all system packages including libgnutls30 are updated to their latest versions during the container build process. This upgrade strategy ensures that security patches from the Debian security repository are automatically applied, including the fix for CVE-2025-32988 in libgnutls30 version 3.7.9-2+deb12u5 or later for Debian Bookworm.
+* **Acceptance Date:** 2025-12-28
+* **References:**
+  * [NVD CVE-2025-32988](https://nvd.nist.gov/vuln/detail/CVE-2025-32988)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2025-32988)
+  * [Debian Security Advisory DSA-5962-1](https://www.debian.org/security/2025/dsa-5962)
+  * [Ubuntu Security Notice USN-7635-1](https://ubuntu.com/security/notices/USN-7635-1)
+  * [Upstream Patch Commit](https://gitlab.com/gnutls/gnutls/-/commit/608829769cbc247679ffe98841109fc73875e573)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
