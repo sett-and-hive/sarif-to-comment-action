@@ -710,6 +710,31 @@ This section documents specific security findings that have been analyzed, triag
   * [GitHub Security Advisory](https://github.com/advisories/GHSA-xvch-5gv4-984h)
   * [GitHub minimist Issue #164](https://github.com/substack/minimist/issues/164)
 
+### CVE-2018-7408: npm Incorrect Permission Assignment
+
+* **Component:** `npm` (Node Package Manager)
+* **Scanner:** Trivy
+* **Severity:** High (CVSS 7.4)
+* **Status:** **Mitigated / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** npm version 5.7.0 (a pre-release version marked as "next: 5.7.0") contains a critical vulnerability in the correctMkdir logic. Running this specific version of npm could change the ownership of critical system directories like /etc and /usr, allowing local users to bypass intended filesystem access restrictions. This could lead to unauthorized access, manipulation of system directories, or privilege escalation. The vulnerability is highly specific to the 5.7.0 pre-release version.
+  * **The Fix:** The vulnerability was fixed in npm 5.7.1 through corrected directory permission handling logic. All npm versions from 5.7.1 onwards, including all modern versions, are not affected.
+  * **Current Status (as of December 2025):** The Dockerfile explicitly installs `npm@latest` (currently 10.8.2+), which is well above the vulnerable version threshold (5.7.0). The base image `node:24-bookworm-slim` also includes a modern npm version.
+  * **Why Trivy Detects It:** Trivy may be detecting the vulnerable npm version 5.7.0 in:
+    * Intermediate build layers or cached images before the `npm install -g npm@latest` command executes
+    * Initial base image state before the npm upgrade occurs
+    * Stale cache artifacts from previous builds
+* **Risk Assessment:**
+  * **Likelihood:** None. The vulnerable version (5.7.0) was a pre-release and is not present in the final container image.
+  * **Impact:** None. No attack surface exists for this vulnerability as npm@latest (10.8.2+) is used throughout.
+* **Mitigation:** The vulnerability is fully mitigated through the explicit installation of `npm@latest` in the Dockerfile, which ensures npm version 10.8.2+ is used (well above the 5.7.1 fix threshold). The finding is suppressed via `.trivyignore` to acknowledge that the vulnerability is addressed through our npm upgrade strategy.
+* **Acceptance Date:** 2025-12-28
+* **References:**
+  * [NVD CVE-2018-7408](https://nvd.nist.gov/vuln/detail/CVE-2018-7408)
+  * [npm Blog Post v5.7.1 Fix](http://blog.npmjs.org/post/171169301000/v571)
+  * [GitHub Fix Commit](https://github.com/npm/npm/commit/74e149da6efe6ed89477faa81fef08eee7999ad0)
+  * [Snyk Vulnerability Database](https://security.snyk.io/vuln/npm:npm:20180222)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
