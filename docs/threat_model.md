@@ -650,6 +650,7 @@ This section documents specific security findings that have been analyzed, triag
   * [Debian Security Advisory DSA-5962-1](https://www.debian.org/security/2025/dsa-5962)
   * [Ubuntu Security Notice USN-7635-1](https://ubuntu.com/security/notices/USN-7635-1)
   * [Upstream Patch Commit](https://gitlab.com/gnutls/gnutls/-/commit/608829769cbc247679ffe98841109fc73875e573)
+
 ### CVE-2025-32990: GnuTLS Heap Buffer Overflow
 
 * **Component:** `libgnutls30` (GnuTLS library, Debian system package)
