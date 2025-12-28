@@ -135,3 +135,14 @@ CVE-2025-32988
 # Trivy may detect it in cached base images or intermediate build layers before the upgrade executes.
 # Acceptance date: 2025-12-27
 CVE-2025-32990
+
+# Mitigated: minimist Prototype Pollution vulnerability (< 1.2.6)
+# The CVE affects minimist versions < 1.2.6 (or < 0.2.4 for older branches) and allows attackers
+# to pollute the Function prototype via specially crafted input to the setKey() function.
+# Fixed in minimist 1.2.6 (and 0.2.4 for older branches).
+# minimist is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including minimist, are updated to their latest compatible versions (>= 1.2.6).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2025-12-28
+CVE-2021-44906
