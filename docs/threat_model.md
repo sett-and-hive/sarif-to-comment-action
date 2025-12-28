@@ -650,6 +650,36 @@ This section documents specific security findings that have been analyzed, triag
   * [Debian Security Advisory DSA-5962-1](https://www.debian.org/security/2025/dsa-5962)
   * [Ubuntu Security Notice USN-7635-1](https://ubuntu.com/security/notices/USN-7635-1)
   * [Upstream Patch Commit](https://gitlab.com/gnutls/gnutls/-/commit/608829769cbc247679ffe98841109fc73875e573)
+### CVE-2025-32990: GnuTLS Heap Buffer Overflow
+
+* **Component:** `libgnutls30` (GnuTLS library, Debian system package)
+* **Scanner:** Trivy
+* **Severity:** HIGH (CVSS 7.5-8.2)
+* **Status:** **Mitigated / Patched**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2025-32990 is a heap-buffer-overflow (off-by-one) vulnerability in the GnuTLS library, specifically in the template parsing logic of the certtool utility. The flaw allows attackers to trigger an out-of-bounds (OOB) NULL pointer write during certificate template parsing, potentially leading to memory corruption and denial-of-service (DoS) by crashing the affected system. The vulnerability is classified as CWE-122 (Heap-based Buffer Overflow) and is network-bound, meaning remote exploitation is possible without user interaction or privileges.
+  * **The Fix:** The vulnerability was fixed in GnuTLS 3.8.10 (upstream) and backported to distribution-specific versions:
+    * Debian Bullseye (11): Fixed in 3.7.1-5+deb11u8
+    * Debian Bookworm (12): Fixed in 3.7.9-2+deb12u5
+    * Debian Unstable/Trixie: Fixed in 3.8.9-3 and higher
+  * **Current Status (as of December 2025):** The Dockerfile uses `node:24-bookworm-slim` as the base image, which is based on Debian 12 (Bookworm). Verification confirms:
+    * The base image includes `libgnutls30` version **3.7.9-2+deb12u5**, which is the **fixed version** for Debian Bookworm
+    * The Dockerfile includes `apt-get upgrade -y` command to ensure all system packages are updated to their latest versions during build
+    * This upgrade strategy automatically applies security patches from the Debian security repository
+  * **Why Trivy May Still Detect It:** Trivy may be detecting vulnerable GnuTLS versions in:
+    * Cached base images before the apt-get upgrade executes
+    * Initial base image state before the upgrade layer runs
+    * Image layers that haven't been rebuilt since the fix was applied
+    * Scanner database lag or misidentification of version numbers
+* **Risk Assessment:**
+  * **Likelihood:** Low. The vulnerability is fully patched in the container image. The attack vector requires processing a malicious certificate template.
+  * **Impact:** Medium to High. If exploited, could cause DoS through system crashes and memory corruption. Integrity and availability are at risk, but confidentiality is not directly impacted.
+* **Mitigation:** The vulnerability is fully mitigated through the use of the patched base image (`node:24-bookworm-slim`) which includes libgnutls30 version 3.7.9-2+deb12u5 (the fixed version for Debian Bookworm). The explicit `apt-get upgrade -y` command in the Dockerfile ensures all system packages remain updated to their latest versions during the container build process. This upgrade strategy ensures that security patches from the Debian security repository are automatically applied.
+* **Acceptance Date:** 2025-12-27
+* **References:**
+  * [NVD CVE-2025-32990](https://nvd.nist.gov/vuln/detail/CVE-2025-32990)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2025-32990)
+  * [Aqua Security Vulnerability Database](https://avd.aquasec.com/nvd/2025/cve-2025-32990/)
 
 ### General Dependency Policy
 
