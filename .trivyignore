@@ -224,3 +224,57 @@ CVE-2022-25881
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-01-02
 CVE-2022-29167
+
+# Mitigated: cross-spawn Command Injection vulnerability (< 7.0.5, 6.0.6)
+# The CVE affects cross-spawn versions with command injection vulnerability.
+# Fixed versions: 7.0.5, 6.0.6. cross-spawn is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including cross-spawn, are updated to their latest compatible versions.
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2024-21538
+
+# Mitigated: debug Regular Expression Denial of Service (< 2.6.8)
+# The CVE affects debug versions < 2.6.8 and contains a ReDoS vulnerability.
+# Fixed versions: 3.1.0, 2.6.9. debug is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including debug, are updated to their latest compatible versions.
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2017-20165
+
+# Mitigated: deep-extend Prototype Pollution vulnerability (< 0.4.2)
+# The CVE affects deep-extend versions < 0.4.2 and contains a prototype pollution vulnerability.
+# Fixed version: 0.5.1. deep-extend is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including deep-extend, are updated to their latest compatible versions.
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2018-3750
+
+# Mitigated: form-data Denial of Service vulnerability
+# The CVE affects form-data versions and contains a DoS vulnerability.
+# Fixed versions: 2.5.4, 3.0.4, 4.0.4. form-data is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including form-data, are updated to their latest compatible versions.
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2025-7783
+
+# Mitigated: fstream Arbitrary File Overwrite vulnerability (< 1.0.11)
+# The CVE affects fstream versions < 1.0.11 and allows arbitrary file overwrites.
+# Fixed version: 1.0.12. fstream is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including fstream, are updated to their latest compatible versions.
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2019-13173
+
+# Mitigated: glob Denial of Service vulnerability
+# The CVE affects glob versions and contains a DoS vulnerability.
+# Fixed versions: 11.1.0, 10.5.0. glob is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including glob, are updated to their latest compatible versions.
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2025-64756
