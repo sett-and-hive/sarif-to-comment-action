@@ -252,7 +252,7 @@ CVE-2017-20165
 # Acceptance date: 2026-01-02
 CVE-2018-3750
 
-# Mitigated: form-data Denial of Service vulnerability (< 2.1.4)
+# Mitigated: form-data Denial of Service vulnerability
 # The CVE affects form-data versions and contains a DoS vulnerability.
 # Fixed versions: 2.5.4, 3.0.4, 4.0.4. form-data is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
 # The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
@@ -270,7 +270,7 @@ CVE-2025-7783
 # Acceptance date: 2026-01-02
 CVE-2019-13173
 
-# Mitigated: glob Denial of Service vulnerability (< 10.4.5)
+# Mitigated: glob Denial of Service vulnerability
 # The CVE affects glob versions and contains a DoS vulnerability.
 # Fixed versions: 11.1.0, 10.5.0. glob is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
 # The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
