@@ -1059,7 +1059,7 @@ This section documents specific security findings that have been analyzed, triag
 * **Analysis:**
   * **The Vulnerability:** ansi-regex versions prior to 3.0.1, 4.1.1, 5.0.1, and 6.0.1 contain a Regular Expression Denial of Service (ReDoS) vulnerability. The flaw exists due to inefficient regular expression complexity when parsing ANSI escape codes. Attackers can exploit this by providing specially crafted input strings containing ANSI codes that trigger catastrophic backtracking in the regex engine, causing excessive CPU usage and potentially leading to denial of service. The vulnerable regex patterns use unconstrained quantifiers that can undergo exponential time complexity during matching.
   * **The Fix:** The vulnerability was fixed in ansi-regex versions 3.0.1, 4.1.1, 5.0.1, and 6.0.1 (depending on the version branch) through tightening the regular expression patterns to prevent inefficient processing and catastrophic backtracking.
-  * **Current Status (as of January 2026):** The ansi-regex package is a transitive dependency of `@security-alert/sarif-to-comment@1.10.10`. The Dockerfile implements aggressive dependency updating:
+  * **Current Status:** The ansi-regex package is a transitive dependency of `@security-alert/sarif-to-comment@1.10.10`. The Dockerfile implements aggressive dependency updating:
     * The `npm install -g npm@latest` command ensures the latest npm version
     * The `npm update --depth 99` command ensures all transitive dependencies, including ansi-regex, are updated to their latest compatible versions (>= 3.0.1, >= 4.1.1, >= 5.0.1, or >= 6.0.1 depending on the branch)
     * This update strategy applies security patches even if the upstream package's `package.json` has stale version ranges
