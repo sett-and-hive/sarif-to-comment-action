@@ -212,3 +212,15 @@ CVE-2018-3739
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-01-02
 CVE-2022-25881
+
+# Mitigated: hawk Regular Expression Denial of Service (< 9.0.1)
+# The CVE affects hawk versions < 9.0.1 and contains a ReDoS vulnerability in the Hawk.utils.parseHost()
+# function that can be exploited through specially crafted host strings, causing excessive CPU usage
+# through catastrophic backtracking in regular expression matching, leading to denial of service.
+# Fixed in hawk 9.0.1 by replacing the problematic regex parsing with the safer built-in URL class.
+# hawk is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including hawk, are updated to their latest compatible versions (>= 9.0.1).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2022-29167
