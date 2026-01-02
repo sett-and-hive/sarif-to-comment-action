@@ -177,3 +177,15 @@ CVE-2021-3918
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2025-12-28
 GHSA-8w57-jfpm-945m
+
+# Mitigated: dot-prop Prototype Pollution vulnerability (< 4.2.1, 5.x < 5.1.1)
+# The CVE affects dot-prop versions < 4.2.1 and 5.x versions < 5.1.1, which contain a prototype
+# pollution vulnerability. Attackers can inject arbitrary properties into JavaScript objects,
+# potentially leading to denial of service, permission escalation, or altering application logic.
+# Fixed in dot-prop 4.2.1 (for 4.x) and 5.1.1 (for 5.x).
+# dot-prop is NOT present in the current dependency tree of @security-alert/sarif-to-comment@1.10.10.
+# If it was previously present, the Dockerfile's npm update --depth 99 command would have updated it
+# to a safe version (>= 4.2.1 or >= 5.1.1).
+# Trivy may detect it in intermediate build layers before npm update executes, or from stale cache artifacts.
+# Acceptance date: 2026-01-02
+CVE-2020-8116

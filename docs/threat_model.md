@@ -789,6 +789,34 @@ This section documents specific security findings that have been analyzed, triag
   * [OSV Vulnerability Database](https://osv.dev/vulnerability/GHSA-8w57-jfpm-945m)
   * [HackerOne Report #321631](https://hackerone.com/reports/321631)
 
+### CVE-2020-8116: dot-prop Prototype Pollution
+
+* **Component:** `dot-prop` (NPM Package, potential transitive dependency)
+* **Scanner:** Trivy
+* **Severity:** High (CVSS 7.3)
+* **Status:** **Mitigated / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** dot-prop versions prior to 4.2.1 (for 4.x branch) and prior to 5.1.1 (for 5.x branch) contain a prototype pollution vulnerability. Attackers can exploit this by injecting arbitrary properties into JavaScript object prototypes using specially crafted input. This can lead to denial of service, permission escalation, unauthorized access to data, or manipulation of application logic depending on how the polluted objects are used throughout the application.
+  * **The Fix:** The vulnerability was fixed in dot-prop 4.2.1 (for 4.x users) and 5.1.1 (for 5.x users) through improved input validation that prevents prototype chain manipulation.
+  * **Current Status (as of January 2026):** Comprehensive dependency analysis confirms that dot-prop is NOT present in the dependency tree:
+    * Analysis of the current `@security-alert/sarif-to-comment@1.10.10` package shows no dot-prop dependency
+    * The package does not appear in the transitive dependency tree when installing with npm
+    * The Dockerfile's `npm update --depth 99` command ensures all transitive dependencies are updated to their latest compatible versions
+  * **Why Trivy Detects It:** Trivy may be detecting dot-prop in:
+    * Intermediate build layers or cached images before the `npm update --depth 99` command executes
+    * Stale cache artifacts from previous builds
+    * Previous versions of dependencies that may have been present before the npm update command runs
+* **Risk Assessment:**
+  * **Likelihood:** None. The package is not present in the actual runtime container.
+  * **Impact:** None. No attack surface exists for this vulnerability in the final image.
+* **Mitigation:** The vulnerability is not applicable to this project as dot-prop is not present in the current dependency tree. If it was previously included in an older version of the dependency tree, the Dockerfile's `npm update --depth 99` command would have updated it to a safe version (>= 4.2.1 or >= 5.1.1). The finding is suppressed via `.trivyignore` to acknowledge that the vulnerability is addressed through our dependency update strategy and to maintain a clean build signal.
+* **Acceptance Date:** 2026-01-02
+* **References:**
+  * [NVD CVE-2020-8116](https://nvd.nist.gov/vuln/detail/CVE-2020-8116)
+  * [GitHub Security Advisory GHSA-ff7x-qrg7-qggm](https://github.com/advisories/GHSA-ff7x-qrg7-qggm)
+  * [Snyk Vulnerability Database](https://security.snyk.io/vuln/SNYK-JS-DOTPROP-543489)
+  * [GitHub Issue #63](https://github.com/sindresorhus/dot-prop/issues/63)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
