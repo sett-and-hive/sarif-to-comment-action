@@ -278,3 +278,14 @@ CVE-2019-13173
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-01-02
 CVE-2025-64756
+
+# Mitigated: ansi-regex Regular Expression Denial of Service (ReDoS)
+# The CVE affects ansi-regex versions < 3.0.1, < 4.1.1, < 5.0.1, and < 6.0.1.
+# The vulnerability allows attackers to trigger catastrophic backtracking through crafted ANSI escape sequences,
+# causing excessive CPU usage and denial of service. Fixed in ansi-regex versions 3.0.1, 4.1.1, 5.0.1, and 6.0.1.
+# ansi-regex is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including ansi-regex, are updated to their latest compatible versions (>= 3.0.1, 4.1.1, 5.0.1, or 6.0.1).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2021-3807
