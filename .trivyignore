@@ -189,3 +189,15 @@ GHSA-8w57-jfpm-945m
 # Trivy may detect it in intermediate build layers before npm update executes, or from stale cache artifacts.
 # Acceptance date: 2026-01-02
 CVE-2020-8116
+
+# Mitigated: https-proxy-agent Denial of Service and Memory Leak (< 2.1.1)
+# The CVE affects https-proxy-agent versions < 2.1.1 and exposes unsafe Buffer constructor usage
+# in authentication handling, allowing attackers to trigger DoS through resource exhaustion or
+# potentially leak uninitialized memory containing sensitive data. An attacker can submit crafted
+# numeric values to the auth option, causing uncontrolled memory allocation.
+# Fixed in https-proxy-agent 2.1.1 and 2.2.0. https-proxy-agent is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including https-proxy-agent, are updated to their latest compatible versions (>= 2.2.0).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-01-02
+CVE-2018-3739
