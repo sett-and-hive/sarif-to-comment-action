@@ -1,96 +1,123 @@
 {
-    // SHAI-HULUD FREEZE:
-    // Flip this to true or remove this flag when it is safe
-    // to re-enable Renovate.
-    "enabled": false,
-    "extends": [
-        "config:recommended"
-    ],
-    "pre-commit": {
-        "enabled": true
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // Re-enable Renovate in "slow lane + security-only automerge" mode
+  "enabled": true,
+
+  "extends": [
+    "config:recommended",
+
+    // Supply-chain hardening for GitHub Actions: pin to immutable digests/SHAs, and let Renovate update them.
+    "helpers:pinGitHubActionDigests"
+  ],
+
+  "pre-commit": { "enabled": true },
+
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+
+  "labels": ["renovate"],
+
+  // ----------------------------
+  // SLOW LANE (default behavior)
+  // ----------------------------
+  // Wait "small weeks" before PR creation, not just before merge.
+  // Renovate recommends combining:
+  //   minimumReleaseAge + prCreation="not-pending" + internalChecksFilter="strict"
+  // to suppress branch/PR creation until the waiting period has elapsed.
+  "minimumReleaseAge": "21 days",
+  "minimumReleaseAgeBehaviour": "timestamp-required",
+  "prCreation": "not-pending",
+  "internalChecksFilter": "strict",
+
+  // Slow down overall throughput/noise
+  "prHourlyLimit": 1,
+  "prConcurrentLimit": 2,
+
+  // No automatic merges by default
+  "automerge": false,
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+
+  "separateMultipleMajor": true,
+
+  // Run during off-hours for non-security updates (security PRs override this)
+  "schedule": [
+    "after 8pm every weekday",
+    "before 8am every weekday",
+    "every weekend"
+  ],
+  "timezone": "America/Chicago",
+
+  // Make major upgrades opt-in (still visible on the dashboard)
+  "major": {
+    "dependencyDashboardApproval": true,
+    "minimumReleaseAge": "28 days"
+  },
+
+  // -----------------------------------
+  // FAST LANE (vulnerability remediations)
+  // -----------------------------------
+  // GitHub vulnerability alerts (GHSA/CVE) → immediate PRs
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["renovate", "security"],
+    "schedule": [],
+    "minimumReleaseAge": null,
+    "prCreation": "immediate"
+  },
+
+  // OSV vulnerability alerts (direct dependencies incl. PyPI) → PRs when fix versions exist
+  "osvVulnerabilityAlerts": true,
+
+  "packageRules": [
+    // Auto-merge ONLY when Renovate has an explicit vulnerabilityFixVersion
+    // and ONLY for non-major update types.
+    {
+      "description": "Auto-merge non-major vulnerability remediations (after required CI/security checks pass)",
+      "matchJsonata": "$exists(vulnerabilityFixVersion)",
+      "matchUpdateTypes": ["patch", "minor", "pin", "pinDigest", "digest", "rollback", "bump"],
+      "addLabels": ["security", "automerge"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash",
+      "schedule": [],
+      "minimumReleaseAge": null,
+      "prCreation": "immediate"
     },
-    "automerge": true,
-    "automergeType": "pr",
-    "automergeStrategy": "squash",
-    "dependencyDashboard": true,
-    "dependencyDashboardAutoclose": true,
-    "separateMultipleMajor": true,
-    "minor": {
-        "automerge": true,
-        "minimumReleaseAge": "3 days",
-        "prCreation": "not-pending"
+    {
+      "description": "Never auto-merge major upgrades, even if security-related",
+      "matchJsonata": "$exists(vulnerabilityFixVersion)",
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["security"],
+      "automerge": false
     },
-    "patch": {
-        "automerge": true,
-        "minimumReleaseAge": null
+
+    // Keep your existing grouping controls, but remove the invalid/fragile 'security' updateType usage
+    {
+      "matchDatasources": ["docker"],
+      "groupName": "Docker base images",
+      "schedule": ["after 8pm every weekend"],
+      "matchPackageNames": ["/.*/"]
     },
-    "major": {
-        "automerge": true,
-        "minimumReleaseAge": "9 days"
+    {
+      "matchDatasources": ["apt"],
+      "groupName": "APT packages",
+      "schedule": ["after 8pm every weekend"],
+      "matchPackageNames": ["/.*/"]
     },
-    "digest": {
-        "automerge": true
+    {
+      "matchDatasources": ["npm"],
+      "matchPackageNames": ["@security-alert/sarif-to-comment"],
+      "groupName": "NPM: sarif-to-comment",
+      "schedule": ["after 8pm every weekend"],
+      "matchUpdateTypes": ["patch", "minor"]
     },
-    "schedule": [
-        "after 8pm every weekday",
-        "before 8am every weekday",
-        "every weekend"
-    ],
-    "timezone": "America/Chicago",
-    "labels": [
-        "renovate"
-    ],
-    "packageRules": [
-        {
-            "matchDatasources": [
-                "docker"
-            ],
-            "groupName": "Docker base images",
-            "schedule": [
-                "after 8pm every weekend"
-            ],
-            "matchPackageNames": [
-                "/.*/"
-            ]
-        },
-        {
-            "matchDatasources": [
-                "apt"
-            ],
-            "groupName": "APT Security Updates",
-            "schedule": [
-                "after 8pm"
-            ],
-            "minimumReleaseAge": "3 days",
-            "matchUpdateTypes": [
-                "security"
-            ],
-            "matchPackageNames": [
-                "/.*/"
-            ]
-        },
-        {
-            "matchDatasources": [
-                "npm"
-            ],
-            "matchPackageNames": [
-                "@security-alert/sarif-to-comment"
-            ],
-            "groupName": "NPM Security Patches",
-            "schedule": [
-                "after 8pm every weekend"
-            ],
-            "matchUpdateTypes": [
-                "patch",
-                "minor",
-                "security"
-            ]
-        },
-        {
-            "matchPackageNames": [
-                "zricethezav/gitleaks"
-            ],
-            "allowedVersions": "<=8.21.2"
-        }
-    ]
+
+    // Your existing pin
+    {
+      "matchPackageNames": ["zricethezav/gitleaks"],
+      "allowedVersions": "<=8.21.2 || >=8.30.0"
+    }
+  ]
 }
