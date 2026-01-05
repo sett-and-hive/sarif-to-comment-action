@@ -24,14 +24,14 @@ repos:
 
   # Linter for GitHub Actoin workflow files
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.9
+    rev: v1.7.10
     hooks:
     - id: actionlint-docker
 
   # Linter for markdown files
   # This hook uses fast rumdl, based on DavidAnson Node.js markdownlint, for speed
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.206
+    rev: v0.0.209
     hooks:
       - id: rumdl
         # MD013: Line length rule disabled to allow long URLs and code blocks.
