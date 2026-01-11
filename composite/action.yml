@@ -47,8 +47,20 @@ runs:
     - name: Download action
       run: npm install @security-alert/sarif-to-comment@1.10.10
       shell: bash
-    - run: '${{ github.action_path }}/../entrypoint.sh "${{ inputs.sarif-file }}" "${{ inputs.token }}" "${{ inputs.repository }}" "${{ inputs.branch }}" "${{ inputs.pr-number }}" "${{ inputs.title }}" "${{ inputs.show-rule-details }}" "${{ inputs.dry-run }}" "${{ inputs.odc-sarif }}" "${{ inputs.simple }}"'
+    - name: Run sarif-to-comment
+      run: '${{ github.action_path }}/../entrypoint.sh "$SARIF_FILE" "$TOKEN" "$REPOSITORY" "$BRANCH" "$PR_NUMBER" "$TITLE" "$SHOW_RULE_DETAILS" "$DRY_RUN" "$ODC_SARIF" "$SIMPLE"'
       shell: bash
+      env:
+        SARIF_FILE: ${{ inputs.sarif-file }}
+        TOKEN: ${{ inputs.token }}
+        REPOSITORY: ${{ inputs.repository }}
+        BRANCH: ${{ inputs.branch }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        TITLE: ${{ inputs.title }}
+        SHOW_RULE_DETAILS: ${{ inputs.show-rule-details }}
+        DRY_RUN: ${{ inputs.dry-run }}
+        ODC_SARIF: ${{ inputs.odc-sarif }}
+        SIMPLE: ${{ inputs.simple }}
 branding:
   icon: 'git-pull-request'
   color: 'green'
