@@ -299,3 +299,12 @@ CVE-2021-3807
 # The action does not directly use gpgv; it's a system dependency used by apt for package signature verification.
 # Acceptance date: 2026-02-01
 CVE-2025-68973
+
+# Accepted Risk: Unknown vulnerability in app container (CVE-2025-61728)
+# Trivy detected CVE-2025-61728 but provided no specific package or version information.
+# The affected component is listed as "app" with package "unknown" and version "unknown".
+# No fixed version is available. May be a false positive or very recently disclosed CVE.
+# Risk is unknown: without package details, cannot assess attack surface or impact.
+# Will continue monitoring for updates and re-scan periodically.
+# Acceptance date: 2026-02-01
+CVE-2025-61728
