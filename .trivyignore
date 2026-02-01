@@ -289,3 +289,13 @@ CVE-2025-64756
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-01-02
 CVE-2021-3807
+
+# Mitigated: gpgv security vulnerability (CVE-2025-68973)
+# The CVE affects gpgv versions < 2.2.40-1.1+deb12u2 in Debian 12 (Bookworm).
+# gpgv is the GNU Privacy Guard signature verification tool included in the base image node:24-bookworm-slim.
+# The vulnerability is fully mitigated through the apt-get upgrade -y command in the Dockerfile,
+# which ensures gpgv is upgraded to version 2.2.40-1.1+deb12u2 or later.
+# Trivy may detect it in the base image layer before the apt-get upgrade -y command executes.
+# The action does not directly use gpgv; it's a system dependency used by apt for package signature verification.
+# Acceptance date: 2026-02-01
+CVE-2025-68973
