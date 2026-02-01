@@ -12,3 +12,6 @@ test/.trivy.sh.swp
 .idea
 /.rumdl-cache/
 /.rumdl_cache/
+__pycache__/
+*.py[cod]
+*$py.class
