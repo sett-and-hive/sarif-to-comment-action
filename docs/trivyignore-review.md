@@ -19,11 +19,11 @@ Without periodic review, we may continue ignoring vulnerabilities long after fix
 The workflow consists of:
 
 1. **Python Script** (`.github/scripts/review_trivyignore.py`): Parses `.trivyignore`, queries GitHub Advisory Database, and generates reports
-2. **GitHub Actions Workflow** (`.github/workflows/review-trivyignore.yaml`): Runs monthly and creates/updates tracking issues
+2. **GitHub Actions Workflow** (`.github/workflows/review-trivyignore.yaml`): Runs weekly and creates/updates tracking issues
 
 ## Features
 
-- **Automated Monthly Reviews**: Runs on the 1st of each month at 9:00 UTC
+- **Automated Weekly Reviews**: Runs every Wednesday at 16:00 UTC (10:00 AM Chicago time)
 - **Manual Trigger Support**: Can be triggered manually via workflow_dispatch
 - **Patch Detection**: Queries GitHub Advisory Database for available fixes
 - **Issue Tracking**: Creates a single tracking issue that is updated with each review
@@ -33,13 +33,13 @@ The workflow consists of:
 
 ## Workflow Schedule
 
-The workflow runs monthly by default:
+The workflow runs weekly by default:
 
 ```yaml
 on:
   schedule:
-    # Run monthly on the 1st at 9:00 UTC
-    - cron: '0 9 1 * *'
+    # Run every Wednesday at 16:00 UTC (10:00 AM Chicago time)
+    - cron: '0 16 * * 3'
   workflow_dispatch:
 ```
 
