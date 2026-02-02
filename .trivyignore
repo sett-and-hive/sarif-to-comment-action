@@ -19,14 +19,22 @@ CVE-2024-52308
 
 CVE-2017-15010
 # Accepted Risk: Go stdlib DoS in crypto/x509 (CVE-2025-61729)
-# GitHub CLI v2.83.1 is compiled with Go 1.25.3, which is vulnerable.
+# GitHub CLI v2.86.0 is compiled with Go 1.25.5, which is vulnerable.
 # Fixed in Go 1.25.5 and 1.24.11. Waiting for upstream gh CLI to rebuild with patched Go.
 # Risk is low: requires malicious TLS cert during GitHub API communication.
 # Acceptance date: 2025-12-06
 CVE-2025-61729
 
+# Accepted Risk: Go stdlib Memory Exhaustion in net/url (CVE-2025-61726)
+# GitHub CLI v2.86.0 is compiled with Go 1.25.5, which is vulnerable.
+# Fixed in Go 1.25.6 and 1.24.12. Waiting for upstream gh CLI to rebuild with patched Go.
+# Risk is low: requires malicious query parameters in GitHub API communication.
+# The GitHub CLI primarily makes outbound requests to trusted GitHub.com infrastructure.
+# Acceptance date: 2026-02-02
+CVE-2025-61726
+
 # Accepted Risk: Sigstore Timestamp Authority DoS (CVE-2025-66564)
-# GitHub CLI v2.83.1 bundles sigstore/timestamp-authority < v2.0.3, which is vulnerable.
+# GitHub CLI v2.86.0 bundles sigstore/timestamp-authority < v2.0.3, which is vulnerable.
 # Fixed in timestamp-authority v2.0.3. Waiting for upstream gh CLI to update dependency.
 # Risk is low: requires crafted requests with malicious OID or Content-Type headers.
 # The action does not directly use timestamp authority features.

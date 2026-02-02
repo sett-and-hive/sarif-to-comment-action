@@ -18,9 +18,9 @@ RUN apt-get update && apt-get upgrade -y \
     && rm -rf /var/lib/apt/lists/*
 
 # 3. Install GitHub CLI (Direct Binary Download)
-# We update to 2.83.1 (Nov 2025) to fix CVE-2024-45337 (x/crypto)
-# and ensure the binary was compiled with a modern Go runtime (fixing stdlib CVEs).
-ARG GH_VERSION=2.83.1
+# We update to 2.86.0 (Jan 2026) to fix CVE-2024-45337 (x/crypto)
+# and ensure the binary was compiled with a modern Go runtime (fixing most stdlib CVEs).
+ARG GH_VERSION=2.86.0
 # Download and verify GitHub CLI via published SHA256 checksums to reduce supply-chain risk.
 RUN set -e; \
     GH_BASE_URL="https://github.com/cli/cli/releases/download/v${GH_VERSION}"; \

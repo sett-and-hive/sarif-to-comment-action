@@ -347,7 +347,7 @@ This section documents specific security findings that have been analyzed, triag
 * **Analysis:**
   * **The Vulnerability:** Go stdlib versions prior to 1.24.11 and 1.25.5 contain a vulnerability in the crypto/x509 package. The HostnameError.Error() method can print an unbounded number of hostnames using repeated string concatenation, resulting in quadratic runtime. A malicious certificate can cause excessive CPU and memory consumption, leading to denial-of-service (DoS).
   * **The Fix:** The vulnerability was fixed in Go 1.25.5 and Go 1.24.11 by limiting the number of hosts printed and optimizing the string concatenation method.
-  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.83.1** (Released November 13, 2025), which was built with Go 1.25.3 (vulnerable version). As of this documentation (December 2025), version 2.83.1 remains the latest GitHub CLI release.
+  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.86.0** (Released January 21, 2026), which was built with Go 1.25.5 (vulnerable version). As of this documentation (February 2026), version 2.86.0 remains the latest GitHub CLI release.
   * **Why We Cannot Upgrade:** The GitHub CLI upstream project has not released a version compiled with Go 1.25.5+ or Go 1.24.11+. We are dependent on the upstream project to rebuild with a patched Go version.
 * **Risk Assessment:**
   * **Likelihood:** Low. Exploitation requires the action to process a malicious TLS certificate during GitHub API communication, which would require a compromised GitHub.com infrastructure or successful MITM attack.
@@ -362,6 +362,30 @@ This section documents specific security findings that have been analyzed, triag
   * [Go Issue Tracker #76445](https://github.com/golang/go/issues/76445)
   * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2025-61729)
 
+### CVE-2025-61726: Go Standard Library (stdlib) Memory Exhaustion in net/url
+
+* **Component:** `stdlib` (Go standard library embedded in `gh` binary)
+* **Scanner:** Trivy
+* **Severity:** High (CVSS 7.5)
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** Go stdlib versions prior to 1.24.12 and 1.25.6 contain a vulnerability in the net/url package. The net/http.Request.ParseForm method does not enforce a limit on the number of query parameters present in a URL. When processing URL-encoded forms with an excessive number of unique query parameters, ParseForm can consume large amounts of memory through unbounded allocations, resulting in memory exhaustion and denial-of-service (DoS).
+  * **The Fix:** The vulnerability was fixed in Go 1.25.6 and Go 1.24.12 by introducing limits on the number of query parameters that can be parsed and optimizing the memory allocation strategy.
+  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.86.0** (Released January 21, 2026), which was built with Go 1.25.5 (vulnerable version). As of this documentation (February 2026), version 2.86.0 remains the latest GitHub CLI release.
+  * **Why We Cannot Upgrade:** The GitHub CLI upstream project has not released a version compiled with Go 1.25.6+ or Go 1.24.12+. We are dependent on the upstream project to rebuild with a patched Go version.
+* **Risk Assessment:**
+  * **Likelihood:** Low. Exploitation requires the action to process HTTP requests with malicious query strings. The GitHub CLI primarily makes outbound API requests to GitHub.com, which is a trusted source. An attacker would need to compromise GitHub's infrastructure or successfully perform a man-in-the-middle (MITM) attack to inject malicious query parameters.
+  * **Impact:** Medium. DoS would affect only the single workflow run processing the malicious request, causing the workflow to fail due to memory exhaustion.
+* **Mitigation Strategy:**
+  1. Monitor the GitHub CLI releases for a version built with Go 1.25.6+ or Go 1.24.12+
+  2. Update the Dockerfile immediately when a patched version becomes available
+  3. The finding is suppressed via `.trivyignore` as an accepted risk until upstream fix is available
+* **Acceptance Date:** 2026-02-02
+* **References:**
+  * [NVD CVE-2025-61726](https://nvd.nist.gov/vuln/detail/CVE-2025-61726)
+  * [Go Vulnerability Database GO-2026-4341](https://pkg.go.dev/vuln/GO-2026-4341)
+  * [Go Issue Tracker #77101](https://go.dev/issue/77101)
+
 ### CVE-2025-66564: Sigstore Timestamp Authority Denial of Service
 
 * **Component:** `github.com/sigstore/timestamp-authority` (Go Package bundled in GitHub CLI)
@@ -371,7 +395,7 @@ This section documents specific security findings that have been analyzed, triag
 * **Analysis:**
   * **The Vulnerability:** Sigstore Timestamp Authority versions < v2.0.3 contain a vulnerability that allows remote attackers to cause denial of service through excessive memory allocation. The vulnerability occurs in the `api.ParseJSONRequest` and `api.getContentType` functions which use `strings.Split` on untrusted input without limits. An attacker can send specially crafted JSON payloads with very long OIDs containing many periods, or HTTP headers with malformed Content-Type strings, causing the service to allocate memory proportional to the number of splits.
   * **The Fix:** The vulnerability was fixed in timestamp-authority v2.0.3 by replacing unlimited `strings.Split` with `strings.SplitN` to introduce explicit limits on string splits and enforce stricter input validation.
-  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.83.1** (Released November 2025), which bundles an older version of sigstore/timestamp-authority (< v2.0.3). As of this documentation (December 2025), version 2.83.1 remains the latest GitHub CLI release.
+  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.86.0** (Released January 21, 2026), which bundles an older version of sigstore/timestamp-authority (< v2.0.3). As of this documentation (February 2026), version 2.86.0 remains the latest GitHub CLI release.
   * **Why We Cannot Upgrade:** The GitHub CLI upstream project has not released a version with the updated timestamp-authority dependency. We are dependent on the upstream project to rebuild with the patched version.
 * **Risk Assessment:**
   * **Likelihood:** Low. The action does not directly use timestamp authority features. Exploitation would require an attacker to intercept or manipulate network requests during GitHub API communication, or for GitHub itself to send malicious responses.
