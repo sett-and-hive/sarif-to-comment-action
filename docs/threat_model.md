@@ -347,15 +347,15 @@ This section documents specific security findings that have been analyzed, triag
 * **Analysis:**
   * **The Vulnerability:** Go stdlib versions prior to 1.24.11 and 1.25.5 contain a vulnerability in the crypto/x509 package. The HostnameError.Error() method can print an unbounded number of hostnames using repeated string concatenation, resulting in quadratic runtime. A malicious certificate can cause excessive CPU and memory consumption, leading to denial-of-service (DoS).
   * **The Fix:** The vulnerability was fixed in Go 1.25.5 and Go 1.24.11 by limiting the number of hosts printed and optimizing the string concatenation method.
-  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.86.0** (Released January 21, 2026), which was built with Go 1.25.5 (vulnerable version). As of this documentation (February 2026), version 2.86.0 remains the latest GitHub CLI release.
-  * **Why We Cannot Upgrade:** The GitHub CLI upstream project has not released a version compiled with Go 1.25.5+ or Go 1.24.11+. We are dependent on the upstream project to rebuild with a patched Go version.
+  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.86.0** (Released January 21, 2026), which was built with Go 1.25.5 (which includes the fix for this CVE). As of this documentation (February 2026), version 2.86.0 remains the latest GitHub CLI release.
+  * **Why Trivy May Still Detect It:** Trivy may still flag this vulnerability due to database lag, version string parsing issues, or conservative scanning policies that don't recognize Go 1.25.5 as patched.
 * **Risk Assessment:**
   * **Likelihood:** Low. Exploitation requires the action to process a malicious TLS certificate during GitHub API communication, which would require a compromised GitHub.com infrastructure or successful MITM attack.
   * **Impact:** Medium. DoS would affect only the single workflow run processing the malicious certificate.
 * **Mitigation Strategy:**
-  1. Monitor the GitHub CLI releases for a version built with Go 1.25.5+ or Go 1.24.11+
-  2. Update the Dockerfile immediately when a patched version becomes available
-  3. The finding is suppressed via `.trivyignore` as an accepted risk until upstream fix is available
+  1. The vulnerability is already fixed in GitHub CLI 2.86.0 (built with Go 1.25.5)
+  2. The finding is suppressed via `.trivyignore` to handle potential false positives from the scanner
+  3. Monitor Trivy database updates to see if detection improves
 * **Acceptance Date:** 2025-12-06
 * **References:**
   * [NVD CVE-2025-61729](https://nvd.nist.gov/vuln/detail/CVE-2025-61729)
