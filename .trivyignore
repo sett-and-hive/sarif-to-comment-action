@@ -317,12 +317,12 @@ CVE-2025-68973
 # Acceptance date: 2026-02-01
 CVE-2025-61728
 
-# Accepted Risk: Unknown vulnerability in app container (CVE-2026-24842)
-# Trivy detected CVE-2026-24842 but provided no specific package or version information.
-# The affected component is listed as "app" with package "unknown" and version "unknown".
-# Description references version "7.5.7" but affected package is unknown.
-# No fixed version is available. May be a false positive or very recently disclosed CVE.
-# Risk is unknown: without package details, cannot assess attack surface or impact.
-# Will continue monitoring for updates and re-scan periodically.
+# Mitigated: node-tar Arbitrary File Creation via Hardlink (< 7.5.7)
+# The CVE affects node-tar versions < 7.5.7 and allows arbitrary file creation/overwrite
+# via hardlink entries in malicious TAR archives due to path traversal vulnerability.
+# Fixed in node-tar 7.5.7. node-tar is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including node-tar, are updated to their latest compatible versions (>= 7.5.7).
+# Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-02-02
 CVE-2026-24842

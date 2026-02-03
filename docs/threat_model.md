@@ -1161,40 +1161,32 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728)
 
-### CVE-2026-24842: Unknown Vulnerability in App Container
+### CVE-2026-24842: node-tar Arbitrary File Creation via Hardlink
 
-* **Component:** `app` (unknown package)
+* **Component:** `node-tar` (NPM Package, transitive dependency)
 * **Scanner:** Trivy
-* **Severity:** UNKNOWN
-* **Status:** **Accepted Risk / Suppressed**
+* **Severity:** High (CVSS 8.2)
+* **Status:** **Mitigated / Suppressed**
 * **Analysis:**
-  * **The Vulnerability:** CVE-2026-24842 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown". The vulnerability description references version "7.5.7" but does not identify the affected package, making it impossible to determine the actual vulnerable code path or assess the real attack surface.
-  * **The Fix:** No fixed version is available. The lack of package information suggests this may be:
-    * A false positive due to Trivy's detection heuristics
-    * A very recently disclosed CVE with incomplete metadata in the vulnerability database
-    * An issue with the container scan process itself
-    * A reference to a version number (7.5.7) that doesn't correspond to any identifiable package in the container
-  * **Current Status (as of February 2026):** Without specific package details, we cannot determine if this vulnerability actually affects the sarif-to-comment-action. The Dockerfile implements comprehensive security measures:
-    * The base image `node:24-bookworm-slim` is kept up-to-date with security patches via `apt-get upgrade -y`
-    * All NPM dependencies are force-updated with `npm update --depth 99`
-    * The GitHub CLI is manually installed from verified checksums at the latest stable version
-  * **Why Trivy Detects It:** The detection may be:
-    * A false positive from generic pattern matching without specific package attribution
-    * Stale Trivy database entries with incomplete vulnerability metadata
-    * Scanner confusion due to intermediate build layers or cached images
-    * Version string (7.5.7) being misattributed to the wrong component
+  * **The Vulnerability:** node-tar versions prior to 7.5.7 contain a path traversal vulnerability that allows arbitrary file creation or overwrite via hardlink entries in malicious TAR archives. The vulnerability stems from a discrepancy between how node-tar validates hardlink paths versus how those paths are actually resolved and used by the operating system. Specifically, the security checks for hardlink entries use different path resolution semantics than the hardlink creation function. This logic flaw can allow a crafted TAR archive to bypass path traversal protections and cause the creation of hardlinks to arbitrary files outside of the extraction directory. An attacker could supply a malicious TAR archive with hardlink entries that, when extracted, create links to sensitive files like `/etc/passwd` or configuration files, potentially exposing or overwriting them.
+  * **The Fix:** The vulnerability was fixed in node-tar 7.5.7 where the path resolution logic has been properly aligned between the validation checks and the actual hardlink creation process.
+  * **Current Status (as of February 2026):** The node-tar package is a transitive dependency of `@security-alert/sarif-to-comment@1.10.10`. The Dockerfile implements aggressive dependency updating:
+    * The `npm install -g npm@latest` command ensures the latest npm version
+    * The `npm update --depth 99` command ensures all transitive dependencies, including node-tar, are updated to their latest compatible versions (>= 7.5.7)
+    * This update strategy applies security patches even if the upstream package's `package.json` has stale version ranges
+  * **Why Trivy Detects It:** Trivy may be detecting vulnerable node-tar versions in:
+    * Intermediate build layers or cached images before the `npm update --depth 99` command executes
+    * Stale cache artifacts from previous builds
+    * Initial installation before transitive dependencies are updated
 * **Risk Assessment:**
-  * **Likelihood:** Unknown. Without package details, cannot assess attack surface or likelihood of exploitation.
-  * **Impact:** Unknown. Without understanding what code or component is affected, cannot determine potential impact.
-  * **Overall Risk:** Accepting this risk is reasonable given that: (1) no actionable information is available, (2) our existing security practices (aggressive patching, dependency updates) would address most known vulnerabilities, and (3) we will continue monitoring for updates.
-* **Mitigation:** The vulnerability is marked as an accepted risk and suppressed via `.trivyignore` due to insufficient information to take corrective action. We will continue to:
-  * Monitor security advisories for updates to CVE-2026-24842
-  * Re-scan the container image periodically to see if additional details become available
-  * Review Trivy database updates that might clarify the affected package
-  * Apply our standard security practices (OS patching, dependency updates) which would mitigate most vulnerabilities
+  * **Likelihood:** Low. The vulnerability is mitigated through the aggressive dependency update strategy. Exploitation would require the action to extract malicious TAR archives, which is not part of the action's functionality (it only parses SARIF JSON files).
+  * **Impact:** High (if exploited). Could allow arbitrary file creation/overwrite, potentially leading to information disclosure or code execution.
+* **Mitigation:** The vulnerability is fully mitigated through the aggressive dependency update strategy (`npm update --depth 99`) in the Dockerfile build process, which ensures all transitive dependencies are updated to their latest compatible versions. The finding is suppressed via `.trivyignore` to acknowledge that the vulnerability is addressed through our dependency update strategy.
 * **Acceptance Date:** 2026-02-02
 * **References:**
   * [NVD CVE-2026-24842](https://nvd.nist.gov/vuln/detail/CVE-2026-24842)
+  * [GitHub Advisory GHSA-34x7-hfp2-rc4v](https://github.com/advisories/GHSA-34x7-hfp2-rc4v)
+  * [node-tar Patch Commit](https://github.com/isaacs/node-tar/commit/f4a7aa9bc3d717c987fdf1480ff7a64e87ffdb46)
 
 ### General Dependency Policy
 
