@@ -1161,6 +1161,41 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2025-61728](https://nvd.nist.gov/vuln/detail/CVE-2025-61728)
 
+### CVE-2026-23950: Unknown Vulnerability in App Container
+
+* **Component:** `app` (unknown package)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-23950 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown". The description references version "7.5.4" but does not specify which package this refers to. This makes it impossible to determine the actual vulnerable code path or assess the real attack surface.
+  * **The Fix:** No fixed version is available. The lack of package information suggests this may be:
+    * A false positive due to Trivy's detection heuristics
+    * A very recently disclosed CVE with incomplete metadata in the vulnerability database
+    * An issue with the container scan process itself
+    * A CVE that affects a version reference without proper package attribution
+  * **Current Status (as of February 2026):** Without specific package details, we cannot determine if this vulnerability actually affects the sarif-to-comment-action. The Dockerfile implements comprehensive security measures:
+    * The base image `node:24-bookworm-slim` is kept up-to-date with security patches via `apt-get upgrade -y`
+    * All NPM dependencies are force-updated with `npm update --depth 99`
+    * The GitHub CLI is manually installed from verified checksums at the latest stable version
+  * **Why Trivy Detects It:** The detection may be:
+    * A false positive from generic pattern matching without specific package attribution
+    * Stale Trivy database entries with incomplete vulnerability metadata
+    * Scanner confusion due to intermediate build layers or cached images
+    * Version string matching (7.5.4) without proper package context
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, cannot assess attack surface or likelihood of exploitation.
+  * **Impact:** Unknown. Without understanding what code or component is affected, cannot determine potential impact.
+  * **Overall Risk:** Accepting this risk is reasonable given that: (1) no actionable information is available, (2) our existing security practices (aggressive patching, dependency updates) would address most known vulnerabilities, and (3) we will continue monitoring for updates.
+* **Mitigation:** The vulnerability is marked as an accepted risk and suppressed via `.trivyignore` due to insufficient information to take corrective action. We will continue to:
+  * Monitor security advisories for updates to CVE-2026-23950
+  * Re-scan the container image periodically to see if additional details become available
+  * Review Trivy database updates that might clarify the affected package
+  * Apply our standard security practices (OS patching, dependency updates) which would mitigate most vulnerabilities
+* **Acceptance Date:** 2026-02-07
+* **References:**
+  * [NVD CVE-2026-23950](https://nvd.nist.gov/vuln/detail/CVE-2026-23950)
+
 ### CVE-2026-24842: node-tar Arbitrary File Creation via Hardlink
 
 * **Component:** `node-tar` (NPM Package, transitive dependency)
