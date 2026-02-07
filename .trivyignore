@@ -327,6 +327,15 @@ CVE-2025-61728
 # Acceptance date: 2026-02-02
 CVE-2026-24842
 
+# Mitigated: node-tar vulnerability (< 7.5.2)
+# The CVE affects node-tar versions < 7.5.2.
+# Fixed in node-tar 7.5.2. node-tar is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including node-tar, are updated to their latest compatible versions (>= 7.5.2).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-02-07
+CVE-2026-23745
+
 # Accepted Risk: Unknown vulnerability in app container (CVE-2026-23950)
 # Trivy detected CVE-2026-23950 but provided no specific package or version information.
 # The affected component is listed as "app" with package "unknown" and version "unknown".
