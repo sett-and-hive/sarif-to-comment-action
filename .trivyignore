@@ -316,3 +316,13 @@ CVE-2025-68973
 # Will continue monitoring for updates and re-scan periodically.
 # Acceptance date: 2026-02-01
 CVE-2025-61728
+
+# Mitigated: node-tar Arbitrary File Creation via Hardlink (< 7.5.7)
+# The CVE affects node-tar versions < 7.5.7 and allows arbitrary file creation/overwrite
+# via hardlink entries in malicious TAR archives due to path traversal vulnerability.
+# Fixed in node-tar 7.5.7. node-tar is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including node-tar, are updated to their latest compatible versions (>= 7.5.7).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-02-02
+CVE-2026-24842
