@@ -1282,7 +1282,7 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2025-15467](https://nvd.nist.gov/vuln/detail/CVE-2025-15467)
   * [OpenSSL Security Advisory (20260127)](https://openssl-library.org/news/secadv/20260127.txt)
-  * [JFrog Security Research: Potentially Critical RCE Vulnerability in OpenSSL](https://research.jfrog.com/post/potential-rce-vulnerabilityin-openssl-cve-2025-15467/)
+  * [JFrog Security Research: Potentially Critical RCE Vulnerability in OpenSSL](https://research.jfrog.com/post/potential-rce-vulnerability-in-openssl-cve-2025-15467/)
   * [Orca Security: CVE-2025-15467 Critical OpenSSL RCE Vulnerability Explained](https://orca.security/resources/blog/cve-2025-15467-openssl-pre-auth-rce/)
   * [Debian Security Advisory: libssl3 update](https://security-tracker.debian.org/tracker/CVE-2025-15467)
 
