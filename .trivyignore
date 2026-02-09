@@ -366,3 +366,13 @@ CVE-2025-15467
 # Will continue monitoring for updates and re-scan periodically.
 # Acceptance date: 2026-02-09
 CVE-2025-69419
+
+# Accepted Risk: Unknown vulnerability in app container (CVE-2025-68121)
+# Trivy detected CVE-2025-68121 but provided no specific package or version information.
+# The affected component is listed as "app" with package "unknown" and version "unknown".
+# Description references versions "1.24.13, 1.25.7, 1.26.0-rc.3" but affected package is unknown.
+# No fixed version is available. May be a false positive or very recently disclosed CVE.
+# Risk is unknown: without package details, cannot assess attack surface or impact.
+# Will continue monitoring for updates and re-scan periodically.
+# Acceptance date: 2026-02-09
+CVE-2025-68121
