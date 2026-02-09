@@ -376,3 +376,15 @@ CVE-2025-69419
 # Will continue monitoring for updates and re-scan periodically.
 # Acceptance date: 2026-02-09
 CVE-2025-68121
+
+# Accepted Risk: Go stdlib crypto/tls TLS 1.3 Handshake Information Disclosure (CVE-2025-61730)
+# GitHub CLI v2.86.0 is compiled with Go 1.25.5, which is vulnerable to CVE-2025-61730.
+# The vulnerability affects the crypto/tls package during TLS 1.3 handshakes, where handshake
+# messages spanning encryption level boundaries may be processed before appropriate encryption
+# is set, potentially leading to minor information disclosure.
+# Fixed in Go 1.25.6 and 1.24.12. Waiting for upstream GitHub CLI to rebuild with patched Go.
+# Risk is low: requires network-local attacker capable of injecting messages during TLS handshake.
+# The GitHub CLI primarily makes outbound requests to trusted GitHub.com infrastructure.
+# Attack complexity is high and no wide-scale exploitation has been reported.
+# Acceptance date: 2026-02-09
+CVE-2025-61730

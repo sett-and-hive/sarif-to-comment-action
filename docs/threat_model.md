@@ -1356,6 +1356,45 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2025-68121](https://nvd.nist.gov/vuln/detail/CVE-2025-68121)
 
+### CVE-2025-61730: Go stdlib crypto/tls TLS 1.3 Handshake Information Disclosure
+
+* **Component:** `stdlib` (Go standard library - crypto/tls package)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2025-61730 is a vulnerability in the Go standard library's `crypto/tls` package affecting TLS 1.3 handshakes. During the TLS 1.3 handshake, if multiple handshake messages are sent in records that span encryption level boundaries (for example, the ClientHello and EncryptedExtensions messages), subsequent messages might be processed before the appropriate encryption level is set. This can cause minor information disclosure if a network-local attacker is able to inject messages during the handshake process.
+  * **The Fix:** Fixed in Go 1.25.6 and 1.24.12. GitHub CLI v2.86.0 (the latest version as of February 2026) is compiled with Go 1.25.5, which is vulnerable. We are waiting for upstream GitHub CLI to rebuild with the patched Go version (1.25.6 or later).
+  * **Current Status (as of February 2026):** GitHub CLI v2.86.0 uses Go 1.25.5 (confirmed via go.mod toolchain directive). The vulnerability is not yet fixed in the available GitHub CLI releases. The next CLI release that updates to Go 1.25.6+ will automatically resolve this issue.
+  * **Why Trivy Detects It:** Trivy correctly identifies that the GitHub CLI binary (`/usr/local/bin/gh`) embedded in the container was compiled with Go 1.25.5, which contains the vulnerable `crypto/tls` implementation. The detection is accurate and reflects a real vulnerability in the Go standard library used by the GitHub CLI.
+  * **Attack Surface in Our Context:** The sarif-to-comment-action uses the GitHub CLI to interact with GitHub's API over HTTPS/TLS connections. The vulnerability requires:
+    * A network-local attacker with the ability to intercept and inject TLS handshake messages
+    * The attacker must be positioned between the GitHub Action runner and GitHub's API servers
+    * Exploitation requires precise timing to inject messages during the TLS 1.3 handshake
+    The risk is significantly reduced because:
+    * GitHub Actions run in ephemeral, isolated environments
+    * The GitHub CLI primarily makes outbound requests to trusted GitHub.com infrastructure
+    * GitHub's infrastructure uses modern TLS configurations with strong encryption
+    * The information disclosure is minor and limited to handshake-level data
+* **Risk Assessment:**
+  * **Likelihood:** Low. The vulnerability requires a network-local attacker capable of intercepting and injecting messages during the TLS handshake. GitHub Actions runners operate in isolated network environments, and all communications with GitHub.com occur over encrypted channels with certificate pinning. The attack complexity is high, and no wide-scale exploitation has been reported in the security community.
+  * **Impact:** Medium. If exploited, the vulnerability could lead to minor information disclosure during TLS handshakes. The disclosed information is limited to handshake-level data and does not directly expose repository secrets, GitHub tokens, or code content. However, any information disclosure in cryptographic protocols should be taken seriously.
+  * **Overall Risk:** Low to Medium. While the vulnerability is real and affects the GitHub CLI, the practical risk is mitigated by the isolated execution environment, the trusted nature of GitHub's infrastructure, and the high attack complexity. The vulnerability does not enable remote code execution or direct data exfiltration. We will monitor for GitHub CLI updates and rebuild the container image when a patched version becomes available.
+* **Mitigation:** The vulnerability is marked as an accepted risk and suppressed via `.trivyignore` while waiting for upstream GitHub CLI to release a version compiled with Go 1.25.6 or later. We will:
+  * Monitor GitHub CLI releases for versions compiled with Go 1.25.6+ (expected in the next release)
+  * Rebuild the container image immediately when a patched GitHub CLI version is available
+  * Continue applying OS-level security patches via `apt-get upgrade -y`
+  * Monitor security advisories for any active exploitation attempts
+  * Re-evaluate the risk if new exploitation techniques or attack scenarios are discovered
+  * **Action Item:** Check for GitHub CLI updates weekly and upgrade to a version using Go 1.25.6+ as soon as available
+* **Acceptance Date:** 2026-02-09
+* **References:**
+  * [NVD CVE-2025-61730](https://nvd.nist.gov/vuln/detail/CVE-2025-61730)
+  * [Go Official Security Announcement](https://groups.google.com/g/golang-announce/c/Vd2tYVM8eUc)
+  * [Go Issue Tracker: Issue #76443](https://go.dev/issue/76443)
+  * [GitHub CLI Repository](https://github.com/cli/cli)
+  * [GitHub CLI v2.86.0 go.mod](https://github.com/cli/cli/blob/v2.86.0/go.mod)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
