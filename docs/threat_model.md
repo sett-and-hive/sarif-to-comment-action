@@ -1270,6 +1270,7 @@ This section documents specific security findings that have been analyzed, triag
     * The GitHub CLI (`gh`) uses OpenSSL for secure communications
     * System package management tools (apt, curl) use OpenSSL for verifying package signatures over HTTPS
     While we don't directly parse CMS content, the presence of a pre-authentication RCE vulnerability in a core system library represents a significant supply chain risk. An attacker could potentially exploit this through:
+
     * Man-in-the-middle attacks on network communications if TLS certificate validation logic passes through vulnerable CMS parsing code paths
     * Malicious GitHub API responses containing crafted CMS content (unlikely but theoretically possible)
     * Exploitation of other services or dependencies that might process CMS content
