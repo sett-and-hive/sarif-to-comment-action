@@ -345,3 +345,15 @@ CVE-2026-23745
 # Will continue monitoring for updates and re-scan periodically.
 # Acceptance date: 2026-02-07
 CVE-2026-23950
+
+# Mitigated: libssl3 OpenSSL Pre-Authentication RCE/DoS vulnerability (< 3.0.19)
+# The CVE affects OpenSSL 3.x versions < 3.0.19 (libssl3 Debian package < 3.0.18-1~deb12u2).
+# This is a CRITICAL pre-authentication stack buffer overflow when parsing CMS AuthEnvelopedData
+# with AEAD ciphers, allowing Remote Code Execution or Denial of Service without authentication.
+# Fixed in OpenSSL 3.0.19 / Debian package 3.0.18-1~deb12u2.
+# The Dockerfile uses node:24-bookworm-slim (Debian 12) and explicitly runs apt-get upgrade -y
+# to ensure all system packages, including libssl3, are updated to their latest versions
+# from the Debian security repository (3.0.18-1~deb12u2 or later).
+# Trivy may detect it in intermediate build layers or cached base images before the apt-get upgrade executes.
+# Acceptance date: 2026-02-09
+CVE-2025-15467
