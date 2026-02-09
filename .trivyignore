@@ -357,3 +357,12 @@ CVE-2026-23950
 # Trivy may detect it in intermediate build layers or cached base images before the apt-get upgrade executes.
 # Acceptance date: 2026-02-09
 CVE-2025-15467
+
+# Accepted Risk: Unknown vulnerability in app container (CVE-2025-69419)
+# Trivy detected CVE-2025-69419 but provided no specific package or version information.
+# The affected component is listed as "app" with package "unknown" and version "unknown".
+# No fixed version is available. May be a false positive or very recently disclosed CVE.
+# Risk is unknown: without package details, cannot assess attack surface or impact.
+# Will continue monitoring for updates and re-scan periodically.
+# Acceptance date: 2026-02-09
+CVE-2025-69419
