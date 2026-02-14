@@ -1372,6 +1372,7 @@ This section documents specific security findings that have been analyzed, triag
     * The attacker must be positioned between the GitHub Action runner and GitHub's API servers
     * Exploitation requires precise timing to inject messages during the TLS 1.3 handshake
     The risk is significantly reduced because:
+
     * GitHub Actions run in ephemeral, isolated environments
     * The GitHub CLI primarily makes outbound requests to trusted GitHub.com infrastructure
     * GitHub's infrastructure uses modern TLS configurations with strong encryption
