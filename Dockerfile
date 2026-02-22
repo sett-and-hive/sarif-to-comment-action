@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
-# 1. Base Image: Use official LTS (Node 22) on Debian 12 (Bookworm)
+# 1. Base Image: Use Node 24 on Debian 13 (Trixie)
 # This instantly fixes the "ancient npm" vulnerabilities.
-FROM node:24-bookworm-slim
+FROM node:24.13.1-trixie-slim
 
 WORKDIR /app
 
