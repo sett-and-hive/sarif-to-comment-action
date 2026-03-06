@@ -75,7 +75,7 @@
     // and ONLY for non-major update types.
     {
       "description": "Auto-merge non-major vulnerability remediations (after required CI/security checks pass)",
-      "matchJsonata": "$exists(vulnerabilityFixVersion)",
+      "matchJsonata": ["$exists(vulnerabilityFixVersion)"],
       "matchUpdateTypes": ["patch", "minor", "pin", "pinDigest", "digest", "rollback", "bump"],
       "addLabels": ["security", "automerge"],
       "automerge": true,
@@ -87,7 +87,7 @@
     },
     {
       "description": "Never auto-merge major upgrades, even if security-related",
-      "matchJsonata": "$exists(vulnerabilityFixVersion)",
+      "matchJsonata": ["$exists(vulnerabilityFixVersion)"],
       "matchUpdateTypes": ["major"],
       "addLabels": ["security"],
       "automerge": false
