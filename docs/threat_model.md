@@ -1421,6 +1421,37 @@ This section documents specific security findings that have been analyzed, triag
   * [GitHub CLI Repository](https://github.com/cli/cli)
   * [GitHub CLI v2.86.0 go.mod](https://github.com/cli/cli/blob/v2.86.0/go.mod)
 
+### CVE-2025-15558: Docker CLI Windows-only Local Privilege Escalation
+
+* **Component:** `app` (github.com/docker/cli, bundled in GitHub CLI binary)
+* **Scanner:** Trivy
+* **Severity:** HIGH (CVSS 7.0)
+* **Status:** **Not Applicable / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2025-15558 is a local privilege escalation vulnerability (CWE-427: Uncontrolled Search Path Element) in the Docker CLI for Windows. The Docker CLI searches for plugin binaries in `C:\ProgramData\Docker\cli-plugins`, a directory that does not exist by default. On Windows, low-privileged users can create directories under `C:\ProgramData`. An attacker can pre-create the `cli-plugins` directory and place a malicious executable named after a legitimate Docker CLI plugin (e.g., `docker-compose.exe`, `docker-buildx.exe`). When a privileged user subsequently runs a Docker CLI plugin command or starts Docker Desktop, the attacker's malicious binary executes with elevated privileges. The vulnerability was fixed by removing `%PROGRAMDATA%\Docker\cli-plugins` from the legacy search paths in [docker/cli#6713](https://github.com/docker/cli/pull/6713).
+  * **The Fix:** Fixed in Docker CLI v29.2.0 and Docker Compose v5.1.0. The upstream advisory explicitly states that **non-Windows installations are not impacted**.
+  * **Current Status (as of March 2026):** This action runs exclusively inside a Linux container (`node:24.13.1-trixie-slim`). The vulnerable Windows code path (`C:\ProgramData` directory search logic) is not present or exercisable on Linux. While the GitHub CLI binary bundled in our container includes `github.com/docker/cli` as a transitive dependency, the attack vector — a low-privileged Windows user planting executables in a Windows-specific directory — simply does not exist in a Linux environment. Trivy detects this CVE by inspecting the Go module metadata embedded in the `gh` binary, but the affected code path is guarded by OS-specific build constraints that are not active on Linux.
+  * **Why Trivy Detects It:** Trivy performs static analysis of Go binaries and identifies bundled dependencies regardless of OS-specific build constraints. It reports the vulnerability because `github.com/docker/cli` is present in the GitHub CLI binary's module graph, even though the Windows-specific vulnerable code path is never executed in a Linux container.
+  * **Attack Surface in Our Context:** None. The vulnerability requires:
+    * A Windows operating system (the attack exploits `C:\ProgramData` directory creation)
+    * A local attacker who can create directories on the Windows filesystem
+    * A privileged user who subsequently invokes Docker CLI plugin functionality
+    None of these conditions apply to this action:
+    * The container runs on Linux (not Windows)
+    * GitHub Actions runners execute in isolated, ephemeral Linux environments
+    * The action does not invoke Docker CLI plugin commands
+* **Risk Assessment:**
+  * **Likelihood:** None. The vulnerability is Windows-specific and the action runs exclusively on Linux. The OS-level condition required for exploitation is structurally absent.
+  * **Impact:** None in our context. The Windows privilege escalation attack surface does not exist in a Linux container.
+  * **Overall Risk:** None. This is a confirmed false-positive detection for our Linux deployment. The upstream advisory explicitly lists non-Windows installations as unaffected.
+* **Mitigation:** Not applicable — this vulnerability does not affect Linux deployments. The finding is suppressed via `.trivyignore` because the affected platform (Windows) is not used. If this action is ever ported to run on Windows runners, this assessment should be re-evaluated and the dependency updated to Docker CLI v29.2.0 or later.
+* **Acceptance Date:** 2026-03-07
+* **References:**
+  * [NVD CVE-2025-15558](https://nvd.nist.gov/vuln/detail/CVE-2025-15558)
+  * [GitHub Advisory: GHSA-p436-gjf2-799p](https://github.com/advisories/GHSA-p436-gjf2-799p)
+  * [docker/cli Pull Request #6713 (fix)](https://github.com/docker/cli/pull/6713)
+  * [Docker CLI Release Notes](https://docs.docker.com/engine/release-notes/29.2/)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
