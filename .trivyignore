@@ -397,3 +397,17 @@ CVE-2025-61730
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-02-22
 CVE-2026-26960
+
+# Not Applicable: Docker CLI Windows-only Local Privilege Escalation (CVE-2025-15558)
+# CVE-2025-15558 is a Windows-specific local privilege escalation vulnerability in github.com/docker/cli.
+# The vulnerability exploits an uncontrolled search path element: on Windows, Docker CLI searches
+# C:\ProgramData\Docker\cli-plugins, a directory that low-privileged users can create, allowing
+# them to plant malicious binaries that execute with elevated privileges when a privileged user
+# runs a Docker CLI plugin command.
+# This action runs exclusively in a Linux container (node:24.13.1-trixie-slim). The vulnerable
+# Windows code path (C:\ProgramData search logic) is not present or exercisable on Linux.
+# Non-Windows installations are explicitly noted as unaffected in the upstream advisory.
+# Fixed in Docker CLI v29.2.0 (upstream). The gh CLI binary bundles docker/cli, but since
+# we only run on Linux, the attack vector does not apply.
+# Acceptance date: 2026-03-07
+CVE-2025-15558
