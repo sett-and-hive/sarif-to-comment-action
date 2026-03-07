@@ -411,3 +411,14 @@ CVE-2026-26960
 # we only run on Linux, the attack vector does not apply.
 # Acceptance date: 2026-03-07
 CVE-2025-15558
+
+# Accepted Risk: Unknown vulnerability in app container (CVE-2026-27904)
+# Trivy detected CVE-2026-27904 but provided no specific package or version information.
+# The affected component is listed as "app" with package "unknown" and version "unknown".
+# Description references versions "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.4"
+# but the affected package is unknown, making it impossible to assess the real attack surface.
+# No fixed version is available. May be a false positive or very recently disclosed CVE.
+# Risk is unknown: without package details, cannot assess attack surface or impact.
+# Will continue monitoring for updates and re-scan periodically.
+# Acceptance date: 2026-03-07
+CVE-2026-27904

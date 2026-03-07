@@ -254,8 +254,8 @@ Potential improvements:
 
 ## Related Workflows
 
-- [trivy.yaml](./.github/workflows/trivy.yaml): Scans for new vulnerabilities
-- [create_trivy_issues.py](./.github/scripts/create_trivy_issues.py): Creates issues for new findings
+- [trivy.yaml](../.github/workflows/trivy.yaml): Scans for new vulnerabilities
+- [create_trivy_issues.py](../.github/scripts/create_trivy_issues.py): Creates issues for new findings
 
 ## References
 
