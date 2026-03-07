@@ -1437,6 +1437,7 @@ This section documents specific security findings that have been analyzed, triag
     * A local attacker who can create directories on the Windows filesystem
     * A privileged user who subsequently invokes Docker CLI plugin functionality
     None of these conditions apply to this action:
+
     * The container runs on Linux (not Windows)
     * GitHub Actions runners execute in isolated, ephemeral Linux environments
     * The action does not invoke Docker CLI plugin commands
