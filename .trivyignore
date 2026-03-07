@@ -422,3 +422,13 @@ CVE-2025-15558
 # Will continue monitoring for updates and re-scan periodically.
 # Acceptance date: 2026-03-07
 CVE-2026-27904
+
+# Mitigated: minimatch Security Vulnerability (CVE-2026-27903)
+# The CVE affects minimatch versions prior to 10.2.2 (and 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.3
+# for respective major version branches).
+# minimatch is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including minimatch, are updated to their latest compatible versions (>= 10.2.2).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-03-07
+CVE-2026-27903
