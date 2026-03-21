@@ -1615,6 +1615,7 @@ This section documents specific security findings that have been analyzed, triag
 | Added `allowedVersions: ">=0.35.0"` for `aquasecurity/trivy-action` in Renovate to block auto-updates into compromised version range | `renovate.json` | Hardening commit |
 | Added `dependencyDashboardApproval: true` for `aquasecurity/setup-trivy` in Renovate (pending verified clean releases) | `renovate.json` | Hardening commit |
 | Tightened workflow `permissions` to least-privilege per job: top-level `contents: read`; `build-and-scan` job adds `pull-requests: write`; `create-vulnerability-issues` job adds `issues: write` | `.github/workflows/trivy.yaml` | Hardening commit |
+| Switched both workflow jobs from `egress-policy: audit` to `egress-policy: block` with explicit `allowed-endpoints` covering only required destinations (GitHub API, GHCR, Docker Hub, PyPI) | `.github/workflows/trivy.yaml` | Egress hardening commit |
 
 ### Verified Clean SHA
 
@@ -1622,5 +1623,4 @@ This section documents specific security findings that have been analyzed, triag
 
 ### Residual Risk
 
-* **Egress policy:** Both workflow jobs use `egress-policy: audit` via `step-security/harden-runner`. Switching to `egress-policy: block` would provide the strongest protection against exfiltration, but requires an explicit `allowedEndpoints` configuration covering Trivy DB download servers, Docker Hub, GitHub APIs, etc. This is tracked as a follow-up hardening task.
 * **`aquasecurity/setup-trivy`:** This package is not currently used in any workflow in this repository. The Renovate `dependencyDashboardApproval: true` rule is a precautionary control in case it is added in the future before additional clean releases are verified.
