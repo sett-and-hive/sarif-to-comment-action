@@ -1590,6 +1590,7 @@ This section documents specific security findings that have been analyzed, triag
 **Date:** 2026-03-19 UTC (detected) / 2026-03-21 UTC (clean SHA confirmed by Aqua Security engineering)
 
 **Affected packages:**
+
 * `aquasecurity/trivy-action` — 75 of 76 version tags force-pushed to malicious commits
 * `aquasecurity/setup-trivy` — 7 version tags force-pushed to malicious commits
 
