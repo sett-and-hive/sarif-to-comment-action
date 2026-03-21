@@ -14,8 +14,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
-  issues: write
 
 concurrency:
   group: trivy-${{ github.ref }}
@@ -30,6 +28,9 @@ env:
 jobs:
   build-and-scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Harden the runner
         uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
@@ -68,7 +69,7 @@ jobs:
 
       # 3. Scan Config (Terraform/Dockerfiles)
       - name: Run Trivy config scanner
-        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         with:
           scan-type: config
           hide-progress: false
@@ -79,7 +80,7 @@ jobs:
 
       # 4. Scan The Built Image
       - name: Run Trivy image scanner on App
-        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         with:
           scan-type: image
           image-ref: "${{ env.APP_IMAGE_TAG }}"
@@ -191,6 +192,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-scan
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      issues: write
 
     steps:
       - name: Harden the runner

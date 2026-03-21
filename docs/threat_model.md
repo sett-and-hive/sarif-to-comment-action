@@ -69,6 +69,10 @@ The interface between the Action and the GitHub API. The Action operates with th
 
 The interface between the Action code and its NPM Dependencies.
 
+### Boundary 4 (CI Workflow Actions)
+
+The interface between the CI workflow YAML files and the third-party GitHub Actions they invoke (e.g., `aquasecurity/trivy-action`, `step-security/harden-runner`). A compromised action tag can execute arbitrary code with the permissions granted to the workflow job.
+
 ## Threat Analysis (STRIDE)
 
 ### S - Spoofing
@@ -121,6 +125,40 @@ Low/Medium (common vector in Node.js ecosystem).
 Pin dependencies to specific SHA hashes or lockfiles (package-lock.json) rather than version ranges.
 
 Use Renovate or Dependabot to monitor for upstream vulnerabilities.
+
+#### Threat
+
+Compromised Third-Party GitHub Action (CI Workflow Supply Chain)
+
+##### Description
+
+A malicious actor gains write access to a third-party GitHub Action repository and force-pushes a compromised commit to existing version tags. Any workflow referencing the action by tag (e.g., `@v1`) silently executes the attacker's code on the next run.
+
+**Realized example — Team PCP attack (2026-03-19):** Attackers force-pushed 75 of 76 `aquasecurity/trivy-action` tags and 7 `aquasecurity/setup-trivy` tags to credential-stealing malware. The malware exfiltrated GitHub tokens, cloud credentials, SSH keys, Kubernetes tokens, and any secrets in the environment.
+
+Known indicators of compromise (IOCs):
+
+* `scan.aquasecurtiy[.]org` — C2 domain (typosquatted, note misspelling)
+* `45.148.10.212` — C2 IP
+* `plug-tab-protective-relay.trycloudflare.com` — Cloudflare Tunnel C2
+* `tpcp-docs` — GitHub repository name used for fallback exfiltration
+
+##### Impact
+
+Critical. Arbitrary code execution in the CI runner with access to all secrets, tokens, and credentials available to the workflow job. Can lead to full repository compromise, supply-chain poisoning of artifacts, and credential exfiltration.
+
+##### Likelihood
+
+Medium. Supply-chain attacks on popular GitHub Actions have increased in frequency. Tag mutability is a fundamental feature of Git that any maintainer or attacker with repo write access can exploit at any time.
+
+##### Mitigation
+
+* **Pin all GitHub Actions to immutable full-length commit SHAs** (e.g., `uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0`) rather than mutable tags. SHA references cannot be silently redirected.
+* **Use `helpers:pinGitHubActionDigests` in Renovate** to automatically maintain SHA pins while still tracking version updates.
+* **Set `allowedVersions`** in Renovate for affected packages to block auto-update into known-compromised version ranges (e.g., `allowedVersions: ">=0.35.0"` for `aquasecurity/trivy-action`).
+* **Require `dependencyDashboardApproval: true`** in Renovate for packages with unverified clean releases (e.g., `aquasecurity/setup-trivy`).
+* **Apply least-privilege `permissions`** at the job level in workflow YAML so that a compromised action cannot access more than what the job requires.
+* **Enable egress filtering** via `step-security/harden-runner` to restrict outbound network traffic to known-good endpoints, blocking exfiltration to unknown C2 infrastructure.
 
 #### Threat
 
@@ -269,6 +307,7 @@ inputs should be validated against an allowlist (alphanumeric only).
 
 | Severity  | Threat                  | Category  | Remediation                                                                      |
 | --------- | ----------------------  |-----------|----------------------------------------------------------------------------------|
+| Critical  | CI Action Supply Chain Compromise (e.g., trivy-action tag poisoning) | Tampering | Pin all GitHub Actions to full commit SHAs; apply job-level least-privilege permissions; enable egress filtering. |
 | High      | Supply Chain Compromise | Tampering | Pin dependencies and review `@security-alert/sarif-to-comment` security posture. |
 | High      | Command Injection       | EoP       | Audit code to ensure inputs (branch, title) are not passed to `exec()`.          |
 | Medium    | SARIF "Bomb" / OOM      | DoS       | Add file size checks before parsing JSON.                                        |
@@ -1541,3 +1580,47 @@ This section documents specific security findings that have been analyzed, triag
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
 * **Node Level:** Native dependencies are compiled/fetched using `--ignore-scripts` to prevent arbitrary code execution during the build phase.
 * **Supply Chain:** Sub-dependencies of the wrapped library are force-updated during the Docker build (`npm update --depth 99`) to ensure critical patches are applied even if the upstream `package.json` is stale.
+
+---
+
+## Incident Record: Team PCP Supply-Chain Attack on aquasecurity/trivy-action (2026-03-19)
+
+### Incident Summary
+
+**Date:** 2026-03-19 UTC (detected) / 2026-03-21 UTC (clean SHA confirmed by Aqua Security engineering)
+
+**Affected packages:**
+
+* `aquasecurity/trivy-action` — 75 of 76 version tags force-pushed to malicious commits
+* `aquasecurity/setup-trivy` — 7 version tags force-pushed to malicious commits
+
+**Attack vector:** Attackers with write access to the upstream repository force-pushed existing Git tags to commits containing credential-stealing malware. Workflows that referenced these actions by tag (e.g., `@v0.33.0`) silently began executing the malicious code on any workflow run triggered after the force-push.
+
+**Malware behaviour:** Exfiltrated GitHub tokens, cloud provider credentials, SSH keys, Kubernetes service account tokens, and all secrets visible in the CI environment.
+
+**Known IOCs:**
+
+| Indicator | Type |
+|-----------|------|
+| `scan.aquasecurtiy[.]org` | C2 domain (typosquatted — note misspelling of "security") |
+| `45.148.10.212` | C2 IP address |
+| `plug-tab-protective-relay.trycloudflare.com` | Cloudflare Tunnel C2 endpoint |
+| `tpcp-docs` | GitHub repository used for fallback exfiltration |
+
+### Mitigations Applied to This Repository
+
+| Action | File(s) Changed | Commit |
+|--------|-----------------|--------|
+| Pinned both `aquasecurity/trivy-action` references from compromised tag `b6643a29` (v0.33.1) to verified clean SHA `57a97c7e7821a5776cebc9bb87c984fa69cba8f1` (v0.35.0) | `.github/workflows/trivy.yaml` | Initial fix commit |
+| Added `allowedVersions: ">=0.35.0"` for `aquasecurity/trivy-action` in Renovate to block auto-updates into compromised version range | `renovate.json` | Hardening commit |
+| Added `dependencyDashboardApproval: true` for `aquasecurity/setup-trivy` in Renovate (pending verified clean releases) | `renovate.json` | Hardening commit |
+| Tightened workflow `permissions` to least-privilege per job: top-level `contents: read`; `build-and-scan` job adds `pull-requests: write`; `create-vulnerability-issues` job adds `issues: write` | `.github/workflows/trivy.yaml` | Hardening commit |
+
+### Verified Clean SHA
+
+`aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1` — corresponds to tag `v0.35.0`, confirmed clean by Aqua Security engineering on 2026-03-21.
+
+### Residual Risk
+
+* **Egress policy:** Both workflow jobs use `egress-policy: audit` via `step-security/harden-runner`. Switching to `egress-policy: block` would provide the strongest protection against exfiltration, but requires an explicit `allowedEndpoints` configuration covering Trivy DB download servers, Docker Hub, GitHub APIs, etc. This is tracked as a follow-up hardening task.
+* **`aquasecurity/setup-trivy`:** This package is not currently used in any workflow in this repository. The Renovate `dependencyDashboardApproval: true` rule is a precautionary control in case it is added in the future before additional clean releases are verified.
