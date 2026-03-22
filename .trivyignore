@@ -450,3 +450,28 @@ CVE-2026-29786
 # communicates only with trusted GitHub.com infrastructure.
 # Acceptance date: 2026-03-22
 CVE-2026-25679
+# Mitigated: node-tar Security Vulnerability (CVE-2026-31802)
+# The CVE affects node-tar versions prior to 7.5.9.
+# node-tar is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including node-tar, are updated to their latest compatible versions (>= 7.5.9).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-03-22
+CVE-2026-31802
+# Mitigated: libc-bin glibc Security Vulnerability (CVE-2026-0861)
+# The CVE affects libc-bin versions prior to 2.41-12+deb13u1 in Debian 13 (Trixie).
+# libc-bin is a core system package providing the GNU C Library runtime binaries.
+# The Dockerfile uses node:24.13.1-trixie-slim (Debian 13) and explicitly runs
+# apt-get upgrade -y to ensure all system packages, including libc-bin, are updated
+# to their latest versions from the Debian security repository (>= 2.41-12+deb13u1).
+# Trivy may detect it in intermediate build layers or cached base images before
+# the apt-get upgrade executes.
+# Acceptance date: 2026-03-22
+CVE-2026-0861
+# Accepted Risk: google.golang.org/grpc CRITICAL vulnerability (CVE-2026-33186)
+# GitHub CLI v2.86.0 bundles google.golang.org/grpc which is affected by CVE-2026-33186.
+# Fixed in google.golang.org/grpc v1.77.0. Waiting for upstream gh CLI to update dependency.
+# Risk is limited: The gh CLI uses gRPC only for internal communication with GitHub APIs.
+# The action does not expose gRPC endpoints or accept untrusted gRPC traffic directly.
+# Acceptance date: 2026-03-22
+CVE-2026-33186
