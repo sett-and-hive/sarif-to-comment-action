@@ -441,3 +441,11 @@ CVE-2026-27903
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-03-07
 CVE-2026-29786
+
+# Accepted Risk: google.golang.org/grpc CRITICAL vulnerability (CVE-2026-33186)
+# GitHub CLI v2.86.0 bundles google.golang.org/grpc which is affected by CVE-2026-33186.
+# Fixed in google.golang.org/grpc v1.77.0. Waiting for upstream gh CLI to update dependency.
+# Risk is limited: The gh CLI uses gRPC only for internal communication with GitHub APIs.
+# The action does not expose gRPC endpoints or accept untrusted gRPC traffic directly.
+# Acceptance date: 2026-03-22
+CVE-2026-33186
