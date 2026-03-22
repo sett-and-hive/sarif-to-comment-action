@@ -1578,6 +1578,7 @@ This section documents specific security findings that have been analyzed, triag
 ### CVE-2026-31802: node-tar Security Vulnerability
 
 * **Component:** `node-tar` (NPM Package, transitive dependency)
+
 ### CVE-2026-0861: libc-bin glibc Security Vulnerability
 
 * **Component:** `libc-bin` (GNU C Library runtime binaries, Debian system package)
