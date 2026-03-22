@@ -21,13 +21,16 @@
   // ----------------------------
   // SLOW LANE (default behavior)
   // ----------------------------
-  // Wait "small weeks" before PR creation, not just before merge.
-  // Renovate recommends combining:
-  //   minimumReleaseAge + prCreation="not-pending" + internalChecksFilter="strict"
-  // to suppress branch/PR creation until the waiting period has elapsed.
+  // Wait three weeks before PR creation.
+  // Use minimumReleaseAge + internalChecksFilter="strict" to suppress PR creation
+  // until the waiting period has elapsed via the renovate/stability-days branch check.
+  // prCreation="immediate" is used instead of "not-pending" because CI workflows only
+  // trigger on pull_request events (not on branch pushes), so "not-pending" creates a
+  // deadlock: branches are created but PRs are never opened because no external CI
+  // checks run on the branch to transition out of the pending state.
   "minimumReleaseAge": "21 days",
   "minimumReleaseAgeBehaviour": "timestamp-required",
-  "prCreation": "not-pending",
+  "prCreation": "immediate",
   "internalChecksFilter": "strict",
 
   // Slow down overall throughput/noise
