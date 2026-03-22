@@ -1597,6 +1597,29 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2026-0861](https://nvd.nist.gov/vuln/detail/CVE-2026-0861)
   * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-0861)
+### CVE-2026-33186: google.golang.org/grpc CRITICAL Vulnerability
+
+* **Component:** `google.golang.org/grpc` (Go Package bundled in GitHub CLI)
+* **Scanner:** Trivy
+* **Severity:** Critical
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-33186 is a CRITICAL severity vulnerability in the `google.golang.org/grpc` Go package affecting version 1.79.3 and earlier. The fix is available in `google.golang.org/grpc` v1.77.0 and later. gRPC (gRPC Remote Procedure Calls) is a high-performance, open-source universal RPC framework developed by Google, used extensively in Go applications for service-to-service communication.
+  * **The Fix:** The vulnerability is fixed in `google.golang.org/grpc` v1.77.0 and later versions.
+  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.86.0** (Released January 21, 2026), which bundles a version of `google.golang.org/grpc` that is affected by this CVE. As of this documentation (March 2026), version 2.86.0 remains the latest GitHub CLI release.
+  * **Why We Cannot Upgrade:** The GitHub CLI upstream project has not released a version with the updated `google.golang.org/grpc` dependency. We are dependent on the upstream project to rebuild and release with the patched version.
+* **Risk Assessment:**
+  * **Likelihood:** Low. The action uses the GitHub CLI (`gh`) exclusively for making outbound API requests to trusted GitHub.com infrastructure. The gRPC library is used internally by the CLI for inter-process or service communication, not as an exposed network service. An attacker would need to compromise GitHub's infrastructure or intercept the outbound connection to exploit this vulnerability.
+  * **Impact:** Unknown without the full CVE details. The finding is detected in the `app` component where `google.golang.org/grpc` is a transitive dependency of the bundled `gh` binary.
+  * **Overall Risk:** Low in our deployment context. The GitHub CLI is invoked in a short-lived, ephemeral GitHub Actions runner environment, making sustained exploitation scenarios unlikely. The action does not accept inbound gRPC connections from untrusted sources.
+* **Mitigation Strategy:**
+  1. Monitor the GitHub CLI releases for a version that bundles `google.golang.org/grpc` v1.77.0 or later
+  2. Update the Dockerfile immediately when a patched `gh` version becomes available
+  3. The finding is suppressed via `.trivyignore` as an accepted risk until the upstream fix is available
+* **Acceptance Date:** 2026-03-22
+* **References:**
+  * [NVD CVE-2026-33186](https://nvd.nist.gov/vuln/detail/CVE-2026-33186)
+  * [google.golang.org/grpc module](https://pkg.go.dev/google.golang.org/grpc)
 
 ### General Dependency Policy
 
