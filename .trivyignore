@@ -441,3 +441,12 @@ CVE-2026-27903
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-03-07
 CVE-2026-29786
+
+# Accepted Risk: Go stdlib vulnerability (CVE-2026-25679)
+# GitHub CLI v2.86.0 is compiled with Go 1.25.5, which is vulnerable to CVE-2026-25679.
+# The CVE affects the Go standard library; fixed in Go 1.25.8 and 1.26.1.
+# Waiting for upstream GitHub CLI to rebuild with a patched Go version (1.25.8+ or 1.26.1+).
+# Risk is low: the action runs in an ephemeral, isolated GitHub Actions environment and
+# communicates only with trusted GitHub.com infrastructure.
+# Acceptance date: 2026-03-22
+CVE-2026-25679

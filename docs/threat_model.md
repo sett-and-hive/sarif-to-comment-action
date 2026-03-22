@@ -1575,6 +1575,37 @@ This section documents specific security findings that have been analyzed, triag
   * [NVD CVE-2026-29786](https://nvd.nist.gov/vuln/detail/CVE-2026-29786)
   * [node-tar npm package](https://www.npmjs.com/package/tar)
 
+### CVE-2026-25679: Go Standard Library (stdlib) Vulnerability
+
+* **Component:** `stdlib` (Go standard library embedded in `gh` binary)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-25679 is a vulnerability in the Go standard library (`stdlib`). The CVE description references fixed versions 1.25.8 and 1.26.1, indicating that all Go releases prior to those versions are affected.
+  * **The Fix:** Fixed in Go 1.25.8 and 1.26.1. GitHub CLI v2.86.0 (the latest version as of March 2026) is compiled with Go 1.25.5, which is vulnerable. We are waiting for upstream GitHub CLI to rebuild with the patched Go version (1.25.8 or 1.26.1).
+  * **Current Status (as of March 2026):** GitHub CLI v2.86.0 uses Go 1.25.5. The vulnerability is not yet fixed in the available GitHub CLI releases. The next CLI release that updates to Go 1.25.8+ or 1.26.1+ will automatically resolve this issue.
+  * **Why Trivy Detects It:** Trivy correctly identifies that the GitHub CLI binary (`/usr/local/bin/gh`) embedded in the container was compiled with Go 1.25.5, which contains the vulnerable standard library implementation.
+  * **Attack Surface in Our Context:** The sarif-to-comment-action uses the GitHub CLI to interact with GitHub's API. The risk is significantly reduced because:
+    * GitHub Actions run in ephemeral, isolated environments
+    * The GitHub CLI primarily makes outbound requests to trusted GitHub.com infrastructure
+    * No untrusted input reaches the vulnerable code path through normal action usage
+* **Risk Assessment:**
+  * **Likelihood:** Low. GitHub Actions runners operate in isolated network environments with all communications directed to trusted GitHub.com endpoints.
+  * **Impact:** Medium. The exact attack surface depends on the specific nature of the vulnerability, but the isolated execution environment limits the exploitable attack paths.
+  * **Overall Risk:** Low. While the vulnerability is real and affects the GitHub CLI, the practical risk is mitigated by the isolated execution environment and the trusted nature of GitHub's infrastructure. We will monitor for GitHub CLI updates and rebuild the container image when a patched version becomes available.
+* **Mitigation:** The vulnerability is marked as an accepted risk and suppressed via `.trivyignore` while waiting for upstream GitHub CLI to release a version compiled with Go 1.25.8+ or 1.26.1+. We will:
+  * Monitor GitHub CLI releases for versions compiled with Go 1.25.8+ or 1.26.1+
+  * Rebuild the container image immediately when a patched GitHub CLI version is available
+  * Continue applying OS-level security patches via `apt-get upgrade -y`
+  * Re-evaluate the risk if new exploitation techniques or attack scenarios are discovered
+  * **Action Item:** Check for GitHub CLI updates and upgrade to a version using Go 1.25.8+ or 1.26.1+ as soon as available
+* **Acceptance Date:** 2026-03-22
+* **References:**
+  * [NVD CVE-2026-25679](https://nvd.nist.gov/vuln/detail/CVE-2026-25679)
+  * [GitHub CLI Repository](https://github.com/cli/cli)
+  * [GitHub CLI v2.86.0 go.mod](https://github.com/cli/cli/blob/v2.86.0/go.mod)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
