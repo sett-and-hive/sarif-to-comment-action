@@ -1605,6 +1605,7 @@ This section documents specific security findings that have been analyzed, triag
   * [NVD CVE-2026-25679](https://nvd.nist.gov/vuln/detail/CVE-2026-25679)
   * [GitHub CLI Repository](https://github.com/cli/cli)
   * [GitHub CLI v2.86.0 go.mod](https://github.com/cli/cli/blob/v2.86.0/go.mod)
+
 ### CVE-2026-31802: node-tar Security Vulnerability
 
 * **Component:** `node-tar` (NPM Package, transitive dependency)
