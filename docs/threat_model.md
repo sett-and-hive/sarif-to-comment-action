@@ -1597,6 +1597,7 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2026-0861](https://nvd.nist.gov/vuln/detail/CVE-2026-0861)
   * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-0861)
+
 ### CVE-2026-33186: google.golang.org/grpc CRITICAL Vulnerability
 
 * **Component:** `google.golang.org/grpc` (Go Package bundled in GitHub CLI)
