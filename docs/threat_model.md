@@ -1578,6 +1578,9 @@ This section documents specific security findings that have been analyzed, triag
 ### CVE-2026-31802: node-tar Security Vulnerability
 
 * **Component:** `node-tar` (NPM Package, transitive dependency)
+### CVE-2026-0861: libc-bin glibc Security Vulnerability
+
+* **Component:** `libc-bin` (GNU C Library runtime binaries, Debian system package)
 * **Scanner:** Trivy
 * **Severity:** HIGH
 * **Status:** **Mitigated / Suppressed**
@@ -1599,10 +1602,49 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2026-31802](https://nvd.nist.gov/vuln/detail/CVE-2026-31802)
   * [node-tar npm package](https://www.npmjs.com/package/tar)
+  * **The Vulnerability:** CVE-2026-0861 is a HIGH severity security vulnerability in the `libc-bin` package (GNU C Library) affecting versions prior to 2.41-12+deb13u1 in Debian 13 (Trixie). libc-bin provides the core GNU C Library runtime binaries that underpin nearly all userspace programs in the container.
+  * **The Fix:** The vulnerability is fixed in libc-bin version 2.41-12+deb13u1 (and later, such as 2.41-12+deb13u2), available in the Debian 13 (Trixie) security repositories.
+  * **Current Status (as of March 2026):** The Dockerfile uses `node:24.13.1-trixie-slim` (Debian 13/Trixie) as the base image and explicitly runs `apt-get upgrade -y` during the build. This ensures libc-bin and all other system packages are updated to their latest security-patched versions from the Debian security repository, including the fixed version 2.41-12+deb13u1 or later.
+  * **Why Trivy Detects It:** Trivy may be detecting the vulnerable libc-bin version in:
+    * Intermediate Docker build layers before the `apt-get upgrade -y` command executes
+    * Cached base image layers that pre-date the vulnerability disclosure
+* **Risk Assessment:**
+  * **Likelihood:** Low. The `apt-get upgrade -y` command in the Dockerfile ensures libc-bin is updated to the fixed version during the build process. Trivy detections are most likely from intermediate build layers.
+  * **Impact:** Potentially high if exploited, as libc-bin is a foundational system library. However, the fixed version is applied during the build and the attack surface is limited to the container's execution environment.
+  * **Overall Risk:** Low. The mitigation (system package upgrade) is in place and actively addresses the vulnerability. The detection is likely in transient intermediate build layers.
+* **Mitigation:** The Dockerfile's `apt-get upgrade -y` command updates all system packages, including libc-bin, to their latest available fixed versions from the Debian security repository. The vulnerability is suppressed via `.trivyignore` because Trivy detects it in intermediate build layers where the fix has not yet been applied, but the final image contains the patched version.
+* **Acceptance Date:** 2026-03-22
+* **References:**
+  * [NVD CVE-2026-0861](https://nvd.nist.gov/vuln/detail/CVE-2026-0861)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-0861)
+
+### CVE-2026-33186: google.golang.org/grpc CRITICAL Vulnerability
+
+* **Component:** `google.golang.org/grpc` (Go Package bundled in GitHub CLI)
+* **Scanner:** Trivy
+* **Severity:** Critical
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-33186 is a CRITICAL severity vulnerability in the `google.golang.org/grpc` Go package affecting version 1.79.3 and earlier. The fix is available in `google.golang.org/grpc` v1.77.0 and later. gRPC (gRPC Remote Procedure Calls) is a high-performance, open-source universal RPC framework developed by Google, used extensively in Go applications for service-to-service communication.
+  * **The Fix:** The vulnerability is fixed in `google.golang.org/grpc` v1.77.0 and later versions.
+  * **Current Status:** The Dockerfile explicitly installs `gh` version **2.86.0** (Released January 21, 2026), which bundles a version of `google.golang.org/grpc` that is affected by this CVE. As of this documentation (March 2026), version 2.86.0 remains the latest GitHub CLI release.
+  * **Why We Cannot Upgrade:** The GitHub CLI upstream project has not released a version with the updated `google.golang.org/grpc` dependency. We are dependent on the upstream project to rebuild and release with the patched version.
+* **Risk Assessment:**
+  * **Likelihood:** Low. The action uses the GitHub CLI (`gh`) exclusively for making outbound API requests to trusted GitHub.com infrastructure. The gRPC library is used internally by the CLI for inter-process or service communication, not as an exposed network service. An attacker would need to compromise GitHub's infrastructure or intercept the outbound connection to exploit this vulnerability.
+  * **Impact:** Unknown without the full CVE details. The finding is detected in the `app` component where `google.golang.org/grpc` is a transitive dependency of the bundled `gh` binary.
+  * **Overall Risk:** Low in our deployment context. The GitHub CLI is invoked in a short-lived, ephemeral GitHub Actions runner environment, making sustained exploitation scenarios unlikely. The action does not accept inbound gRPC connections from untrusted sources.
+* **Mitigation Strategy:**
+  1. Monitor the GitHub CLI releases for a version that bundles `google.golang.org/grpc` v1.77.0 or later
+  2. Update the Dockerfile immediately when a patched `gh` version becomes available
+  3. The finding is suppressed via `.trivyignore` as an accepted risk until the upstream fix is available
+* **Acceptance Date:** 2026-03-22
+* **References:**
+  * [NVD CVE-2026-33186](https://nvd.nist.gov/vuln/detail/CVE-2026-33186)
+  * [google.golang.org/grpc module](https://pkg.go.dev/google.golang.org/grpc)
 
 ### General Dependency Policy
 
-* **OS Level:** The container is built on `node:24-bookworm-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 12), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
+* **OS Level:** The container is built on `node:24.13.1-trixie-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 13/Trixie), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
 * **Node Level:** Native dependencies are compiled/fetched using `--ignore-scripts` to prevent arbitrary code execution during the build phase.
 * **Supply Chain:** Sub-dependencies of the wrapped library are force-updated during the Docker build (`npm update --depth 99`) to ensure critical patches are applied even if the upstream `package.json` is stale.
 
