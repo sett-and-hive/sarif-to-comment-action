@@ -24,14 +24,14 @@ repos:
 
   # Linter for GitHub Actoin workflow files
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.11
+    rev: v1.7.12
     hooks:
     - id: actionlint-docker
 
   # Linter for markdown files
   # This hook uses fast rumdl, based on DavidAnson Node.js markdownlint, for speed
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.58
+    rev: v0.1.67
     hooks:
       - id: rumdl
         # MD013: Line length rule disabled to allow long URLs and code blocks.
@@ -50,7 +50,7 @@ repos:
   # Prettifier for shell scripts
   # Try to get close to Google style guide
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.12.0-2
+    rev: v3.13.0-1
     hooks:
       - id: shfmt-docker # Docker image (requires Docker to run)
         language: docker_image
