@@ -1333,7 +1333,7 @@ This section documents specific security findings that have been analyzed, triag
     * Node.js uses OpenSSL for TLS/HTTPS connections (e.g., GitHub API calls)
     * The GitHub CLI (`gh`) uses OpenSSL for secure communications
     * System package management tools (apt, curl) use OpenSSL for verifying package signatures over HTTPS
-    While we don't directly parse CMS content, the presence of a pre-authentication RCE vulnerability in a core system library represents a significant supply chain risk. An attacker could potentially exploit this through:
+  While we don't directly parse CMS content, the presence of a pre-authentication RCE vulnerability in a core system library represents a significant supply chain risk. An attacker could potentially exploit this through:
 
     * Man-in-the-middle attacks on network communications if TLS certificate validation logic passes through vulnerable CMS parsing code paths
     * Malicious GitHub API responses containing crafted CMS content (unlikely but theoretically possible)
@@ -1435,7 +1435,7 @@ This section documents specific security findings that have been analyzed, triag
     * A network-local attacker with the ability to intercept and inject TLS handshake messages
     * The attacker must be positioned between the GitHub Action runner and GitHub's API servers
     * Exploitation requires precise timing to inject messages during the TLS 1.3 handshake
-    The risk is significantly reduced because:
+  The risk is significantly reduced because:
 
     * GitHub Actions run in ephemeral, isolated environments
     * The GitHub CLI primarily makes outbound requests to trusted GitHub.com infrastructure
@@ -1475,7 +1475,7 @@ This section documents specific security findings that have been analyzed, triag
     * A Windows operating system (the attack exploits `C:\ProgramData` directory creation)
     * A local attacker who can create directories on the Windows filesystem
     * A privileged user who subsequently invokes Docker CLI plugin functionality
-    None of these conditions apply to this action:
+  None of these conditions apply to this action:
 
     * The container runs on Linux (not Windows)
     * GitHub Actions runners execute in isolated, ephemeral Linux environments
