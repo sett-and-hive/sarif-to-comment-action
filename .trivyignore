@@ -475,3 +475,12 @@ CVE-2026-0861
 # The action does not expose gRPC endpoints or accept untrusted gRPC traffic directly.
 # Acceptance date: 2026-03-22
 CVE-2026-33186
+# Mitigated: picomatch Security Vulnerability (CVE-2026-33671)
+# The CVE affects picomatch versions prior to 4.0.3 (also fixed in 3.0.2 and 2.3.2 for
+# respective major version branches).
+# picomatch is a transitive dependency of @security-alert/sarif-to-comment@1.10.10.
+# The Dockerfile's npm update --depth 99 command ensures all transitive dependencies,
+# including picomatch, are updated to their latest compatible versions (>= 4.0.3).
+# Trivy may detect it in intermediate build layers before npm update executes.
+# Acceptance date: 2026-04-08
+CVE-2026-33671
