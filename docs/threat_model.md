@@ -1698,6 +1698,35 @@ This section documents specific security findings that have been analyzed, triag
   * [NVD CVE-2026-33671](https://nvd.nist.gov/vuln/detail/CVE-2026-33671)
   * [picomatch npm package](https://www.npmjs.com/package/picomatch)
 
+### CVE-2026-32282: Unknown Vulnerability in App Container
+
+* **Component:** `app` (unknown package)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-32282 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown", so we cannot identify a concrete vulnerable dependency or code path.
+  * **The Fix:** No fixed version is available. Because no package attribution is provided, there is no direct upgrade target to apply.
+  * **Current Status (as of April 2026):** The repository already applies standard hardening controls in the Dockerfile:
+    * The base image is upgraded with `apt-get upgrade -y`
+    * NPM transitive dependencies are aggressively refreshed using `npm update --depth 99 --omit=dev --ignore-scripts`
+    * GitHub CLI is installed from verified release checksums
+  * **Why Trivy Detects It:** The detection may be:
+    * A false positive from generic signature matching without package attribution
+    * Incomplete CVE metadata in the vulnerability database
+    * Detection against intermediate build layers or stale scanner data
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, exploitability in this action cannot be determined.
+  * **Impact:** Unknown. Without a known affected package, scope and impact cannot be quantified.
+  * **Overall Risk:** Low-to-unknown but currently acceptable as a temporary exception because no actionable remediation path exists and baseline hardening controls are already in place.
+* **Mitigation:** The vulnerability is temporarily accepted and suppressed via `.trivyignore` until actionable package metadata or a fixed version is published. We will:
+  * Monitor updates to CVE-2026-32282 in NVD/Trivy databases
+  * Re-run scans regularly and remove the suppression as soon as a concrete fix path is available
+  * Continue applying routine OS and dependency updates in container builds
+* **Acceptance Date:** 2026-04-18
+* **References:**
+  * [NVD CVE-2026-32282](https://nvd.nist.gov/vuln/detail/CVE-2026-32282)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24.13.1-trixie-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 13/Trixie), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.

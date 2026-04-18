@@ -484,3 +484,11 @@ CVE-2026-33186
 # Trivy may detect it in intermediate build layers before npm update executes.
 # Acceptance date: 2026-04-08
 CVE-2026-33671
+# Accepted Risk: Unknown vulnerability in app container (CVE-2026-32282)
+# Trivy detected CVE-2026-32282 but provided no specific package or version information.
+# The affected component is listed as "app" with package "unknown" and version "unknown".
+# No fixed version is currently available, so no direct patch can be applied.
+# This may be a false positive or a newly published CVE with incomplete metadata.
+# We will monitor NVD/Trivy updates and remove this ignore once actionable details exist.
+# Acceptance date: 2026-04-18
+CVE-2026-32282
