@@ -1727,6 +1727,31 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2026-32282](https://nvd.nist.gov/vuln/detail/CVE-2026-32282)
 
+### CVE-2026-32280: Go Standard Library (stdlib) Vulnerability
+
+* **Component:** `stdlib` (Go standard library embedded in `gh` binary)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-32280 is a HIGH severity vulnerability in the Go standard library (`stdlib`) detected in the app container image.
+  * **The Fix:** Fixed in Go 1.25.9 and 1.26.2.
+  * **Current Status (as of April 2026):** The Dockerfile pins GitHub CLI to `v2.86.0`, which is compiled with Go 1.25.5. This version is below the fixed Go versions for CVE-2026-32280.
+  * **Why We Cannot Upgrade Yet:** We rely on upstream GitHub CLI release artifacts. Until GitHub CLI publishes a release built with Go 1.25.9+ or 1.26.2+, we cannot directly remediate this CVE in the embedded `gh` binary.
+  * **Attack Surface in Our Context:** The action uses `gh` for outbound requests to trusted GitHub APIs in ephemeral GitHub Actions runners. No inbound Go service endpoint is exposed by this action.
+* **Risk Assessment:**
+  * **Likelihood:** Low. Exploitation would require an attacker to influence the specific vulnerable code path through our constrained usage of `gh`.
+  * **Impact:** Medium. A successful exploit would be limited to the current ephemeral workflow run.
+  * **Overall Risk:** Low-to-medium and temporarily acceptable while awaiting an upstream GitHub CLI rebuild with patched Go.
+* **Mitigation Strategy:**
+  1. Monitor GitHub CLI releases for builds using Go 1.25.9+ or 1.26.2+
+  2. Upgrade the Dockerfile `GH_VERSION` immediately when a patched release is available
+  3. Keep the temporary `.trivyignore` suppression only until an upstream patched binary is available
+* **Acceptance Date:** 2026-04-18
+* **References:**
+  * [NVD CVE-2026-32280](https://nvd.nist.gov/vuln/detail/CVE-2026-32280)
+  * [GitHub CLI Repository](https://github.com/cli/cli)
+
 ### CVE-2026-28390: libssl3t64 OpenSSL Vulnerability
 
 * **Component:** `libssl3t64` (Debian system package, OpenSSL runtime library)

@@ -492,6 +492,14 @@ CVE-2026-33671
 # We will monitor NVD/Trivy updates and remove this ignore once actionable details exist.
 # Acceptance date: 2026-04-18
 CVE-2026-32282
+# Accepted Risk: Go stdlib vulnerability in app container (CVE-2026-32280)
+# Trivy reports this against package "stdlib" in component "app".
+# GitHub CLI v2.86.0 is compiled with Go 1.25.5, which is vulnerable.
+# Fixed in Go 1.25.9 and 1.26.2. Waiting for upstream gh CLI to rebuild with patched Go.
+# Risk is currently low in our context: gh is used for outbound calls to trusted GitHub APIs
+# from short-lived, isolated GitHub Actions runners.
+# Acceptance date: 2026-04-18
+CVE-2026-32280
 # Mitigated: libssl3t64 OpenSSL Vulnerability (CVE-2026-28390)
 # The CVE affects libssl3t64 versions prior to 3.5.4-1~deb13u2 in Debian 13 (Trixie).
 # The Dockerfile uses node:24.13.1-trixie-slim and runs apt-get upgrade -y, which updates
