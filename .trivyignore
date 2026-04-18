@@ -492,3 +492,10 @@ CVE-2026-33671
 # We will monitor NVD/Trivy updates and remove this ignore once actionable details exist.
 # Acceptance date: 2026-04-18
 CVE-2026-32282
+# Mitigated: libssl3t64 OpenSSL Vulnerability (CVE-2026-28390)
+# The CVE affects libssl3t64 versions prior to 3.5.4-1~deb13u2 in Debian 13 (Trixie).
+# The Dockerfile uses node:24.13.1-trixie-slim and runs apt-get upgrade -y, which updates
+# libssl3t64 to the latest patched Debian security version (3.5.4-1~deb13u2 or later).
+# Trivy may detect vulnerable versions in cached/intermediate layers before upgrade.
+# Acceptance date: 2026-04-18
+CVE-2026-28390
