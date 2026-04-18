@@ -31,7 +31,7 @@ repos:
   # Linter for markdown files
   # This hook uses fast rumdl, based on DavidAnson Node.js markdownlint, for speed
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.67
+    rev: v0.1.71
     hooks:
       - id: rumdl
         # MD013: Line length rule disabled to allow long URLs and code blocks.
@@ -50,7 +50,7 @@ repos:
   # Prettifier for shell scripts
   # Try to get close to Google style guide
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.13.0-1
+    rev: v3.13.1-1
     hooks:
       - id: shfmt-docker # Docker image (requires Docker to run)
         language: docker_image
@@ -58,7 +58,7 @@ repos:
 
   # Detect secrets with GitLeaks
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.30.1
+    rev: v8.30.0
     hooks:
       - id: gitleaks-docker
 
