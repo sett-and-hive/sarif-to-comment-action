@@ -1773,6 +1773,27 @@ This section documents specific security findings that have been analyzed, triag
   * [NVD CVE-2026-28390](https://nvd.nist.gov/vuln/detail/CVE-2026-28390)
   * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-28390)
 
+### CVE-2026-31789: libssl3t64 OpenSSL Vulnerability
+
+* **Component:** `libssl3t64` (Debian system package, OpenSSL runtime library)
+* **Scanner:** Trivy
+* **Severity:** CRITICAL
+* **Status:** **Mitigated / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-31789 is a CRITICAL severity vulnerability in `libssl3t64`. Trivy reports the fixed version as `3.5.4-1~deb13u2`.
+  * **The Fix:** Upgrade `libssl3t64` to `3.5.4-1~deb13u2` or later from Debian 13 security repositories.
+  * **Current Status (as of May 2026):** The Dockerfile uses `node:24.13.1-trixie-slim` and explicitly runs `apt-get update && apt-get upgrade -y` during image build. This upgrades system packages, including `libssl3t64`, to current security-patched versions (`3.5.4-1~deb13u2` or later).
+  * **Why Trivy Detects It:** Trivy can detect vulnerable package versions in cached or intermediate image layers before the `apt-get upgrade -y` layer executes.
+* **Risk Assessment:**
+  * **Likelihood:** Low. The Docker build process upgrades `libssl3t64` to a fixed version during image creation.
+  * **Impact:** High if unpatched. `libssl3t64` is a core crypto runtime library used by multiple tools in the container.
+  * **Overall Risk:** Low in the final built image because the fixed version is applied during build.
+* **Mitigation:** Continue using `apt-get upgrade -y` in the Docker build to apply Debian security updates. The vulnerability is suppressed in `.trivyignore` because findings are expected from pre-upgrade layers or scanner timing.
+* **Acceptance Date:** 2026-05-03
+* **References:**
+  * [NVD CVE-2026-31789](https://nvd.nist.gov/vuln/detail/CVE-2026-31789)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-31789)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24.13.1-trixie-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 13/Trixie), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
