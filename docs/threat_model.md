@@ -1727,6 +1727,147 @@ This section documents specific security findings that have been analyzed, triag
 * **References:**
   * [NVD CVE-2026-32282](https://nvd.nist.gov/vuln/detail/CVE-2026-32282)
 
+### CVE-2026-32283: Unknown App Container Vulnerability
+
+* **Component:** `app` (unknown package)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-32283 is reported without package attribution or version details.
+  * **The Fix:** No fixed version is available because the affected package is unknown.
+  * **Current Status (as of May 2026):** The repository already applies standard hardening controls in the Dockerfile:
+    * The base image is upgraded with `apt-get upgrade -y`
+    * NPM transitive dependencies are aggressively refreshed using `npm update --depth 99 --omit=dev --ignore-scripts`
+    * GitHub CLI is installed from verified release checksums
+  * **Why Trivy Detects It:** The detection may be:
+    * A false positive from generic signature matching without package attribution
+    * Incomplete CVE metadata in the vulnerability database
+    * Detection against intermediate build layers or stale scanner data
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, exploitability in this action cannot be determined.
+  * **Impact:** Unknown. Without a known affected package, scope and impact cannot be quantified.
+  * **Overall Risk:** Low-to-unknown but currently acceptable as a temporary exception because no actionable remediation path exists and baseline hardening controls are already in place.
+* **Mitigation:** The vulnerability is temporarily accepted and suppressed via `.trivyignore` until actionable package metadata or a fixed version is published. We will:
+  * Monitor updates to CVE-2026-32283 in NVD/Trivy databases
+  * Re-run scans regularly and remove the suppression as soon as a concrete fix path is available
+  * Continue applying routine OS and dependency updates in container builds
+* **Acceptance Date:** 2026-05-03
+* **References:**
+  * [NVD CVE-2026-32283](https://nvd.nist.gov/vuln/detail/CVE-2026-32283)
+
+### CVE-2026-28387: Unknown App Container Vulnerability
+
+* **Component:** `app` (unknown package)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-28387 is reported without package attribution or version details.
+  * **The Fix:** No fixed version is available because the affected package is unknown.
+  * **Current Status (as of May 2026):** The repository already applies standard hardening controls in the Dockerfile:
+    * The base image is upgraded with `apt-get upgrade -y`
+    * NPM transitive dependencies are aggressively refreshed using `npm update --depth 99 --omit=dev --ignore-scripts`
+    * GitHub CLI is installed from verified release checksums
+  * **Why Trivy Detects It:** The detection may be:
+    * A false positive from generic signature matching without package attribution
+    * Incomplete CVE metadata in the vulnerability database
+    * Detection against intermediate build layers or stale scanner data
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, exploitability in this action cannot be determined.
+  * **Impact:** Unknown. Without a known affected package, scope and impact cannot be quantified.
+  * **Overall Risk:** Low-to-unknown but currently acceptable as a temporary exception because no actionable remediation path exists and baseline hardening controls are already in place.
+* **Mitigation:** The vulnerability is temporarily accepted and suppressed via `.trivyignore` until actionable package metadata or a fixed version is published. We will:
+  * Monitor updates to CVE-2026-28387 in NVD/Trivy databases
+  * Re-run scans regularly and remove the suppression as soon as a concrete fix path is available
+  * Continue applying routine OS and dependency updates in container builds
+* **Acceptance Date:** 2026-05-03
+* **References:**
+  * [NVD CVE-2026-28387](https://nvd.nist.gov/vuln/detail/CVE-2026-28387)
+
+### CVE-2026-28388: Unknown App Container Vulnerability
+
+* **Component:** `app` (unknown package)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-28388 is reported without package attribution or version details.
+  * **The Fix:** No fixed version is available because the affected package is unknown.
+  * **Current Status (as of May 2026):** The repository already applies standard hardening controls in the Dockerfile:
+    * The base image is upgraded with `apt-get upgrade -y`
+    * NPM transitive dependencies are aggressively refreshed using `npm update --depth 99 --omit=dev --ignore-scripts`
+    * GitHub CLI is installed from verified release checksums
+  * **Why Trivy Detects It:** The detection may be:
+    * A false positive from generic signature matching without package attribution
+    * Incomplete CVE metadata in the vulnerability database
+    * Detection against intermediate build layers or stale scanner data
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, exploitability in this action cannot be determined.
+  * **Impact:** Unknown. Without a known affected package, scope and impact cannot be quantified.
+  * **Overall Risk:** Low-to-unknown but currently acceptable as a temporary exception because no actionable remediation path exists and baseline hardening controls are already in place.
+* **Mitigation:** The vulnerability is temporarily accepted and suppressed via `.trivyignore` until actionable package metadata or a fixed version is published. We will:
+  * Monitor updates to CVE-2026-28388 in NVD/Trivy databases
+  * Re-run scans regularly and remove the suppression as soon as a concrete fix path is available
+  * Continue applying routine OS and dependency updates in container builds
+* **Acceptance Date:** 2026-05-03
+* **References:**
+  * [NVD CVE-2026-28388](https://nvd.nist.gov/vuln/detail/CVE-2026-28388)
+
+### CVE-2026-28389: Unknown App Container Vulnerability
+
+* **Component:** `app` (unknown package)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-28389 is reported without package attribution or version details.
+  * **The Fix:** No fixed version is available because the affected package is unknown.
+  * **Current Status (as of May 2026):** The repository already applies standard hardening controls in the Dockerfile:
+    * The base image is upgraded with `apt-get upgrade -y`
+    * NPM transitive dependencies are aggressively refreshed using `npm update --depth 99 --omit=dev --ignore-scripts`
+    * GitHub CLI is installed from verified release checksums
+  * **Why Trivy Detects It:** The detection may be:
+    * A false positive from generic signature matching without package attribution
+    * Incomplete CVE metadata in the vulnerability database
+    * Detection against intermediate build layers or stale scanner data
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, exploitability in this action cannot be determined.
+  * **Impact:** Unknown. Without a known affected package, scope and impact cannot be quantified.
+  * **Overall Risk:** Low-to-unknown but currently acceptable as a temporary exception because no actionable remediation path exists and baseline hardening controls are already in place.
+* **Mitigation:** The vulnerability is temporarily accepted and suppressed via `.trivyignore` until actionable package metadata or a fixed version is published. We will:
+  * Monitor updates to CVE-2026-28389 in NVD/Trivy databases
+  * Re-run scans regularly and remove the suppression as soon as a concrete fix path is available
+  * Continue applying routine OS and dependency updates in container builds
+* **Acceptance Date:** 2026-05-03
+* **References:**
+  * [NVD CVE-2026-28389](https://nvd.nist.gov/vuln/detail/CVE-2026-28389)
+
+### CVE-2026-32281: Go Standard Library (stdlib) Vulnerability
+
+* **Component:** `stdlib` (Go standard library embedded in `gh` binary)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-32281 is a HIGH severity vulnerability in the Go standard library (`stdlib`) detected in the app container image.
+  * **The Fix:** Fixed in Go 1.25.9 and 1.26.2.
+  * **Current Status (as of May 2026):** The Dockerfile pins GitHub CLI to `v2.86.0`, which is compiled with Go 1.25.5. This version is below the fixed Go versions for CVE-2026-32281.
+  * **Why We Cannot Upgrade Yet:** We rely on upstream GitHub CLI release artifacts. Until GitHub CLI publishes a release built with Go 1.25.9+ or 1.26.2+, we cannot directly remediate this CVE in the embedded `gh` binary.
+  * **Attack Surface in Our Context:** The action uses `gh` for outbound requests to trusted GitHub APIs in ephemeral GitHub Actions runners. No inbound Go service endpoint is exposed by this action.
+* **Risk Assessment:**
+  * **Likelihood:** Low. Exploitation would require an attacker to influence the specific vulnerable code path through our constrained usage of `gh`.
+  * **Impact:** Medium. A successful exploit would be limited to the current ephemeral workflow run.
+  * **Overall Risk:** Low-to-medium and temporarily acceptable while awaiting an upstream GitHub CLI rebuild with patched Go.
+* **Mitigation Strategy:**
+  1. Monitor GitHub CLI releases for builds using Go 1.25.9+ or 1.26.2+
+  2. Upgrade the Dockerfile `GH_VERSION` immediately when a patched release is available
+  3. Keep the temporary `.trivyignore` suppression only until an upstream patched binary is available
+* **Acceptance Date:** 2026-05-03
+* **References:**
+  * [NVD CVE-2026-32281](https://nvd.nist.gov/vuln/detail/CVE-2026-32281)
+  * [GitHub CLI Repository](https://github.com/cli/cli)
+
 ### CVE-2026-32280: Go Standard Library (stdlib) Vulnerability
 
 * **Component:** `stdlib` (Go standard library embedded in `gh` binary)
