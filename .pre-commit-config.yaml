@@ -31,7 +31,7 @@ repos:
   # Linter for markdown files
   # This hook uses fast rumdl, based on DavidAnson Node.js markdownlint, for speed
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.83
+    rev: v0.1.87
     hooks:
       - id: rumdl
         # MD013: Line length rule disabled to allow long URLs and code blocks.
@@ -58,7 +58,7 @@ repos:
 
   # Detect secrets with GitLeaks
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.30.1
+    rev: v8.30.0
     hooks:
       - id: gitleaks-docker
 
