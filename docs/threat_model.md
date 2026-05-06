@@ -1967,6 +1967,27 @@ This section documents specific security findings that have been analyzed, triag
 * **Node Level:** Native dependencies are compiled/fetched using `--ignore-scripts` to prevent arbitrary code execution during the build phase.
 * **Supply Chain:** Sub-dependencies of the wrapped library are force-updated during the Docker build (`npm update --depth 99`) to ensure critical patches are applied even if the upstream `package.json` is stale.
 
+### Tradeoff: `apt-get upgrade -y` — Patch Currency vs. Reproducibility
+
+The `apt-get upgrade -y` step trades **build reproducibility** for **patch currency**. Two builds on different dates may produce different images because Debian security repos update continuously. This is an intentional choice.
+
+**Why the risk is bounded:**
+
+* The base image `node:24.13.1-trixie-slim` is pinned by tag (and effectively by digest on first pull), so the *starting point* is fixed.
+* `apt-get upgrade` only pulls from Debian's official security mirrors — not arbitrary sources.
+* All Debian packages are GPG-signed; a tampered package fails signature verification at install time.
+* The container runs in an ephemeral GitHub Actions environment with egress policy `block` and a narrow `allowed-endpoints` allowlist, severely limiting the blast radius of any supply-chain compromise.
+
+**Residual risks accepted:**
+
+* A Debian security update could introduce a regression that breaks the action. This is mitigated by the CI test suite running on every build.
+* A compromised Debian mirror or GPG key could deliver a malicious package. This is an industry-wide trust assumption shared by all Debian-based containers and is not unique to this action.
+* Builds are not bit-for-bit reproducible across dates. If reproducibility is required in future, individual packages could be pinned by version (e.g., `libssl3t64=3.5.4-1~deb13u2`), at the cost of manual CVE tracking for each pinned package.
+
+**Why we do not pin individual packages:**
+
+Pinning every system package would require manually tracking each package's CVE lifecycle and updating pins for every security release — the exact work that `apt-get upgrade -y` automates. Given that this action does not push images to an external registry consumed by third parties, and rebuilds happen in short-lived CI runners, the non-reproducibility risk is low relative to the operational cost of manual pinning.
+
 ---
 
 ## Incident Record: Team PCP Supply-Chain Attack on aquasecurity/trivy-action (2026-03-19)
