@@ -1935,6 +1935,32 @@ This section documents specific security findings that have been analyzed, triag
   * [NVD CVE-2026-31789](https://nvd.nist.gov/vuln/detail/CVE-2026-31789)
   * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-31789)
 
+### CVE-2026-29181: go.opentelemetry.io/otel Vulnerability
+
+* **Component:** `go.opentelemetry.io/otel` (Go OpenTelemetry library embedded in `gh` binary)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-29181 is a HIGH severity vulnerability in `go.opentelemetry.io/otel` detected in the app container image via the embedded `gh` binary.
+  * **The Fix:** Fixed in `go.opentelemetry.io/otel` v1.38.0.
+  * **Current Status (as of May 2026):** The Dockerfile pins GitHub CLI to `v2.86.0`, which bundles a version of `go.opentelemetry.io/otel` below v1.38.0. We cannot directly update this transitive Go dependency without a new upstream `gh` release.
+  * **Why We Cannot Upgrade Yet:** We rely on upstream GitHub CLI release artifacts. Until GitHub CLI publishes a release that includes `go.opentelemetry.io/otel` v1.38.0+, we cannot directly remediate this CVE.
+  * **Attack Surface in Our Context:** The `gh` binary uses OpenTelemetry only for internal tracing/telemetry. The action does not expose any otel endpoints, does not accept inbound telemetry traffic, and communicates only outbound to trusted GitHub.com APIs in ephemeral, isolated GitHub Actions runners.
+* **Risk Assessment:**
+  * **Likelihood:** Low. Exploitation would require an attacker to influence the specific vulnerable otel code path through our constrained usage of `gh`.
+  * **Impact:** Medium. A successful exploit would be limited to the current ephemeral workflow run.
+  * **Overall Risk:** Low-to-medium and temporarily acceptable while awaiting an upstream GitHub CLI rebuild with a patched `go.opentelemetry.io/otel` version.
+* **Mitigation Strategy:**
+  1. Monitor GitHub CLI releases for builds including `go.opentelemetry.io/otel` v1.38.0+
+  2. Upgrade the Dockerfile `GH_VERSION` immediately when a patched release is available
+  3. Keep the temporary `.trivyignore` suppression only until an upstream patched binary is available
+* **Acceptance Date:** 2026-05-06
+* **References:**
+  * [NVD CVE-2026-29181](https://nvd.nist.gov/vuln/detail/CVE-2026-29181)
+  * [GitHub CLI Repository](https://github.com/cli/cli)
+  * [OpenTelemetry Go Repository](https://github.com/open-telemetry/opentelemetry-go)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24.13.1-trixie-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 13/Trixie), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
