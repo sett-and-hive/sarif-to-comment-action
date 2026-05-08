@@ -1935,11 +1935,58 @@ This section documents specific security findings that have been analyzed, triag
   * [NVD CVE-2026-31789](https://nvd.nist.gov/vuln/detail/CVE-2026-31789)
   * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-31789)
 
+### CVE-2026-29181: go.opentelemetry.io/otel Vulnerability
+
+* **Component:** `go.opentelemetry.io/otel` (Go OpenTelemetry library embedded in `gh` binary)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-29181 is a HIGH severity vulnerability in `go.opentelemetry.io/otel` detected in the app container image via the embedded `gh` binary.
+  * **The Fix:** Fixed in `go.opentelemetry.io/otel` v1.38.0.
+  * **Current Status (as of May 2026):** The Dockerfile pins GitHub CLI to `v2.86.0`, which bundles a version of `go.opentelemetry.io/otel` below v1.38.0. We cannot directly update this transitive Go dependency without a new upstream `gh` release.
+  * **Why We Cannot Upgrade Yet:** We rely on upstream GitHub CLI release artifacts. Until GitHub CLI publishes a release that includes `go.opentelemetry.io/otel` v1.38.0+, we cannot directly remediate this CVE.
+  * **Attack Surface in Our Context:** The `gh` binary uses OpenTelemetry only for internal tracing/telemetry. The action does not expose any otel endpoints, does not accept inbound telemetry traffic, and communicates only outbound to trusted GitHub.com APIs in ephemeral, isolated GitHub Actions runners.
+* **Risk Assessment:**
+  * **Likelihood:** Low. Exploitation would require an attacker to influence the specific vulnerable otel code path through our constrained usage of `gh`.
+  * **Impact:** Medium. A successful exploit would be limited to the current ephemeral workflow run.
+  * **Overall Risk:** Low-to-medium and temporarily acceptable while awaiting an upstream GitHub CLI rebuild with a patched `go.opentelemetry.io/otel` version.
+* **Mitigation Strategy:**
+  1. Monitor GitHub CLI releases for builds including `go.opentelemetry.io/otel` v1.38.0+
+  2. Upgrade the Dockerfile `GH_VERSION` immediately when a patched release is available
+  3. Keep the temporary `.trivyignore` suppression only until an upstream patched binary is available
+* **Acceptance Date:** 2026-05-06
+* **References:**
+  * [NVD CVE-2026-29181](https://nvd.nist.gov/vuln/detail/CVE-2026-29181)
+  * [GitHub CLI Repository](https://github.com/cli/cli)
+  * [OpenTelemetry Go Repository](https://github.com/open-telemetry/opentelemetry-go)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24.13.1-trixie-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 13/Trixie), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
 * **Node Level:** Native dependencies are compiled/fetched using `--ignore-scripts` to prevent arbitrary code execution during the build phase.
 * **Supply Chain:** Sub-dependencies of the wrapped library are force-updated during the Docker build (`npm update --depth 99`) to ensure critical patches are applied even if the upstream `package.json` is stale.
+
+### Tradeoff: `apt-get upgrade -y` — Patch Currency vs. Reproducibility
+
+The `apt-get upgrade -y` step trades **build reproducibility** for **patch currency**. Two builds on different dates may produce different images because Debian security repos update continuously. This is an intentional choice.
+
+**Why the risk is bounded:**
+
+* The base image `node:24.13.1-trixie-slim` is pinned by tag (and effectively by digest on first pull), so the *starting point* is fixed.
+* `apt-get upgrade` only pulls from Debian's official security mirrors — not arbitrary sources.
+* All Debian packages are GPG-signed; a tampered package fails signature verification at install time.
+* The container runs in an ephemeral GitHub Actions environment with egress policy `block` and a narrow `allowed-endpoints` allowlist, severely limiting the blast radius of any supply-chain compromise.
+
+**Residual risks accepted:**
+
+* A Debian security update could introduce a regression that breaks the action. This is mitigated by the CI test suite running on every build.
+* A compromised Debian mirror or GPG key could deliver a malicious package. This is an industry-wide trust assumption shared by all Debian-based containers and is not unique to this action.
+* Builds are not bit-for-bit reproducible across dates. If reproducibility is required in future, individual packages could be pinned by version (e.g., `libssl3t64=3.5.4-1~deb13u2`), at the cost of manual CVE tracking for each pinned package.
+
+**Why we do not pin individual packages:**
+
+Pinning every system package would require manually tracking each package's CVE lifecycle and updating pins for every security release — the exact work that `apt-get upgrade -y` automates. Given that this action does not push images to an external registry consumed by third parties, and rebuilds happen in short-lived CI runners, the non-reproducibility risk is low relative to the operational cost of manual pinning.
 
 ---
 

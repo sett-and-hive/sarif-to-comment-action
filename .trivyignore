@@ -547,6 +547,13 @@ CVE-2026-32280
 # Trivy may detect vulnerable versions in cached/intermediate layers before upgrade.
 # Acceptance date: 2026-04-18
 CVE-2026-28390
+# Accepted Risk: go.opentelemetry.io/otel vulnerability (CVE-2026-29181)
+# GitHub CLI v2.86.0 bundles go.opentelemetry.io/otel which is affected by CVE-2026-29181.
+# Fixed in go.opentelemetry.io/otel v1.38.0. Waiting for upstream gh CLI to update dependency.
+# Risk is limited: The gh CLI uses otel only for internal telemetry/tracing.
+# The action does not expose otel endpoints or accept untrusted telemetry traffic.
+# Acceptance date: 2026-05-06
+CVE-2026-29181
 # Mitigated: libssl3t64 OpenSSL Vulnerability (CVE-2026-31789)
 # The CVE affects libssl3t64 versions prior to 3.5.4-1~deb13u2 in Debian 13 (Trixie).
 # The Dockerfile uses node:24.13.1-trixie-slim and runs apt-get upgrade -y, which updates
