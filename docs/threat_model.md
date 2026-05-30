@@ -1961,6 +1961,410 @@ This section documents specific security findings that have been analyzed, triag
   * [GitHub CLI Repository](https://github.com/cli/cli)
   * [OpenTelemetry Go Repository](https://github.com/open-telemetry/opentelemetry-go)
 
+### CVE-2026-48501: GitHub CLI Security Vulnerability
+
+* **Component:** `github.com/cli/cli/v2` (GitHub CLI binary)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Mitigated — Upgraded to v2.93.0**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-48501 is a HIGH severity vulnerability in GitHub CLI. The GitHub CLI v2.93.0 release notes confirm that a security vulnerability was identified and fixed: it would incorrectly include an authorization header in API requests to TUF repository mirrors via `gh attestation`, `gh release verify`, and `gh release verify-asset` commands. Users are advised to update to v2.93.0 immediately.
+  * **The Fix:** Fixed in GitHub CLI v2.93.0.
+  * **Current Status:** The Dockerfile has been updated to pin GitHub CLI to `v2.93.0`, which contains the security fix. This update resolves CVE-2026-48501 directly.
+  * **Attack Surface in Our Context:** The `gh` binary is used for authenticated API calls to GitHub.com from isolated, ephemeral GitHub Actions runners. The vulnerable code path (TUF mirror attestation) is not exercised by this action's workflows.
+* **Risk Assessment:**
+  * **Likelihood:** Low to medium prior to fix. Exploitation would require an attacker to control a TUF mirror and intercept auth headers.
+  * **Impact:** Medium. Leaked auth tokens could allow unauthorized GitHub API access.
+  * **Overall Risk:** Mitigated by upgrading to v2.93.0.
+* **Mitigation Strategy:**
+  1. Upgraded Dockerfile `GH_VERSION` from `2.86.0` to `2.93.0`
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-48501](https://nvd.nist.gov/vuln/detail/CVE-2026-48501)
+  * [GitHub CLI v2.93.0 Release Notes](https://github.com/cli/cli/releases/tag/v2.93.0)
+
+### CVE-2026-33811: Go Standard Library (stdlib) Vulnerability
+
+* **Component:** `stdlib` (Go standard library embedded in `gh` binary)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-33811 is a vulnerability in the Go standard library. Fixed in Go 1.25.5 (with subsequent patch releases at Go 1.25.10 and 1.26.3).
+  * **The Fix:** Fixed in Go 1.25.5+.
+  * **Current Status:** The Dockerfile has been updated to install GitHub CLI v2.93.0. If this release was compiled with Go 1.25.5 or later, the vulnerability is resolved in the final image. Trivy may still detect it in cached or intermediate build layers compiled with an older Go version.
+  * **Why We Cannot Fully Guarantee Remediation:** The Go version used to compile the gh binary is determined by the upstream GitHub CLI build process. We cannot independently update the embedded Go runtime without waiting for an upstream release that uses the patched Go version.
+  * **Attack Surface in Our Context:** The `gh` binary is used for outbound calls to trusted GitHub APIs from short-lived, isolated GitHub Actions runners. The Go stdlib is not directly exposed to untrusted user input as a network service.
+* **Risk Assessment:**
+  * **Likelihood:** Low. Exploitation requires triggering the specific vulnerable stdlib code path through our constrained usage of `gh`.
+  * **Impact:** Limited. The action runs in an ephemeral, isolated environment.
+  * **Overall Risk:** Low and temporarily acceptable while awaiting confirmation that the upstream gh binary is compiled with a patched Go version.
+* **Mitigation Strategy:**
+  1. Upgraded Dockerfile `GH_VERSION` to `v2.93.0`, which may include a patched Go build
+  2. Monitor GitHub CLI releases for confirmation of Go version used in build
+  3. Remove `.trivyignore` suppression once confirmed patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-33811](https://nvd.nist.gov/vuln/detail/CVE-2026-33811)
+  * [GitHub CLI Repository](https://github.com/cli/cli)
+
+### CVE-2026-33845: libgnutls30t64 CRITICAL TLS Vulnerability
+
+* **Component:** `libgnutls30t64` (GnuTLS library — Debian system package)
+* **Scanner:** Trivy
+* **Severity:** CRITICAL
+* **Status:** **Mitigated — Updated via apt-get upgrade**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-33845 is a CRITICAL severity vulnerability in `libgnutls30t64` affecting versions prior to `3.8.9-3+deb13u2` in Debian 13 (Trixie). GnuTLS provides TLS/SSL functionality and is a widely used cryptographic library.
+  * **The Fix:** Fixed in `libgnutls30t64` version `3.8.9-3+deb13u2` (and later, e.g., `3.8.9-3+deb13u4`) in Debian 13.
+  * **Current Status:** The Dockerfile runs `apt-get upgrade -y` during the build, which updates `libgnutls30t64` to the latest Debian security version (≥ `3.8.9-3+deb13u2`). The vulnerability is therefore not present in the final image layer.
+  * **Why Trivy Detects It:** Trivy may be detecting the vulnerable version in cached base image layers or intermediate build steps before the `apt-get upgrade -y` command executes.
+* **Risk Assessment:**
+  * **Likelihood:** None in the final image. The `apt-get upgrade` ensures the patched version is installed.
+  * **Impact:** None in the final image. The vulnerable version is replaced.
+  * **Overall Risk:** None after the `apt-get upgrade -y` step in the Dockerfile.
+* **Mitigation:** The Dockerfile's `apt-get upgrade -y` command updates all system packages including `libgnutls30t64`. The `.trivyignore` suppression prevents noise from intermediate layer detections.
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-33845](https://nvd.nist.gov/vuln/detail/CVE-2026-33845)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-33845)
+
+### CVE-2026-4878: libcap2 Vulnerability
+
+* **Component:** `libcap2` (Linux capabilities library — Debian system package)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Mitigated — Updated via apt-get upgrade**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-4878 is a vulnerability in `libcap2` affecting versions prior to `1:2.75-10+b3` in Debian 13 (Trixie).
+  * **The Fix:** Fixed in `libcap2` version `1:2.75-10+b3` (and later, e.g., `1:2.75-10+deb13u1`) in Debian 13.
+  * **Current Status:** The Dockerfile runs `apt-get upgrade -y` during the build, which updates `libcap2` to the latest Debian security version. The vulnerability is therefore not present in the final image layer.
+  * **Why Trivy Detects It:** Trivy may be detecting the vulnerable version in cached base image layers or intermediate build steps before the `apt-get upgrade -y` command executes.
+* **Risk Assessment:**
+  * **Likelihood:** None in the final image. The `apt-get upgrade` ensures the patched version is installed.
+  * **Impact:** None in the final image.
+  * **Overall Risk:** None after the `apt-get upgrade -y` step in the Dockerfile.
+* **Mitigation:** The Dockerfile's `apt-get upgrade -y` command updates all system packages including `libcap2`.
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-4878](https://nvd.nist.gov/vuln/detail/CVE-2026-4878)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-4878)
+
+### CVE-2026-32316: jq HIGH Vulnerability
+
+* **Component:** `jq` (command-line JSON processor — Debian system package)
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Mitigated — Updated via apt-get upgrade**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-32316 is a HIGH severity vulnerability in `jq` affecting versions prior to `1.7.1-6+deb13u1` in Debian 13 (Trixie).
+  * **The Fix:** Fixed in `jq` version `1.7.1-6+deb13u1` (and later, e.g., `1.7.1-6+deb13u2`) in Debian 13.
+  * **Current Status:** The Dockerfile runs `apt-get upgrade -y` before installing `jq`, and `jq` is explicitly installed via `apt-get install`. This ensures the patched version (`1.7.1-6+deb13u1` or later) is installed in the final image.
+  * **Why Trivy Detects It:** Trivy may be detecting the vulnerable version in cached base image layers or intermediate build steps before the `apt-get upgrade -y` command executes.
+* **Risk Assessment:**
+  * **Likelihood:** None in the final image.
+  * **Impact:** None in the final image.
+  * **Overall Risk:** None after the `apt-get upgrade -y` and `apt-get install jq` steps in the Dockerfile.
+* **Mitigation:** The Dockerfile's `apt-get upgrade -y` command ensures `jq` is at the latest patched version.
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-32316](https://nvd.nist.gov/vuln/detail/CVE-2026-32316)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-32316)
+
+### CVE-2026-27135: libnghttp2-14 Vulnerability
+
+* **Component:** `libnghttp2-14` (HTTP/2 C library — Debian system package)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Mitigated — Updated via apt-get upgrade**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-27135 is a vulnerability in `libnghttp2-14` affecting versions prior to `1.64.0-1.1` in Debian 13 (Trixie).
+  * **The Fix:** Fixed in `libnghttp2-14` version `1.64.0-1.1+deb13u1` in Debian 13.
+  * **Current Status:** The Dockerfile runs `apt-get upgrade -y` during the build, which updates `libnghttp2-14` to the latest Debian security version. The vulnerability is therefore not present in the final image layer.
+  * **Why Trivy Detects It:** Trivy may be detecting the vulnerable version in cached base image layers or intermediate build steps before the `apt-get upgrade -y` command executes.
+* **Risk Assessment:**
+  * **Likelihood:** None in the final image.
+  * **Impact:** None in the final image.
+  * **Overall Risk:** None after the `apt-get upgrade -y` step in the Dockerfile.
+* **Mitigation:** The Dockerfile's `apt-get upgrade -y` command updates all system packages including `libnghttp2-14`.
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-27135](https://nvd.nist.gov/vuln/detail/CVE-2026-27135)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-27135)
+
+### CVE-2026-40356: libgssapi-krb5-2 (Kerberos) Vulnerability
+
+* **Component:** `libgssapi-krb5-2` (Kerberos GSSAPI library — Debian system package)
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Mitigated — Updated via apt-get upgrade**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-40356 is a vulnerability in `libgssapi-krb5-2` affecting versions prior to `1.21.3-5` in Debian 13 (Trixie).
+  * **The Fix:** Fixed in `libgssapi-krb5-2` version `1.21.3-5+deb13u1` in Debian 13.
+  * **Current Status:** The Dockerfile runs `apt-get upgrade -y` during the build, which updates `libgssapi-krb5-2` to the latest Debian security version. The vulnerability is therefore not present in the final image layer.
+  * **Why Trivy Detects It:** Trivy may be detecting the vulnerable version in cached base image layers or intermediate build steps before the `apt-get upgrade -y` command executes.
+* **Risk Assessment:**
+  * **Likelihood:** None in the final image.
+  * **Impact:** None in the final image.
+  * **Overall Risk:** None after the `apt-get upgrade -y` step in the Dockerfile.
+* **Mitigation:** The Dockerfile's `apt-get upgrade -y` command updates all system packages including `libgssapi-krb5-2`.
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-40356](https://nvd.nist.gov/vuln/detail/CVE-2026-40356)
+  * [Debian Security Tracker](https://security-tracker.debian.org/tracker/CVE-2026-40356)
+
+### CVE-2026-3833: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-3833 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown", so we cannot identify a concrete vulnerable dependency or code path.
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness. Will be re-evaluated when package details become available.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-3833](https://nvd.nist.gov/vuln/detail/CVE-2026-3833)
+
+### CVE-2026-33814: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-33814 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-33814](https://nvd.nist.gov/vuln/detail/CVE-2026-33814)
+
+### CVE-2026-33846: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** HIGH
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-33846 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-33846](https://nvd.nist.gov/vuln/detail/CVE-2026-33846)
+
+### CVE-2026-39820: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-39820 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-39820](https://nvd.nist.gov/vuln/detail/CVE-2026-39820)
+
+### CVE-2026-39823: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-39823 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-39823](https://nvd.nist.gov/vuln/detail/CVE-2026-39823)
+
+### CVE-2026-39825: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-39825 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-39825](https://nvd.nist.gov/vuln/detail/CVE-2026-39825)
+
+### CVE-2026-39826: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-39826 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-39826](https://nvd.nist.gov/vuln/detail/CVE-2026-39826)
+
+### CVE-2026-39836: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-39836 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-39836](https://nvd.nist.gov/vuln/detail/CVE-2026-39836)
+
+### CVE-2026-40164: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-40164 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-40164](https://nvd.nist.gov/vuln/detail/CVE-2026-40164)
+
+### CVE-2026-42009: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-42009 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-42009](https://nvd.nist.gov/vuln/detail/CVE-2026-42009)
+
+### CVE-2026-42010: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-42010 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-42010](https://nvd.nist.gov/vuln/detail/CVE-2026-42010)
+
+### CVE-2026-42499: Unknown Vulnerability in App Container
+
+* **Component:** `app`
+* **Scanner:** Trivy
+* **Severity:** UNKNOWN
+* **Status:** **Accepted Risk / Suppressed**
+* **Analysis:**
+  * **The Vulnerability:** CVE-2026-42499 was detected by Trivy in the app container image, but no specific package or version information was provided. The affected component is listed as "app" with package "unknown" and version "unknown".
+  * **No Fix Available:** No fixed version is currently listed, preventing a direct patch.
+  * **Likely Cause:** This is likely a false positive or a newly published CVE with incomplete or pending metadata in the NVD/Trivy databases.
+* **Risk Assessment:**
+  * **Likelihood:** Unknown. Without package details, no attack surface can be assessed.
+  * **Impact:** Unknown.
+  * **Overall Risk:** Unknown but suppressed pending metadata completeness.
+* **Mitigation Strategy:**
+  1. Monitor NVD/Trivy databases for updated CVE metadata
+  2. Remove `.trivyignore` suppression once the affected package is identified and patched
+* **Acceptance Date:** 2026-05-30
+* **References:**
+  * [NVD CVE-2026-42499](https://nvd.nist.gov/vuln/detail/CVE-2026-42499)
+
 ### General Dependency Policy
 
 * **OS Level:** The container is built on `node:24.13.1-trixie-slim` to ensure the underlying Debian packages are on the latest stable channel (Debian 13/Trixie), minimizing system-level CVEs. An explicit `apt-get upgrade -y` command is run during build to apply all available security patches for system packages.
