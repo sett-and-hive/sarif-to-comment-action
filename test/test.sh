@@ -6,8 +6,9 @@
 set -o pipefail
 
 create_docker_image() {
-  TEST_IMAGE=comment-test-image
-  docker build . -t "$TEST_IMAGE" -q
+  local test_image=comment-test-image
+  docker build . -t "$test_image" -q >/dev/null || return $?
+  echo "$test_image"
 }
 
 run_docker() {
