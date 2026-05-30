@@ -41,6 +41,7 @@ jobs:
             auth.docker.io:443
             ghcr.io:443
             github.com:443
+            release-assets.githubusercontent.com:443
             docker.io:443
             index.docker.io:443
             mirror.gcr.io:443
