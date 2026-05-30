@@ -82,7 +82,9 @@ rm -f $OUTPUTS_FILE
 rm -f "$ALL_OUTPUTS_FILE"
 touch "$ALL_OUTPUTS_FILE"
 
-IMAGE=$(create_docker_image)
+if ! IMAGE=$(create_docker_image); then
+  exit 1
+fi
 
 CODEQL_FIXTURE="./test/fixtures/codeql.sarif"
 ODC_FIXTURE="./test/fixtures/odc.sarif"

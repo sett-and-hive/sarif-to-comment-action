@@ -29,7 +29,7 @@ jobs:
             deb.debian.org:80
             docker.io:443
             github.com:443
-            production.cloudflare.docker.com:443
+            production.cloudfront.docker.com:443
             registry-1.docker.io:443
             registry.npmjs.org:443
             release-assets.githubusercontent.com:443
