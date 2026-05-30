@@ -28,8 +28,8 @@ teardown() {
 CVE-2020-7754
 EOF
 
-  # Run without GITHUB_TOKEN
-  run python "$SCRIPT_PATH"
+  # Run without GITHUB_TOKEN, even if CI injects it into the environment
+  run bash -c "unset GITHUB_TOKEN && '$SCRIPT_PATH'"
   [ "$status" -eq 1 ]
   [[ $output =~ "GITHUB_TOKEN environment variable not set" ]]
 }
@@ -44,7 +44,7 @@ EOF
 
   # Run with GITHUB_TOKEN but without GITHUB_REPOSITORY
   # Unset GITHUB_REPOSITORY in the subprocess
-  run bash -c "unset GITHUB_REPOSITORY && export GITHUB_TOKEN='test-token' && python '$SCRIPT_PATH'"
+  run bash -c "unset GITHUB_REPOSITORY && export GITHUB_TOKEN='test-token' && '$SCRIPT_PATH'"
   [ "$status" -eq 1 ]
   [[ $output =~ "GITHUB_REPOSITORY environment variable not set" ]]
 }
